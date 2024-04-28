@@ -367,6 +367,8 @@ func decodeResponseFromMessage(r []byte, reply interface{}) (err error) {
 		return err
 	}
 
+	fmt.Printf("%s\n", string(r))
+
 	if c.Error != nil {
 		jsonErr := &json2.Error{}
 		if err := json.Unmarshal(*c.Error, jsonErr); err != nil {
