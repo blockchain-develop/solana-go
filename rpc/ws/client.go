@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -367,7 +368,8 @@ func decodeResponseFromMessage(r []byte, reply interface{}) (err error) {
 		return err
 	}
 
-	fmt.Printf("%s\n", string(r))
+	name := fmt.Sprintf("block.json")
+	os.WriteFile(name, r, 0644)
 
 	if c.Error != nil {
 		jsonErr := &json2.Error{}
