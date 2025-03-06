@@ -8,12 +8,6 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-var (
-	GlobalAccount = ag_solanago.MustPublicKeyFromBase58("4wTV1YmiEkRvAtNtsSGPtUrqRYQMe5SKy2uB4Jjaxnjf")
-	FeeRecipientAccount = ag_solanago.MustPublicKeyFromBase58("CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM")
-	EventAuthorityAccount = ag_solanago.MustPublicKeyFromBase58("Ce6TQqeHC9p8KetsN6JsjHK7UTZk7nasjjnr7XxXp9F1")
-)
-
 type Global struct {
 	Initialized                 bool
 	Authority                   ag_solanago.PublicKey
