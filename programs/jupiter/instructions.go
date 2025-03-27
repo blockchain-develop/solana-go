@@ -182,7 +182,7 @@ func (inst *Instruction) MarshalWithEncoder(encoder *ag_binary.Encoder) error {
 }
 
 func registryDecodeInstruction(accounts []*ag_solanago.AccountMeta, data []byte) (interface{}, error) {
-	inst, err := decodeInstruction(accounts, data)
+	inst, err := DecodeInstruction(accounts, data)
 	if err != nil {
 		return nil, err
 	}
