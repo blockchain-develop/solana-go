@@ -43,6 +43,7 @@ func NewRouteInstructionBuilder() *Route {
 	nd := &Route{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 9),
 	}
+	nd.AccountMetaSlice[7] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
 	return nd
 }
 

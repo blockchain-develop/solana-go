@@ -26,7 +26,7 @@ type ClaimToken struct {
 	//
 	// [5] = [] mint
 	//
-	// [6] = [] associated_token_token_program
+	// [6] = [] token_program
 	//
 	// [7] = [] associated_token_program
 	//
@@ -39,6 +39,9 @@ func NewClaimTokenInstructionBuilder() *ClaimToken {
 	nd := &ClaimToken{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 9),
 	}
+	nd.AccountMetaSlice[1] = ag_solanago.Meta(Addresses["J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"])
+	nd.AccountMetaSlice[7] = ag_solanago.Meta(Addresses["ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"])
+	nd.AccountMetaSlice[8] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 
@@ -98,6 +101,54 @@ func (inst *ClaimToken) SetDestinationTokenAccountAccount(destinationTokenAccoun
 	return inst
 }
 
+func (inst *ClaimToken) findFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, knownBumpSeed uint8) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// path: wallet
+	seeds = append(seeds, wallet.Bytes())
+	// path: tokenProgram
+	seeds = append(seeds, tokenProgram.Bytes())
+	// path: mint
+	seeds = append(seeds, mint.Bytes())
+
+	programID := Addresses["ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"]
+
+	if knownBumpSeed != 0 {
+		seeds = append(seeds, []byte{byte(bumpSeed)})
+		pda, err = ag_solanago.CreateProgramAddress(seeds, programID)
+	} else {
+		pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, programID)
+	}
+	return
+}
+
+// FindDestinationTokenAccountAddressWithBumpSeed calculates DestinationTokenAccount account address with given seeds and a known bump seed.
+func (inst *ClaimToken) FindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey, err error) {
+	pda, _, err = inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, bumpSeed)
+	return
+}
+
+func (inst *ClaimToken) MustFindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey) {
+	pda, _, err := inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, bumpSeed)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
+// FindDestinationTokenAccountAddress finds DestinationTokenAccount account address with given seeds.
+func (inst *ClaimToken) FindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	pda, bumpSeed, err = inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, 0)
+	return
+}
+
+func (inst *ClaimToken) MustFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, err := inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, 0)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account.
 func (inst *ClaimToken) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
@@ -114,14 +165,14 @@ func (inst *ClaimToken) GetMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
-// SetAssociatedTokenTokenProgramAccount sets the "associated_token_token_program" account.
-func (inst *ClaimToken) SetAssociatedTokenTokenProgramAccount(associatedTokenTokenProgram ag_solanago.PublicKey) *ClaimToken {
-	inst.AccountMetaSlice[6] = ag_solanago.Meta(associatedTokenTokenProgram)
+// SetTokenProgramAccount sets the "token_program" account.
+func (inst *ClaimToken) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ClaimToken {
+	inst.AccountMetaSlice[6] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
-// GetAssociatedTokenTokenProgramAccount gets the "associated_token_token_program" account.
-func (inst *ClaimToken) GetAssociatedTokenTokenProgramAccount() *ag_solanago.AccountMeta {
+// GetTokenProgramAccount gets the "token_program" account.
+func (inst *ClaimToken) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
@@ -193,7 +244,7 @@ func (inst *ClaimToken) Validate() error {
 			return errors.New("accounts.Mint is not set")
 		}
 		if inst.AccountMetaSlice[6] == nil {
-			return errors.New("accounts.AssociatedTokenTokenProgram is not set")
+			return errors.New("accounts.TokenProgram is not set")
 		}
 		if inst.AccountMetaSlice[7] == nil {
 			return errors.New("accounts.AssociatedTokenProgram is not set")
@@ -220,15 +271,15 @@ func (inst *ClaimToken) EncodeToTree(parent ag_treeout.Branches) {
 
 					// Accounts of the instruction:
 					instructionBranch.Child("Accounts[len=9]").ParentFunc(func(accountsBranch ag_treeout.Branches) {
-						accountsBranch.Child(ag_format.Meta("                         payer", inst.AccountMetaSlice.Get(0)))
-						accountsBranch.Child(ag_format.Meta("                        wallet", inst.AccountMetaSlice.Get(1)))
-						accountsBranch.Child(ag_format.Meta("             program_authority", inst.AccountMetaSlice.Get(2)))
-						accountsBranch.Child(ag_format.Meta("                program_token_", inst.AccountMetaSlice.Get(3)))
-						accountsBranch.Child(ag_format.Meta("            destination_token_", inst.AccountMetaSlice.Get(4)))
-						accountsBranch.Child(ag_format.Meta("                          mint", inst.AccountMetaSlice.Get(5)))
-						accountsBranch.Child(ag_format.Meta("associated_token_token_program", inst.AccountMetaSlice.Get(6)))
-						accountsBranch.Child(ag_format.Meta("      associated_token_program", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("                system_program", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("                   payer", inst.AccountMetaSlice.Get(0)))
+						accountsBranch.Child(ag_format.Meta("                  wallet", inst.AccountMetaSlice.Get(1)))
+						accountsBranch.Child(ag_format.Meta("       program_authority", inst.AccountMetaSlice.Get(2)))
+						accountsBranch.Child(ag_format.Meta("          program_token_", inst.AccountMetaSlice.Get(3)))
+						accountsBranch.Child(ag_format.Meta("      destination_token_", inst.AccountMetaSlice.Get(4)))
+						accountsBranch.Child(ag_format.Meta("                    mint", inst.AccountMetaSlice.Get(5)))
+						accountsBranch.Child(ag_format.Meta("           token_program", inst.AccountMetaSlice.Get(6)))
+						accountsBranch.Child(ag_format.Meta("associated_token_program", inst.AccountMetaSlice.Get(7)))
+						accountsBranch.Child(ag_format.Meta("          system_program", inst.AccountMetaSlice.Get(8)))
 					})
 				})
 		})
@@ -262,7 +313,7 @@ func NewClaimTokenInstruction(
 	programTokenAccount ag_solanago.PublicKey,
 	destinationTokenAccount ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
-	associatedTokenTokenProgram ag_solanago.PublicKey,
+	tokenProgram ag_solanago.PublicKey,
 	associatedTokenProgram ag_solanago.PublicKey,
 	systemProgram ag_solanago.PublicKey) *ClaimToken {
 	return NewClaimTokenInstructionBuilder().
@@ -273,7 +324,7 @@ func NewClaimTokenInstruction(
 		SetProgramTokenAccountAccount(programTokenAccount).
 		SetDestinationTokenAccountAccount(destinationTokenAccount).
 		SetMintAccount(mint).
-		SetAssociatedTokenTokenProgramAccount(associatedTokenTokenProgram).
+		SetTokenProgramAccount(tokenProgram).
 		SetAssociatedTokenProgramAccount(associatedTokenProgram).
 		SetSystemProgramAccount(systemProgram)
 }

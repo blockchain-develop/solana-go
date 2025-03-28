@@ -38,7 +38,7 @@ type SharedAccountsRouteWithTokenLedger struct {
 	//
 	// [9] = [WRITE] platform_fee_account
 	//
-	// [10] = [] token2022_program
+	// [10] = [] token_2022_program
 	//
 	// [11] = [] token_ledger
 	//
@@ -53,6 +53,7 @@ func NewSharedAccountsRouteWithTokenLedgerInstructionBuilder() *SharedAccountsRo
 	nd := &SharedAccountsRouteWithTokenLedger{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 14),
 	}
+	nd.AccountMetaSlice[12] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
 	return nd
 }
 
@@ -196,13 +197,13 @@ func (inst *SharedAccountsRouteWithTokenLedger) GetPlatformFeeAccountAccount() *
 	return inst.AccountMetaSlice.Get(9)
 }
 
-// SetToken2022ProgramAccount sets the "token2022_program" account.
+// SetToken2022ProgramAccount sets the "token_2022_program" account.
 func (inst *SharedAccountsRouteWithTokenLedger) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *SharedAccountsRouteWithTokenLedger {
 	inst.AccountMetaSlice[10] = ag_solanago.Meta(token2022Program)
 	return inst
 }
 
-// GetToken2022ProgramAccount gets the "token2022_program" account (optional).
+// GetToken2022ProgramAccount gets the "token_2022_program" account (optional).
 func (inst *SharedAccountsRouteWithTokenLedger) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(10)
 }
@@ -353,7 +354,7 @@ func (inst *SharedAccountsRouteWithTokenLedger) EncodeToTree(parent ag_treeout.B
 						accountsBranch.Child(ag_format.Meta("               source_mint", inst.AccountMetaSlice.Get(7)))
 						accountsBranch.Child(ag_format.Meta("          destination_mint", inst.AccountMetaSlice.Get(8)))
 						accountsBranch.Child(ag_format.Meta("             platform_fee_", inst.AccountMetaSlice.Get(9)))
-						accountsBranch.Child(ag_format.Meta("         token2022_program", inst.AccountMetaSlice.Get(10)))
+						accountsBranch.Child(ag_format.Meta("        token_2022_program", inst.AccountMetaSlice.Get(10)))
 						accountsBranch.Child(ag_format.Meta("              token_ledger", inst.AccountMetaSlice.Get(11)))
 						accountsBranch.Child(ag_format.Meta("           event_authority", inst.AccountMetaSlice.Get(12)))
 						accountsBranch.Child(ag_format.Meta("                   program", inst.AccountMetaSlice.Get(13)))

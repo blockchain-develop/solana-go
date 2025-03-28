@@ -8,33 +8,138 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-type AmountWithSlippage struct {
-	Amount      uint64
-	SlippageBps uint16
+type AccountsType ag_binary.BorshEnum
+
+const (
+	AccountsTypeTransferHookA AccountsType = iota
+	AccountsTypeTransferHookB
+	AccountsTypeTransferHookReward
+	AccountsTypeTransferHookInput
+	AccountsTypeTransferHookIntermediate
+	AccountsTypeTransferHookOutput
+	AccountsTypeSupplementalTickArrays
+	AccountsTypeSupplementalTickArraysOne
+	AccountsTypeSupplementalTickArraysTwo
+)
+
+func (value AccountsType) String() string {
+	switch value {
+	case AccountsTypeTransferHookA:
+		return "TransferHookA"
+	case AccountsTypeTransferHookB:
+		return "TransferHookB"
+	case AccountsTypeTransferHookReward:
+		return "TransferHookReward"
+	case AccountsTypeTransferHookInput:
+		return "TransferHookInput"
+	case AccountsTypeTransferHookIntermediate:
+		return "TransferHookIntermediate"
+	case AccountsTypeTransferHookOutput:
+		return "TransferHookOutput"
+	case AccountsTypeSupplementalTickArrays:
+		return "SupplementalTickArrays"
+	case AccountsTypeSupplementalTickArraysOne:
+		return "SupplementalTickArraysOne"
+	case AccountsTypeSupplementalTickArraysTwo:
+		return "SupplementalTickArraysTwo"
+	default:
+		return ""
+	}
 }
 
-func (obj AmountWithSlippage) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `Amount` param:
-	err = encoder.Encode(obj.Amount)
+type FeeEvent struct {
+	Account ag_solanago.PublicKey
+	Mint    ag_solanago.PublicKey
+	Amount  uint64
+}
+
+func (obj FeeEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Account` param:
+	err = encoder.Encode(obj.Account)
 	if err != nil {
 		return err
 	}
-	// Serialize `SlippageBps` param:
-	err = encoder.Encode(obj.SlippageBps)
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `Amount` param:
+	err = encoder.Encode(obj.Amount)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (obj *AmountWithSlippage) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *FeeEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Account`:
+	err = decoder.Decode(&obj.Account)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
 	// Deserialize `Amount`:
 	err = decoder.Decode(&obj.Amount)
 	if err != nil {
 		return err
 	}
-	// Deserialize `SlippageBps`:
-	err = decoder.Decode(&obj.SlippageBps)
+	return nil
+}
+
+type RemainingAccountsInfo struct {
+	Slices []RemainingAccountsSlice
+}
+
+func (obj RemainingAccountsInfo) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Slices` param:
+	err = encoder.Encode(obj.Slices)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *RemainingAccountsInfo) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Slices`:
+	err = decoder.Decode(&obj.Slices)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type RemainingAccountsSlice struct {
+	AccountsType AccountsType
+	Length       uint8
+}
+
+func (obj RemainingAccountsSlice) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `AccountsType` param:
+	err = encoder.Encode(obj.AccountsType)
+	if err != nil {
+		return err
+	}
+	// Serialize `Length` param:
+	err = encoder.Encode(obj.Length)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *RemainingAccountsSlice) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `AccountsType`:
+	err = decoder.Decode(&obj.AccountsType)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Length`:
+	err = decoder.Decode(&obj.Length)
 	if err != nil {
 		return err
 	}
@@ -244,69 +349,111 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	case SwapRaydiumClmmV2Tuple:
 		tmp.Enum = 40
 		tmp.RaydiumClmmV2 = realvalue
-	case SwapCloneTuple:
+	case SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple:
 		tmp.Enum = 41
-		tmp.Clone = realvalue
-	case SwapWhirlpoolSwapV2Tuple:
+		tmp.StakeDexPrefundWithdrawStakeAndDepositStake = realvalue
+	case SwapCloneTuple:
 		tmp.Enum = 42
+		tmp.Clone = realvalue
+	case SwapSanctumSTuple:
+		tmp.Enum = 43
+		tmp.SanctumS = realvalue
+	case SwapSanctumSAddLiquidityTuple:
+		tmp.Enum = 44
+		tmp.SanctumSAddLiquidity = realvalue
+	case SwapSanctumSRemoveLiquidityTuple:
+		tmp.Enum = 45
+		tmp.SanctumSRemoveLiquidity = realvalue
+	case SwapRaydiumCPTuple:
+		tmp.Enum = 46
+		tmp.RaydiumCP = realvalue
+	case SwapWhirlpoolSwapV2Tuple:
+		tmp.Enum = 47
 		tmp.WhirlpoolSwapV2 = realvalue
 	case SwapOneIntroTuple:
-		tmp.Enum = 43
+		tmp.Enum = 48
 		tmp.OneIntro = realvalue
 	case SwapPumpdotfunWrappedBuyTuple:
-		tmp.Enum = 44
+		tmp.Enum = 49
 		tmp.PumpdotfunWrappedBuy = realvalue
 	case SwapPumpdotfunWrappedSellTuple:
-		tmp.Enum = 45
+		tmp.Enum = 50
 		tmp.PumpdotfunWrappedSell = realvalue
 	case SwapPerpsV2Tuple:
-		tmp.Enum = 46
+		tmp.Enum = 51
 		tmp.PerpsV2 = realvalue
 	case SwapPerpsV2AddLiquidityTuple:
-		tmp.Enum = 47
+		tmp.Enum = 52
 		tmp.PerpsV2AddLiquidity = realvalue
 	case SwapPerpsV2RemoveLiquidityTuple:
-		tmp.Enum = 48
+		tmp.Enum = 53
 		tmp.PerpsV2RemoveLiquidity = realvalue
 	case SwapMoonshotWrappedBuyTuple:
-		tmp.Enum = 49
+		tmp.Enum = 54
 		tmp.MoonshotWrappedBuy = realvalue
 	case SwapMoonshotWrappedSellTuple:
-		tmp.Enum = 50
+		tmp.Enum = 55
 		tmp.MoonshotWrappedSell = realvalue
 	case SwapStabbleStableSwapTuple:
-		tmp.Enum = 51
+		tmp.Enum = 56
 		tmp.StabbleStableSwap = realvalue
 	case SwapStabbleWeightedSwapTuple:
-		tmp.Enum = 52
+		tmp.Enum = 57
 		tmp.StabbleWeightedSwap = realvalue
 	case SwapObricTuple:
-		tmp.Enum = 53
+		tmp.Enum = 58
 		tmp.Obric = realvalue
 	case SwapFoxBuyFromEstimatedCostTuple:
-		tmp.Enum = 54
+		tmp.Enum = 59
 		tmp.FoxBuyFromEstimatedCost = realvalue
 	case SwapFoxClaimPartialTuple:
-		tmp.Enum = 55
+		tmp.Enum = 60
 		tmp.FoxClaimPartial = realvalue
 	case SwapSolFiTuple:
-		tmp.Enum = 56
+		tmp.Enum = 61
 		tmp.SolFi = realvalue
 	case SwapSolayerDelegateNoInitTuple:
-		tmp.Enum = 57
+		tmp.Enum = 62
 		tmp.SolayerDelegateNoInit = realvalue
 	case SwapSolayerUndelegateNoInitTuple:
-		tmp.Enum = 58
+		tmp.Enum = 63
 		tmp.SolayerUndelegateNoInit = realvalue
 	case SwapTokenMillTuple:
-		tmp.Enum = 59
+		tmp.Enum = 64
 		tmp.TokenMill = realvalue
 	case SwapDaosFunBuyTuple:
-		tmp.Enum = 60
+		tmp.Enum = 65
 		tmp.DaosFunBuy = realvalue
 	case SwapDaosFunSellTuple:
-		tmp.Enum = 61
+		tmp.Enum = 66
 		tmp.DaosFunSell = realvalue
+	case SwapZeroFiTuple:
+		tmp.Enum = 67
+		tmp.ZeroFi = realvalue
+	case SwapStakeDexWithdrawWrappedSolTuple:
+		tmp.Enum = 68
+		tmp.StakeDexWithdrawWrappedSol = realvalue
+	case SwapVirtualsBuyTuple:
+		tmp.Enum = 69
+		tmp.VirtualsBuy = realvalue
+	case SwapVirtualsSellTuple:
+		tmp.Enum = 70
+		tmp.VirtualsSell = realvalue
+	case SwapPerenaTuple:
+		tmp.Enum = 71
+		tmp.Perena = realvalue
+	case SwapPumpdotfunAmmBuyTuple:
+		tmp.Enum = 72
+		tmp.PumpdotfunAmmBuy = realvalue
+	case SwapPumpdotfunAmmSellTuple:
+		tmp.Enum = 73
+		tmp.PumpdotfunAmmSell = realvalue
+	case SwapGammaTuple:
+		tmp.Enum = 74
+		tmp.Gamma = realvalue
+	case SwapMeteoraDlmmSwapV2Tuple:
+		tmp.Enum = 75
+		tmp.MeteoraDlmmSwapV2 = realvalue
 	}
 	return encoder.Encode(tmp)
 }
@@ -401,47 +548,75 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	case 40:
 		obj.Value = tmp.RaydiumClmmV2
 	case 41:
-		obj.Value = tmp.Clone
+		obj.Value = tmp.StakeDexPrefundWithdrawStakeAndDepositStake
 	case 42:
-		obj.Value = tmp.WhirlpoolSwapV2
+		obj.Value = tmp.Clone
 	case 43:
-		obj.Value = tmp.OneIntro
+		obj.Value = tmp.SanctumS
 	case 44:
-		obj.Value = tmp.PumpdotfunWrappedBuy
+		obj.Value = tmp.SanctumSAddLiquidity
 	case 45:
-		obj.Value = tmp.PumpdotfunWrappedSell
+		obj.Value = tmp.SanctumSRemoveLiquidity
 	case 46:
-		obj.Value = tmp.PerpsV2
+		obj.Value = tmp.RaydiumCP
 	case 47:
-		obj.Value = tmp.PerpsV2AddLiquidity
+		obj.Value = tmp.WhirlpoolSwapV2
 	case 48:
-		obj.Value = tmp.PerpsV2RemoveLiquidity
+		obj.Value = tmp.OneIntro
 	case 49:
-		obj.Value = tmp.MoonshotWrappedBuy
+		obj.Value = tmp.PumpdotfunWrappedBuy
 	case 50:
-		obj.Value = tmp.MoonshotWrappedSell
+		obj.Value = tmp.PumpdotfunWrappedSell
 	case 51:
-		obj.Value = tmp.StabbleStableSwap
+		obj.Value = tmp.PerpsV2
 	case 52:
-		obj.Value = tmp.StabbleWeightedSwap
+		obj.Value = tmp.PerpsV2AddLiquidity
 	case 53:
-		obj.Value = tmp.Obric
+		obj.Value = tmp.PerpsV2RemoveLiquidity
 	case 54:
-		obj.Value = tmp.FoxBuyFromEstimatedCost
+		obj.Value = tmp.MoonshotWrappedBuy
 	case 55:
-		obj.Value = tmp.FoxClaimPartial
+		obj.Value = tmp.MoonshotWrappedSell
 	case 56:
-		obj.Value = tmp.SolFi
+		obj.Value = tmp.StabbleStableSwap
 	case 57:
-		obj.Value = tmp.SolayerDelegateNoInit
+		obj.Value = tmp.StabbleWeightedSwap
 	case 58:
-		obj.Value = tmp.SolayerUndelegateNoInit
+		obj.Value = tmp.Obric
 	case 59:
-		obj.Value = tmp.TokenMill
+		obj.Value = tmp.FoxBuyFromEstimatedCost
 	case 60:
-		obj.Value = tmp.DaosFunBuy
+		obj.Value = tmp.FoxClaimPartial
 	case 61:
+		obj.Value = tmp.SolFi
+	case 62:
+		obj.Value = tmp.SolayerDelegateNoInit
+	case 63:
+		obj.Value = tmp.SolayerUndelegateNoInit
+	case 64:
+		obj.Value = tmp.TokenMill
+	case 65:
+		obj.Value = tmp.DaosFunBuy
+	case 66:
 		obj.Value = tmp.DaosFunSell
+	case 67:
+		obj.Value = tmp.ZeroFi
+	case 68:
+		obj.Value = tmp.StakeDexWithdrawWrappedSol
+	case 69:
+		obj.Value = tmp.VirtualsBuy
+	case 70:
+		obj.Value = tmp.VirtualsSell
+	case 71:
+		obj.Value = tmp.Perena
+	case 72:
+		obj.Value = tmp.PumpdotfunAmmBuy
+	case 73:
+		obj.Value = tmp.PumpdotfunAmmSell
+	case 74:
+		obj.Value = tmp.Gamma
+	case 75:
+		obj.Value = tmp.MeteoraDlmmSwapV2
 	default:
 		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
 	}
@@ -453,69 +628,83 @@ type swap interface {
 }
 
 type swapContainer struct {
-	Enum                             ag_binary.BorshEnum `borsh_enum:"true"`
-	Saber                            SwapSaberTuple
-	SaberAddDecimalsDeposit          SwapSaberAddDecimalsDepositTuple
-	SaberAddDecimalsWithdraw         SwapSaberAddDecimalsWithdrawTuple
-	TokenSwap                        SwapTokenSwapTuple
-	Sencha                           SwapSenchaTuple
-	Step                             SwapStepTuple
-	Cropper                          SwapCropperTuple
-	Raydium                          SwapRaydiumTuple
-	Crema                            SwapCremaTuple
-	Lifinity                         SwapLifinityTuple
-	Mercurial                        SwapMercurialTuple
-	Cykura                           SwapCykuraTuple
-	Serum                            SwapSerumTuple
-	MarinadeDeposit                  SwapMarinadeDepositTuple
-	MarinadeUnstake                  SwapMarinadeUnstakeTuple
-	Aldrin                           SwapAldrinTuple
-	AldrinV2                         SwapAldrinV2Tuple
-	Whirlpool                        SwapWhirlpoolTuple
-	Invariant                        SwapInvariantTuple
-	Meteora                          SwapMeteoraTuple
-	GooseFX                          SwapGooseFXTuple
-	DeltaFi                          SwapDeltaFiTuple
-	Balansol                         SwapBalansolTuple
-	MarcoPolo                        SwapMarcoPoloTuple
-	Dradex                           SwapDradexTuple
-	LifinityV2                       SwapLifinityV2Tuple
-	RaydiumClmm                      SwapRaydiumClmmTuple
-	Openbook                         SwapOpenbookTuple
-	Phoenix                          SwapPhoenixTuple
-	Symmetry                         SwapSymmetryTuple
-	TokenSwapV2                      SwapTokenSwapV2Tuple
-	HeliumTreasuryManagementRedeemV0 SwapHeliumTreasuryManagementRedeemV0Tuple
-	StakeDexStakeWrappedSol          SwapStakeDexStakeWrappedSolTuple
-	StakeDexSwapViaStake             SwapStakeDexSwapViaStakeTuple
-	GooseFXV2                        SwapGooseFXV2Tuple
-	Perps                            SwapPerpsTuple
-	PerpsAddLiquidity                SwapPerpsAddLiquidityTuple
-	PerpsRemoveLiquidity             SwapPerpsRemoveLiquidityTuple
-	MeteoraDlmm                      SwapMeteoraDlmmTuple
-	OpenBookV2                       SwapOpenBookV2Tuple
-	RaydiumClmmV2                    SwapRaydiumClmmV2Tuple
-	Clone                            SwapCloneTuple
-	WhirlpoolSwapV2                  SwapWhirlpoolSwapV2Tuple
-	OneIntro                         SwapOneIntroTuple
-	PumpdotfunWrappedBuy             SwapPumpdotfunWrappedBuyTuple
-	PumpdotfunWrappedSell            SwapPumpdotfunWrappedSellTuple
-	PerpsV2                          SwapPerpsV2Tuple
-	PerpsV2AddLiquidity              SwapPerpsV2AddLiquidityTuple
-	PerpsV2RemoveLiquidity           SwapPerpsV2RemoveLiquidityTuple
-	MoonshotWrappedBuy               SwapMoonshotWrappedBuyTuple
-	MoonshotWrappedSell              SwapMoonshotWrappedSellTuple
-	StabbleStableSwap                SwapStabbleStableSwapTuple
-	StabbleWeightedSwap              SwapStabbleWeightedSwapTuple
-	Obric                            SwapObricTuple
-	FoxBuyFromEstimatedCost          SwapFoxBuyFromEstimatedCostTuple
-	FoxClaimPartial                  SwapFoxClaimPartialTuple
-	SolFi                            SwapSolFiTuple
-	SolayerDelegateNoInit            SwapSolayerDelegateNoInitTuple
-	SolayerUndelegateNoInit          SwapSolayerUndelegateNoInitTuple
-	TokenMill                        SwapTokenMillTuple
-	DaosFunBuy                       SwapDaosFunBuyTuple
-	DaosFunSell                      SwapDaosFunSellTuple
+	Enum                                        ag_binary.BorshEnum `borsh_enum:"true"`
+	Saber                                       SwapSaberTuple
+	SaberAddDecimalsDeposit                     SwapSaberAddDecimalsDepositTuple
+	SaberAddDecimalsWithdraw                    SwapSaberAddDecimalsWithdrawTuple
+	TokenSwap                                   SwapTokenSwapTuple
+	Sencha                                      SwapSenchaTuple
+	Step                                        SwapStepTuple
+	Cropper                                     SwapCropperTuple
+	Raydium                                     SwapRaydiumTuple
+	Crema                                       SwapCremaTuple
+	Lifinity                                    SwapLifinityTuple
+	Mercurial                                   SwapMercurialTuple
+	Cykura                                      SwapCykuraTuple
+	Serum                                       SwapSerumTuple
+	MarinadeDeposit                             SwapMarinadeDepositTuple
+	MarinadeUnstake                             SwapMarinadeUnstakeTuple
+	Aldrin                                      SwapAldrinTuple
+	AldrinV2                                    SwapAldrinV2Tuple
+	Whirlpool                                   SwapWhirlpoolTuple
+	Invariant                                   SwapInvariantTuple
+	Meteora                                     SwapMeteoraTuple
+	GooseFX                                     SwapGooseFXTuple
+	DeltaFi                                     SwapDeltaFiTuple
+	Balansol                                    SwapBalansolTuple
+	MarcoPolo                                   SwapMarcoPoloTuple
+	Dradex                                      SwapDradexTuple
+	LifinityV2                                  SwapLifinityV2Tuple
+	RaydiumClmm                                 SwapRaydiumClmmTuple
+	Openbook                                    SwapOpenbookTuple
+	Phoenix                                     SwapPhoenixTuple
+	Symmetry                                    SwapSymmetryTuple
+	TokenSwapV2                                 SwapTokenSwapV2Tuple
+	HeliumTreasuryManagementRedeemV0            SwapHeliumTreasuryManagementRedeemV0Tuple
+	StakeDexStakeWrappedSol                     SwapStakeDexStakeWrappedSolTuple
+	StakeDexSwapViaStake                        SwapStakeDexSwapViaStakeTuple
+	GooseFXV2                                   SwapGooseFXV2Tuple
+	Perps                                       SwapPerpsTuple
+	PerpsAddLiquidity                           SwapPerpsAddLiquidityTuple
+	PerpsRemoveLiquidity                        SwapPerpsRemoveLiquidityTuple
+	MeteoraDlmm                                 SwapMeteoraDlmmTuple
+	OpenBookV2                                  SwapOpenBookV2Tuple
+	RaydiumClmmV2                               SwapRaydiumClmmV2Tuple
+	StakeDexPrefundWithdrawStakeAndDepositStake SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple
+	Clone                                       SwapCloneTuple
+	SanctumS                                    SwapSanctumSTuple
+	SanctumSAddLiquidity                        SwapSanctumSAddLiquidityTuple
+	SanctumSRemoveLiquidity                     SwapSanctumSRemoveLiquidityTuple
+	RaydiumCP                                   SwapRaydiumCPTuple
+	WhirlpoolSwapV2                             SwapWhirlpoolSwapV2Tuple
+	OneIntro                                    SwapOneIntroTuple
+	PumpdotfunWrappedBuy                        SwapPumpdotfunWrappedBuyTuple
+	PumpdotfunWrappedSell                       SwapPumpdotfunWrappedSellTuple
+	PerpsV2                                     SwapPerpsV2Tuple
+	PerpsV2AddLiquidity                         SwapPerpsV2AddLiquidityTuple
+	PerpsV2RemoveLiquidity                      SwapPerpsV2RemoveLiquidityTuple
+	MoonshotWrappedBuy                          SwapMoonshotWrappedBuyTuple
+	MoonshotWrappedSell                         SwapMoonshotWrappedSellTuple
+	StabbleStableSwap                           SwapStabbleStableSwapTuple
+	StabbleWeightedSwap                         SwapStabbleWeightedSwapTuple
+	Obric                                       SwapObricTuple
+	FoxBuyFromEstimatedCost                     SwapFoxBuyFromEstimatedCostTuple
+	FoxClaimPartial                             SwapFoxClaimPartialTuple
+	SolFi                                       SwapSolFiTuple
+	SolayerDelegateNoInit                       SwapSolayerDelegateNoInitTuple
+	SolayerUndelegateNoInit                     SwapSolayerUndelegateNoInitTuple
+	TokenMill                                   SwapTokenMillTuple
+	DaosFunBuy                                  SwapDaosFunBuyTuple
+	DaosFunSell                                 SwapDaosFunSellTuple
+	ZeroFi                                      SwapZeroFiTuple
+	StakeDexWithdrawWrappedSol                  SwapStakeDexWithdrawWrappedSolTuple
+	VirtualsBuy                                 SwapVirtualsBuyTuple
+	VirtualsSell                                SwapVirtualsSellTuple
+	Perena                                      SwapPerenaTuple
+	PumpdotfunAmmBuy                            SwapPumpdotfunAmmBuyTuple
+	PumpdotfunAmmSell                           SwapPumpdotfunAmmSellTuple
+	Gamma                                       SwapGammaTuple
+	MeteoraDlmmSwapV2                           SwapMeteoraDlmmSwapV2Tuple
 }
 
 type SwapSaberTuple uint8
@@ -1189,6 +1378,30 @@ func (obj *SwapRaydiumClmmV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decod
 
 func (_ SwapRaydiumClmmV2Tuple) isSwap() {}
 
+type SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple struct {
+	BridgeStakeSeed uint32
+}
+
+func (obj SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `BridgeStakeSeed` param:
+	err = encoder.Encode(obj.BridgeStakeSeed)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `BridgeStakeSeed`:
+	err = decoder.Decode(&obj.BridgeStakeSeed)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple) isSwap() {}
+
 type SwapCloneTuple struct {
 	PoolIndex            uint8
 	QuantityIsInput      bool
@@ -1234,6 +1447,145 @@ func (obj *SwapCloneTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 }
 
 func (_ SwapCloneTuple) isSwap() {}
+
+type SwapSanctumSTuple struct {
+	SrcLstValueCalcAccs uint8
+	DstLstValueCalcAccs uint8
+	SrcLstIndex         uint32
+	DstLstIndex         uint32
+}
+
+func (obj SwapSanctumSTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SrcLstValueCalcAccs` param:
+	err = encoder.Encode(obj.SrcLstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Serialize `DstLstValueCalcAccs` param:
+	err = encoder.Encode(obj.DstLstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Serialize `SrcLstIndex` param:
+	err = encoder.Encode(obj.SrcLstIndex)
+	if err != nil {
+		return err
+	}
+	// Serialize `DstLstIndex` param:
+	err = encoder.Encode(obj.DstLstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapSanctumSTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SrcLstValueCalcAccs`:
+	err = decoder.Decode(&obj.SrcLstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Deserialize `DstLstValueCalcAccs`:
+	err = decoder.Decode(&obj.DstLstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Deserialize `SrcLstIndex`:
+	err = decoder.Decode(&obj.SrcLstIndex)
+	if err != nil {
+		return err
+	}
+	// Deserialize `DstLstIndex`:
+	err = decoder.Decode(&obj.DstLstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapSanctumSTuple) isSwap() {}
+
+type SwapSanctumSAddLiquidityTuple struct {
+	LstValueCalcAccs uint8
+	LstIndex         uint32
+}
+
+func (obj SwapSanctumSAddLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `LstValueCalcAccs` param:
+	err = encoder.Encode(obj.LstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Serialize `LstIndex` param:
+	err = encoder.Encode(obj.LstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapSanctumSAddLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `LstValueCalcAccs`:
+	err = decoder.Decode(&obj.LstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Deserialize `LstIndex`:
+	err = decoder.Decode(&obj.LstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapSanctumSAddLiquidityTuple) isSwap() {}
+
+type SwapSanctumSRemoveLiquidityTuple struct {
+	LstValueCalcAccs uint8
+	LstIndex         uint32
+}
+
+func (obj SwapSanctumSRemoveLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `LstValueCalcAccs` param:
+	err = encoder.Encode(obj.LstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Serialize `LstIndex` param:
+	err = encoder.Encode(obj.LstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapSanctumSRemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `LstValueCalcAccs`:
+	err = decoder.Decode(&obj.LstValueCalcAccs)
+	if err != nil {
+		return err
+	}
+	// Deserialize `LstIndex`:
+	err = decoder.Decode(&obj.LstIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapSanctumSRemoveLiquidityTuple) isSwap() {}
+
+type SwapRaydiumCPTuple uint8
+
+func (obj SwapRaydiumCPTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapRaydiumCPTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapRaydiumCPTuple) isSwap() {}
 
 type SwapWhirlpoolSwapV2Tuple struct {
 	AToB                  bool
@@ -1567,111 +1919,148 @@ func (obj *SwapDaosFunSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapDaosFunSellTuple) isSwap() {}
 
-type RemainingAccountsSlice struct {
-	AccountsType AccountsType
-	Length       uint8
+type SwapZeroFiTuple uint8
+
+func (obj SwapZeroFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
 }
 
-func (obj RemainingAccountsSlice) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `AccountsType` param:
-	err = encoder.Encode(obj.AccountsType)
+func (obj *SwapZeroFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapZeroFiTuple) isSwap() {}
+
+type SwapStakeDexWithdrawWrappedSolTuple uint8
+
+func (obj SwapStakeDexWithdrawWrappedSolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapStakeDexWithdrawWrappedSolTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapStakeDexWithdrawWrappedSolTuple) isSwap() {}
+
+type SwapVirtualsBuyTuple uint8
+
+func (obj SwapVirtualsBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapVirtualsBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapVirtualsBuyTuple) isSwap() {}
+
+type SwapVirtualsSellTuple uint8
+
+func (obj SwapVirtualsSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapVirtualsSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapVirtualsSellTuple) isSwap() {}
+
+type SwapPerenaTuple struct {
+	InIndex  uint8
+	OutIndex uint8
+}
+
+func (obj SwapPerenaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `InIndex` param:
+	err = encoder.Encode(obj.InIndex)
 	if err != nil {
 		return err
 	}
-	// Serialize `Length` param:
-	err = encoder.Encode(obj.Length)
+	// Serialize `OutIndex` param:
+	err = encoder.Encode(obj.OutIndex)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (obj *RemainingAccountsSlice) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `AccountsType`:
-	err = decoder.Decode(&obj.AccountsType)
+func (obj *SwapPerenaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `InIndex`:
+	err = decoder.Decode(&obj.InIndex)
 	if err != nil {
 		return err
 	}
-	// Deserialize `Length`:
-	err = decoder.Decode(&obj.Length)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-type RemainingAccountsInfo struct {
-	Slices []RemainingAccountsSlice
-}
-
-func (obj RemainingAccountsInfo) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `Slices` param:
-	err = encoder.Encode(obj.Slices)
+	// Deserialize `OutIndex`:
+	err = decoder.Decode(&obj.OutIndex)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (obj *RemainingAccountsInfo) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `Slices`:
-	err = decoder.Decode(&obj.Slices)
+func (_ SwapPerenaTuple) isSwap() {}
+
+type SwapPumpdotfunAmmBuyTuple uint8
+
+func (obj SwapPumpdotfunAmmBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpdotfunAmmBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpdotfunAmmBuyTuple) isSwap() {}
+
+type SwapPumpdotfunAmmSellTuple uint8
+
+func (obj SwapPumpdotfunAmmSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpdotfunAmmSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpdotfunAmmSellTuple) isSwap() {}
+
+type SwapGammaTuple uint8
+
+func (obj SwapGammaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapGammaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapGammaTuple) isSwap() {}
+
+type SwapMeteoraDlmmSwapV2Tuple struct {
+	RemainingAccountsInfo RemainingAccountsInfo
+}
+
+func (obj SwapMeteoraDlmmSwapV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `RemainingAccountsInfo` param:
+	err = encoder.Encode(obj.RemainingAccountsInfo)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-type AccountsType ag_binary.BorshEnum
-
-const (
-	AccountsTypeTransferHookA AccountsType = iota
-	AccountsTypeTransferHookB
-)
-
-func (value AccountsType) String() string {
-	switch value {
-	case AccountsTypeTransferHookA:
-		return "TransferHookA"
-	case AccountsTypeTransferHookB:
-		return "TransferHookB"
-	default:
-		return ""
-	}
-}
-
-type TokenLedger struct {
-	TokenAccount ag_solanago.PublicKey
-	Amount       uint64
-}
-
-func (obj TokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `TokenAccount` param:
-	err = encoder.Encode(obj.TokenAccount)
-	if err != nil {
-		return err
-	}
-	// Serialize `Amount` param:
-	err = encoder.Encode(obj.Amount)
+func (obj *SwapMeteoraDlmmSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `RemainingAccountsInfo`:
+	err = decoder.Decode(&obj.RemainingAccountsInfo)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (obj *TokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `TokenAccount`:
-	err = decoder.Decode(&obj.TokenAccount)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Amount`:
-	err = decoder.Decode(&obj.Amount)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+func (_ SwapMeteoraDlmmSwapV2Tuple) isSwap() {}
 
 type SwapEvent struct {
 	Amm          ag_solanago.PublicKey
@@ -1739,20 +2128,14 @@ func (obj *SwapEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err erro
 	return nil
 }
 
-type FeeEvent struct {
-	Account ag_solanago.PublicKey
-	Mint    ag_solanago.PublicKey
-	Amount  uint64
+type TokenLedger struct {
+	TokenAccount ag_solanago.PublicKey
+	Amount       uint64
 }
 
-func (obj FeeEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Serialize `Account` param:
-	err = encoder.Encode(obj.Account)
-	if err != nil {
-		return err
-	}
-	// Serialize `Mint` param:
-	err = encoder.Encode(obj.Mint)
+func (obj TokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `TokenAccount` param:
+	err = encoder.Encode(obj.TokenAccount)
 	if err != nil {
 		return err
 	}
@@ -1764,14 +2147,9 @@ func (obj FeeEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
 
-func (obj *FeeEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Deserialize `Account`:
-	err = decoder.Decode(&obj.Account)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Mint`:
-	err = decoder.Decode(&obj.Mint)
+func (obj *TokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `TokenAccount`:
+	err = decoder.Decode(&obj.TokenAccount)
 	if err != nil {
 		return err
 	}

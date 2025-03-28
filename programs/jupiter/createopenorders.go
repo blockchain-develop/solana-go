@@ -32,6 +32,8 @@ func NewCreateOpenOrdersInstructionBuilder() *CreateOpenOrders {
 	nd := &CreateOpenOrders{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 6),
 	}
+	nd.AccountMetaSlice[3] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
+	nd.AccountMetaSlice[4] = ag_solanago.Meta(Addresses["SysvarRent111111111111111111111111111111111"])
 	return nd
 }
 
@@ -39,6 +41,52 @@ func NewCreateOpenOrdersInstructionBuilder() *CreateOpenOrders {
 func (inst *CreateOpenOrders) SetOpenOrdersAccount(openOrders ag_solanago.PublicKey) *CreateOpenOrders {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(openOrders).WRITE()
 	return inst
+}
+
+func (inst *CreateOpenOrders) findFindOpenOrdersAddress(market ag_solanago.PublicKey, payer ag_solanago.PublicKey, knownBumpSeed uint8) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	var seeds [][]byte
+	// const: open_orders
+	seeds = append(seeds, []byte{byte(0x6f), byte(0x70), byte(0x65), byte(0x6e), byte(0x5f), byte(0x6f), byte(0x72), byte(0x64), byte(0x65), byte(0x72), byte(0x73)})
+	// path: market
+	seeds = append(seeds, market.Bytes())
+	// path: payer
+	seeds = append(seeds, payer.Bytes())
+
+	if knownBumpSeed != 0 {
+		seeds = append(seeds, []byte{byte(bumpSeed)})
+		pda, err = ag_solanago.CreateProgramAddress(seeds, ProgramID)
+	} else {
+		pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, ProgramID)
+	}
+	return
+}
+
+// FindOpenOrdersAddressWithBumpSeed calculates OpenOrders account address with given seeds and a known bump seed.
+func (inst *CreateOpenOrders) FindOpenOrdersAddressWithBumpSeed(market ag_solanago.PublicKey, payer ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey, err error) {
+	pda, _, err = inst.findFindOpenOrdersAddress(market, payer, bumpSeed)
+	return
+}
+
+func (inst *CreateOpenOrders) MustFindOpenOrdersAddressWithBumpSeed(market ag_solanago.PublicKey, payer ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey) {
+	pda, _, err := inst.findFindOpenOrdersAddress(market, payer, bumpSeed)
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
+// FindOpenOrdersAddress finds OpenOrders account address with given seeds.
+func (inst *CreateOpenOrders) FindOpenOrdersAddress(market ag_solanago.PublicKey, payer ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+	pda, bumpSeed, err = inst.findFindOpenOrdersAddress(market, payer, 0)
+	return
+}
+
+func (inst *CreateOpenOrders) MustFindOpenOrdersAddress(market ag_solanago.PublicKey, payer ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+	pda, _, err := inst.findFindOpenOrdersAddress(market, payer, 0)
+	if err != nil {
+		panic(err)
+	}
+	return
 }
 
 // GetOpenOrdersAccount gets the "open_orders" account.

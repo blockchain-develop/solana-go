@@ -26,6 +26,7 @@ func NewCreateTokenLedgerInstructionBuilder() *CreateTokenLedger {
 	nd := &CreateTokenLedger{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
+	nd.AccountMetaSlice[2] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 

@@ -13,6 +13,72 @@ import (
 	"strings"
 )
 
+type FeeEventEventData struct {
+	Account ag_solanago.PublicKey
+	Mint    ag_solanago.PublicKey
+	Amount  uint64
+}
+
+var FeeEventEventDataDiscriminator = [8]byte{73, 79, 78, 127, 184, 213, 13, 220}
+
+func (obj FeeEventEventData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(FeeEventEventDataDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Account` param:
+	err = encoder.Encode(obj.Account)
+	if err != nil {
+		return err
+	}
+	// Serialize `Mint` param:
+	err = encoder.Encode(obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Serialize `Amount` param:
+	err = encoder.Encode(obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *FeeEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(FeeEventEventDataDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[73 79 78 127 184 213 13 220]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Account`:
+	err = decoder.Decode(&obj.Account)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Mint`:
+	err = decoder.Decode(&obj.Mint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Amount`:
+	err = decoder.Decode(&obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (*FeeEventEventData) isEventData() {}
+
 type SwapEventEventData struct {
 	Amm          ag_solanago.PublicKey
 	InputMint    ag_solanago.PublicKey
@@ -100,72 +166,6 @@ func (obj *SwapEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 }
 
 func (*SwapEventEventData) isEventData() {}
-
-type FeeEventEventData struct {
-	Account ag_solanago.PublicKey
-	Mint    ag_solanago.PublicKey
-	Amount  uint64
-}
-
-var FeeEventEventDataDiscriminator = [8]byte{73, 79, 78, 127, 184, 213, 13, 220}
-
-func (obj FeeEventEventData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
-	// Write account discriminator:
-	err = encoder.WriteBytes(FeeEventEventDataDiscriminator[:], false)
-	if err != nil {
-		return err
-	}
-	// Serialize `Account` param:
-	err = encoder.Encode(obj.Account)
-	if err != nil {
-		return err
-	}
-	// Serialize `Mint` param:
-	err = encoder.Encode(obj.Mint)
-	if err != nil {
-		return err
-	}
-	// Serialize `Amount` param:
-	err = encoder.Encode(obj.Amount)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (obj *FeeEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
-	// Read and check account discriminator:
-	{
-		discriminator, err := decoder.ReadTypeID()
-		if err != nil {
-			return err
-		}
-		if !discriminator.Equal(FeeEventEventDataDiscriminator[:]) {
-			return fmt.Errorf(
-				"wrong discriminator: wanted %s, got %s",
-				"[73 79 78 127 184 213 13 220]",
-				fmt.Sprint(discriminator[:]))
-		}
-	}
-	// Deserialize `Account`:
-	err = decoder.Decode(&obj.Account)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Mint`:
-	err = decoder.Decode(&obj.Mint)
-	if err != nil {
-		return err
-	}
-	// Deserialize `Amount`:
-	err = decoder.Decode(&obj.Amount)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (*FeeEventEventData) isEventData() {}
 
 var eventTypes = map[[8]byte]reflect.Type{
 	FeeEventEventDataDiscriminator:  reflect.TypeOf(FeeEventEventData{}),

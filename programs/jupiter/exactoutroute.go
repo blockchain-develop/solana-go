@@ -34,7 +34,7 @@ type ExactOutRoute struct {
 	//
 	// [7] = [WRITE] platform_fee_account
 	//
-	// [8] = [] token2022_program
+	// [8] = [] token_2022_program
 	//
 	// [9] = [] event_authority
 	//
@@ -47,6 +47,7 @@ func NewExactOutRouteInstructionBuilder() *ExactOutRoute {
 	nd := &ExactOutRoute{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 11),
 	}
+	nd.AccountMetaSlice[9] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
 	return nd
 }
 
@@ -168,13 +169,13 @@ func (inst *ExactOutRoute) GetPlatformFeeAccountAccount() *ag_solanago.AccountMe
 	return inst.AccountMetaSlice.Get(7)
 }
 
-// SetToken2022ProgramAccount sets the "token2022_program" account.
+// SetToken2022ProgramAccount sets the "token_2022_program" account.
 func (inst *ExactOutRoute) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *ExactOutRoute {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(token2022Program)
 	return inst
 }
 
-// GetToken2022ProgramAccount gets the "token2022_program" account (optional).
+// GetToken2022ProgramAccount gets the "token_2022_program" account (optional).
 func (inst *ExactOutRoute) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
@@ -303,7 +304,7 @@ func (inst *ExactOutRoute) EncodeToTree(parent ag_treeout.Branches) {
 						accountsBranch.Child(ag_format.Meta("            source_mint", inst.AccountMetaSlice.Get(5)))
 						accountsBranch.Child(ag_format.Meta("       destination_mint", inst.AccountMetaSlice.Get(6)))
 						accountsBranch.Child(ag_format.Meta("          platform_fee_", inst.AccountMetaSlice.Get(7)))
-						accountsBranch.Child(ag_format.Meta("      token2022_program", inst.AccountMetaSlice.Get(8)))
+						accountsBranch.Child(ag_format.Meta("     token_2022_program", inst.AccountMetaSlice.Get(8)))
 						accountsBranch.Child(ag_format.Meta("        event_authority", inst.AccountMetaSlice.Get(9)))
 						accountsBranch.Child(ag_format.Meta("                program", inst.AccountMetaSlice.Get(10)))
 					})

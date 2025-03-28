@@ -27,6 +27,8 @@ func NewClaimInstructionBuilder() *Claim {
 	nd := &Claim{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
+	nd.AccountMetaSlice[0] = ag_solanago.Meta(Addresses["J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"]).WRITE()
+	nd.AccountMetaSlice[2] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 

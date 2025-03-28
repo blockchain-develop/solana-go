@@ -44,6 +44,7 @@ func NewRouteWithTokenLedgerInstructionBuilder() *RouteWithTokenLedger {
 	nd := &RouteWithTokenLedger{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 10),
 	}
+	nd.AccountMetaSlice[8] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
 	return nd
 }
 

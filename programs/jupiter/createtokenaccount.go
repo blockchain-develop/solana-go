@@ -31,6 +31,7 @@ func NewCreateTokenAccountInstructionBuilder() *CreateTokenAccount {
 	nd := &CreateTokenAccount{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 5),
 	}
+	nd.AccountMetaSlice[4] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 

@@ -28,65 +28,69 @@ func init() {
 }
 
 var (
+	Instruction_Claim = ag_binary.TypeID([8]byte{62, 198, 214, 193, 213, 159, 108, 210})
+
+	Instruction_ClaimToken = ag_binary.TypeID([8]byte{116, 206, 27, 191, 166, 19, 0, 73})
+
+	Instruction_CloseToken = ag_binary.TypeID([8]byte{26, 74, 236, 151, 104, 64, 183, 249})
+
+	Instruction_CreateOpenOrders = ag_binary.TypeID([8]byte{229, 194, 212, 172, 8, 10, 134, 147})
+
+	Instruction_CreateProgramOpenOrders = ag_binary.TypeID([8]byte{28, 226, 32, 148, 188, 136, 113, 171})
+
+	Instruction_CreateTokenLedger = ag_binary.TypeID([8]byte{232, 242, 197, 253, 240, 143, 129, 52})
+
+	Instruction_CreateTokenAccount = ag_binary.TypeID([8]byte{147, 241, 123, 100, 244, 132, 174, 118})
+
+	Instruction_ExactOutRoute = ag_binary.TypeID([8]byte{208, 51, 239, 151, 123, 43, 237, 92})
+
 	// route_plan Topologically sorted trade DAG
 	Instruction_Route = ag_binary.TypeID([8]byte{229, 23, 203, 151, 122, 227, 173, 42})
 
 	Instruction_RouteWithTokenLedger = ag_binary.TypeID([8]byte{150, 86, 71, 116, 167, 93, 14, 104})
 
-	Instruction_ExactOutRoute = ag_binary.TypeID([8]byte{208, 51, 239, 151, 123, 43, 237, 92})
+	Instruction_SetTokenLedger = ag_binary.TypeID([8]byte{228, 85, 185, 112, 78, 79, 77, 2})
+
+	// Route by using program owned token accounts and open orders accounts.
+	Instruction_SharedAccountsExactOutRoute = ag_binary.TypeID([8]byte{176, 209, 105, 168, 154, 125, 69, 62})
 
 	// Route by using program owned token accounts and open orders accounts.
 	Instruction_SharedAccountsRoute = ag_binary.TypeID([8]byte{193, 32, 155, 51, 65, 214, 156, 129})
 
 	Instruction_SharedAccountsRouteWithTokenLedger = ag_binary.TypeID([8]byte{230, 121, 143, 80, 119, 159, 106, 170})
-
-	// Route by using program owned token accounts and open orders accounts.
-	Instruction_SharedAccountsExactOutRoute = ag_binary.TypeID([8]byte{176, 209, 105, 168, 154, 125, 69, 62})
-
-	Instruction_SetTokenLedger = ag_binary.TypeID([8]byte{228, 85, 185, 112, 78, 79, 77, 2})
-
-	Instruction_CreateOpenOrders = ag_binary.TypeID([8]byte{229, 194, 212, 172, 8, 10, 134, 147})
-
-	Instruction_CreateTokenAccount = ag_binary.TypeID([8]byte{147, 241, 123, 100, 244, 132, 174, 118})
-
-	Instruction_CreateProgramOpenOrders = ag_binary.TypeID([8]byte{28, 226, 32, 148, 188, 136, 113, 171})
-
-	Instruction_Claim = ag_binary.TypeID([8]byte{62, 198, 214, 193, 213, 159, 108, 210})
-
-	Instruction_ClaimToken = ag_binary.TypeID([8]byte{116, 206, 27, 191, 166, 19, 0, 73})
-
-	Instruction_CreateTokenLedger = ag_binary.TypeID([8]byte{232, 242, 197, 253, 240, 143, 129, 52})
 )
 
 // InstructionIDToName returns the name of the instruction given its ID.
 func InstructionIDToName(id ag_binary.TypeID) string {
 	switch id {
-	case Instruction_Route:
-		return "Route"
-	case Instruction_RouteWithTokenLedger:
-		return "RouteWithTokenLedger"
-	case Instruction_ExactOutRoute:
-		return "ExactOutRoute"
-	case Instruction_SharedAccountsRoute:
-		return "SharedAccountsRoute"
-	case Instruction_SharedAccountsRouteWithTokenLedger:
-		return "SharedAccountsRouteWithTokenLedger"
-	case Instruction_SharedAccountsExactOutRoute:
-		return "SharedAccountsExactOutRoute"
-	case Instruction_SetTokenLedger:
-		return "SetTokenLedger"
-	case Instruction_CreateOpenOrders:
-		return "CreateOpenOrders"
-	case Instruction_CreateTokenAccount:
-		return "CreateTokenAccount"
-	case Instruction_CreateProgramOpenOrders:
-		return "CreateProgramOpenOrders"
 	case Instruction_Claim:
 		return "Claim"
 	case Instruction_ClaimToken:
 		return "ClaimToken"
+	case Instruction_CloseToken:
+		return "CloseToken"
+	case Instruction_CreateOpenOrders:
+		return "CreateOpenOrders"
+	case Instruction_CreateProgramOpenOrders:
+		return "CreateProgramOpenOrders"
 	case Instruction_CreateTokenLedger:
 		return "CreateTokenLedger"
+	case Instruction_CreateTokenAccount:
+		return "CreateTokenAccount"
+	case Instruction_ExactOutRoute:
+		return "ExactOutRoute"
+	case Instruction_Route:
+		return "Route"
+	case Instruction_RouteWithTokenLedger:
+		return "RouteWithTokenLedger"
+	case Instruction_SetTokenLedger:
+		return "SetTokenLedger"
+	case Instruction_SharedAccountsExactOutRoute:
+		return "SharedAccountsExactOutRoute"
+	case Instruction_SharedAccountsRoute:
+		return "SharedAccountsRoute"
+	case Instruction_SharedAccountsRouteWithTokenLedger:
+		return "SharedAccountsRouteWithTokenLedger"
 	default:
 		return ""
 	}
@@ -108,43 +112,46 @@ var InstructionImplDef = ag_binary.NewVariantDefinition(
 	ag_binary.AnchorTypeIDEncoding,
 	[]ag_binary.VariantType{
 		{
-			Name: "route", Type: (*Route)(nil),
-		},
-		{
-			Name: "route_with_token_ledger", Type: (*RouteWithTokenLedger)(nil),
-		},
-		{
-			Name: "exact_out_route", Type: (*ExactOutRoute)(nil),
-		},
-		{
-			Name: "shared_accounts_route", Type: (*SharedAccountsRoute)(nil),
-		},
-		{
-			Name: "shared_accounts_route_with_token_ledger", Type: (*SharedAccountsRouteWithTokenLedger)(nil),
-		},
-		{
-			Name: "shared_accounts_exact_out_route", Type: (*SharedAccountsExactOutRoute)(nil),
-		},
-		{
-			Name: "set_token_ledger", Type: (*SetTokenLedger)(nil),
-		},
-		{
-			Name: "create_open_orders", Type: (*CreateOpenOrders)(nil),
-		},
-		{
-			Name: "create_token_account", Type: (*CreateTokenAccount)(nil),
-		},
-		{
-			Name: "create_program_open_orders", Type: (*CreateProgramOpenOrders)(nil),
-		},
-		{
 			Name: "claim", Type: (*Claim)(nil),
 		},
 		{
 			Name: "claim_token", Type: (*ClaimToken)(nil),
 		},
 		{
+			Name: "close_token", Type: (*CloseToken)(nil),
+		},
+		{
+			Name: "create_open_orders", Type: (*CreateOpenOrders)(nil),
+		},
+		{
+			Name: "create_program_open_orders", Type: (*CreateProgramOpenOrders)(nil),
+		},
+		{
 			Name: "create_token_ledger", Type: (*CreateTokenLedger)(nil),
+		},
+		{
+			Name: "create_token_account", Type: (*CreateTokenAccount)(nil),
+		},
+		{
+			Name: "exact_out_route", Type: (*ExactOutRoute)(nil),
+		},
+		{
+			Name: "route", Type: (*Route)(nil),
+		},
+		{
+			Name: "route_with_token_ledger", Type: (*RouteWithTokenLedger)(nil),
+		},
+		{
+			Name: "set_token_ledger", Type: (*SetTokenLedger)(nil),
+		},
+		{
+			Name: "shared_accounts_exact_out_route", Type: (*SharedAccountsExactOutRoute)(nil),
+		},
+		{
+			Name: "shared_accounts_route", Type: (*SharedAccountsRoute)(nil),
+		},
+		{
+			Name: "shared_accounts_route_with_token_ledger", Type: (*SharedAccountsRouteWithTokenLedger)(nil),
 		},
 	},
 )

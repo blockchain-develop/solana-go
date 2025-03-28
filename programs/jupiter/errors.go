@@ -106,6 +106,11 @@ var (
 		msg:  "Exact out amount doesn't match",
 		name: "ExactOutAmountNotMatched",
 	}
+	ErrSourceAndDestinationMintCannotBeTheSame = &customErrorDef{
+		code: 6018,
+		msg:  "Source mint and destination mint cannot the same",
+		name: "SourceAndDestinationMintCannotBeTheSame",
+	}
 	Errors = map[int]CustomError{
 		6000: ErrEmptyRoute,
 		6001: ErrSlippageToleranceExceeded,
@@ -125,6 +130,7 @@ var (
 		6015: ErrTokenProgramNotProvided,
 		6016: ErrSwapNotSupported,
 		6017: ErrExactOutAmountNotMatched,
+		6018: ErrSourceAndDestinationMintCannotBeTheSame,
 	}
 )
 
