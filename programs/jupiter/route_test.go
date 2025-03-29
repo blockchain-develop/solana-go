@@ -4,6 +4,8 @@ package jupiter
 
 import (
 	"bytes"
+	"encoding/hex"
+	"fmt"
 	ag_gofuzz "github.com/gagliardetto/gofuzz"
 	ag_require "github.com/stretchr/testify/require"
 	"strconv"
@@ -34,4 +36,23 @@ func TestEncodeDecode_Route(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestEncodeDecode_RoutePlan(t *testing.T) {
+	var routePlan *RoutePlanStep
+	s := SwapTokenSwapTuple{}
+	routePlan = &RoutePlanStep{
+		Swap:        &Swap{
+			Value: s,
+		},
+		Percent:     100,
+		InputIndex:  1,
+		OutputIndex: 2,
+	}
+	buf := new(bytes.Buffer)
+	err := encodeT(*routePlan, buf)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", hex.EncodeToString(buf.Bytes()))
 }

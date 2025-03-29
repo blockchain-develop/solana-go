@@ -707,7 +707,7 @@ type swapContainer struct {
 	MeteoraDlmmSwapV2                           SwapMeteoraDlmmSwapV2Tuple
 }
 
-type SwapSaberTuple uint8
+type SwapSaberTuple struct{}
 
 func (obj SwapSaberTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -719,7 +719,7 @@ func (obj *SwapSaberTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSaberTuple) isSwap() {}
 
-type SwapSaberAddDecimalsDepositTuple uint8
+type SwapSaberAddDecimalsDepositTuple struct{}
 
 func (obj SwapSaberAddDecimalsDepositTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -731,7 +731,7 @@ func (obj *SwapSaberAddDecimalsDepositTuple) UnmarshalWithDecoder(decoder *ag_bi
 
 func (_ SwapSaberAddDecimalsDepositTuple) isSwap() {}
 
-type SwapSaberAddDecimalsWithdrawTuple uint8
+type SwapSaberAddDecimalsWithdrawTuple struct{}
 
 func (obj SwapSaberAddDecimalsWithdrawTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -743,7 +743,7 @@ func (obj *SwapSaberAddDecimalsWithdrawTuple) UnmarshalWithDecoder(decoder *ag_b
 
 func (_ SwapSaberAddDecimalsWithdrawTuple) isSwap() {}
 
-type SwapTokenSwapTuple uint8
+type SwapTokenSwapTuple struct{}
 
 func (obj SwapTokenSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -755,7 +755,7 @@ func (obj *SwapTokenSwapTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapTokenSwapTuple) isSwap() {}
 
-type SwapSenchaTuple uint8
+type SwapSenchaTuple struct{}
 
 func (obj SwapSenchaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -767,7 +767,7 @@ func (obj *SwapSenchaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapSenchaTuple) isSwap() {}
 
-type SwapStepTuple uint8
+type SwapStepTuple struct{}
 
 func (obj SwapStepTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -779,7 +779,7 @@ func (obj *SwapStepTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 
 func (_ SwapStepTuple) isSwap() {}
 
-type SwapCropperTuple uint8
+type SwapCropperTuple struct{}
 
 func (obj SwapCropperTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -791,7 +791,7 @@ func (obj *SwapCropperTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapCropperTuple) isSwap() {}
 
-type SwapRaydiumTuple uint8
+type SwapRaydiumTuple struct{}
 
 func (obj SwapRaydiumTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -827,7 +827,7 @@ func (obj *SwapCremaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapCremaTuple) isSwap() {}
 
-type SwapLifinityTuple uint8
+type SwapLifinityTuple struct{}
 
 func (obj SwapLifinityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -839,7 +839,7 @@ func (obj *SwapLifinityTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapLifinityTuple) isSwap() {}
 
-type SwapMercurialTuple uint8
+type SwapMercurialTuple struct{}
 
 func (obj SwapMercurialTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -851,7 +851,7 @@ func (obj *SwapMercurialTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapMercurialTuple) isSwap() {}
 
-type SwapCykuraTuple uint8
+type SwapCykuraTuple struct{}
 
 func (obj SwapCykuraTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -887,7 +887,7 @@ func (obj *SwapSerumTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSerumTuple) isSwap() {}
 
-type SwapMarinadeDepositTuple uint8
+type SwapMarinadeDepositTuple struct{}
 
 func (obj SwapMarinadeDepositTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -899,7 +899,7 @@ func (obj *SwapMarinadeDepositTuple) UnmarshalWithDecoder(decoder *ag_binary.Dec
 
 func (_ SwapMarinadeDepositTuple) isSwap() {}
 
-type SwapMarinadeUnstakeTuple uint8
+type SwapMarinadeUnstakeTuple struct{}
 
 func (obj SwapMarinadeUnstakeTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1007,7 +1007,7 @@ func (obj *SwapInvariantTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapInvariantTuple) isSwap() {}
 
-type SwapMeteoraTuple uint8
+type SwapMeteoraTuple struct{}
 
 func (obj SwapMeteoraTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1019,7 +1019,7 @@ func (obj *SwapMeteoraTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapMeteoraTuple) isSwap() {}
 
-type SwapGooseFXTuple uint8
+type SwapGooseFXTuple struct{}
 
 func (obj SwapGooseFXTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1055,7 +1055,7 @@ func (obj *SwapDeltaFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapDeltaFiTuple) isSwap() {}
 
-type SwapBalansolTuple uint8
+type SwapBalansolTuple struct{}
 
 func (obj SwapBalansolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1115,7 +1115,7 @@ func (obj *SwapDradexTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapDradexTuple) isSwap() {}
 
-type SwapLifinityV2Tuple uint8
+type SwapLifinityV2Tuple struct{}
 
 func (obj SwapLifinityV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1127,7 +1127,7 @@ func (obj *SwapLifinityV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapLifinityV2Tuple) isSwap() {}
 
-type SwapRaydiumClmmTuple uint8
+type SwapRaydiumClmmTuple struct{}
 
 func (obj SwapRaydiumClmmTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1222,7 +1222,7 @@ func (obj *SwapSymmetryTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapSymmetryTuple) isSwap() {}
 
-type SwapTokenSwapV2Tuple uint8
+type SwapTokenSwapV2Tuple struct{}
 
 func (obj SwapTokenSwapV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1234,7 +1234,7 @@ func (obj *SwapTokenSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapTokenSwapV2Tuple) isSwap() {}
 
-type SwapHeliumTreasuryManagementRedeemV0Tuple uint8
+type SwapHeliumTreasuryManagementRedeemV0Tuple struct{}
 
 func (obj SwapHeliumTreasuryManagementRedeemV0Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1246,7 +1246,7 @@ func (obj *SwapHeliumTreasuryManagementRedeemV0Tuple) UnmarshalWithDecoder(decod
 
 func (_ SwapHeliumTreasuryManagementRedeemV0Tuple) isSwap() {}
 
-type SwapStakeDexStakeWrappedSolTuple uint8
+type SwapStakeDexStakeWrappedSolTuple struct{}
 
 func (obj SwapStakeDexStakeWrappedSolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1282,7 +1282,7 @@ func (obj *SwapStakeDexSwapViaStakeTuple) UnmarshalWithDecoder(decoder *ag_binar
 
 func (_ SwapStakeDexSwapViaStakeTuple) isSwap() {}
 
-type SwapGooseFXV2Tuple uint8
+type SwapGooseFXV2Tuple struct{}
 
 func (obj SwapGooseFXV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1294,7 +1294,7 @@ func (obj *SwapGooseFXV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapGooseFXV2Tuple) isSwap() {}
 
-type SwapPerpsTuple uint8
+type SwapPerpsTuple struct{}
 
 func (obj SwapPerpsTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1306,7 +1306,7 @@ func (obj *SwapPerpsTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapPerpsTuple) isSwap() {}
 
-type SwapPerpsAddLiquidityTuple uint8
+type SwapPerpsAddLiquidityTuple struct{}
 
 func (obj SwapPerpsAddLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1318,7 +1318,7 @@ func (obj *SwapPerpsAddLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapPerpsAddLiquidityTuple) isSwap() {}
 
-type SwapPerpsRemoveLiquidityTuple uint8
+type SwapPerpsRemoveLiquidityTuple struct{}
 
 func (obj SwapPerpsRemoveLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1330,7 +1330,7 @@ func (obj *SwapPerpsRemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binar
 
 func (_ SwapPerpsRemoveLiquidityTuple) isSwap() {}
 
-type SwapMeteoraDlmmTuple uint8
+type SwapMeteoraDlmmTuple struct{}
 
 func (obj SwapMeteoraDlmmTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1366,7 +1366,7 @@ func (obj *SwapOpenBookV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapOpenBookV2Tuple) isSwap() {}
 
-type SwapRaydiumClmmV2Tuple uint8
+type SwapRaydiumClmmV2Tuple struct{}
 
 func (obj SwapRaydiumClmmV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1575,7 +1575,7 @@ func (obj *SwapSanctumSRemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_bi
 
 func (_ SwapSanctumSRemoveLiquidityTuple) isSwap() {}
 
-type SwapRaydiumCPTuple uint8
+type SwapRaydiumCPTuple struct{}
 
 func (obj SwapRaydiumCPTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1643,7 +1643,7 @@ func (obj *SwapWhirlpoolSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Dec
 
 func (_ SwapWhirlpoolSwapV2Tuple) isSwap() {}
 
-type SwapOneIntroTuple uint8
+type SwapOneIntroTuple struct{}
 
 func (obj SwapOneIntroTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1655,7 +1655,7 @@ func (obj *SwapOneIntroTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapOneIntroTuple) isSwap() {}
 
-type SwapPumpdotfunWrappedBuyTuple uint8
+type SwapPumpdotfunWrappedBuyTuple struct{}
 
 func (obj SwapPumpdotfunWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1667,7 +1667,7 @@ func (obj *SwapPumpdotfunWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binar
 
 func (_ SwapPumpdotfunWrappedBuyTuple) isSwap() {}
 
-type SwapPumpdotfunWrappedSellTuple uint8
+type SwapPumpdotfunWrappedSellTuple struct{}
 
 func (obj SwapPumpdotfunWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1679,7 +1679,7 @@ func (obj *SwapPumpdotfunWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_bina
 
 func (_ SwapPumpdotfunWrappedSellTuple) isSwap() {}
 
-type SwapPerpsV2Tuple uint8
+type SwapPerpsV2Tuple struct{}
 
 func (obj SwapPerpsV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1691,7 +1691,7 @@ func (obj *SwapPerpsV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapPerpsV2Tuple) isSwap() {}
 
-type SwapPerpsV2AddLiquidityTuple uint8
+type SwapPerpsV2AddLiquidityTuple struct{}
 
 func (obj SwapPerpsV2AddLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1703,7 +1703,7 @@ func (obj *SwapPerpsV2AddLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary
 
 func (_ SwapPerpsV2AddLiquidityTuple) isSwap() {}
 
-type SwapPerpsV2RemoveLiquidityTuple uint8
+type SwapPerpsV2RemoveLiquidityTuple struct{}
 
 func (obj SwapPerpsV2RemoveLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1715,7 +1715,7 @@ func (obj *SwapPerpsV2RemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_bin
 
 func (_ SwapPerpsV2RemoveLiquidityTuple) isSwap() {}
 
-type SwapMoonshotWrappedBuyTuple uint8
+type SwapMoonshotWrappedBuyTuple struct{}
 
 func (obj SwapMoonshotWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1727,7 +1727,7 @@ func (obj *SwapMoonshotWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.
 
 func (_ SwapMoonshotWrappedBuyTuple) isSwap() {}
 
-type SwapMoonshotWrappedSellTuple uint8
+type SwapMoonshotWrappedSellTuple struct{}
 
 func (obj SwapMoonshotWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1739,7 +1739,7 @@ func (obj *SwapMoonshotWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_binary
 
 func (_ SwapMoonshotWrappedSellTuple) isSwap() {}
 
-type SwapStabbleStableSwapTuple uint8
+type SwapStabbleStableSwapTuple struct{}
 
 func (obj SwapStabbleStableSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1751,7 +1751,7 @@ func (obj *SwapStabbleStableSwapTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapStabbleStableSwapTuple) isSwap() {}
 
-type SwapStabbleWeightedSwapTuple uint8
+type SwapStabbleWeightedSwapTuple struct{}
 
 func (obj SwapStabbleWeightedSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1787,7 +1787,7 @@ func (obj *SwapObricTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapObricTuple) isSwap() {}
 
-type SwapFoxBuyFromEstimatedCostTuple uint8
+type SwapFoxBuyFromEstimatedCostTuple struct{}
 
 func (obj SwapFoxBuyFromEstimatedCostTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1847,7 +1847,7 @@ func (obj *SwapSolFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSolFiTuple) isSwap() {}
 
-type SwapSolayerDelegateNoInitTuple uint8
+type SwapSolayerDelegateNoInitTuple struct{}
 
 func (obj SwapSolayerDelegateNoInitTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1859,7 +1859,7 @@ func (obj *SwapSolayerDelegateNoInitTuple) UnmarshalWithDecoder(decoder *ag_bina
 
 func (_ SwapSolayerDelegateNoInitTuple) isSwap() {}
 
-type SwapSolayerUndelegateNoInitTuple uint8
+type SwapSolayerUndelegateNoInitTuple struct{}
 
 func (obj SwapSolayerUndelegateNoInitTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1895,7 +1895,7 @@ func (obj *SwapTokenMillTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapTokenMillTuple) isSwap() {}
 
-type SwapDaosFunBuyTuple uint8
+type SwapDaosFunBuyTuple struct{}
 
 func (obj SwapDaosFunBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1907,7 +1907,7 @@ func (obj *SwapDaosFunBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapDaosFunBuyTuple) isSwap() {}
 
-type SwapDaosFunSellTuple uint8
+type SwapDaosFunSellTuple struct{}
 
 func (obj SwapDaosFunSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1919,7 +1919,7 @@ func (obj *SwapDaosFunSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapDaosFunSellTuple) isSwap() {}
 
-type SwapZeroFiTuple uint8
+type SwapZeroFiTuple struct{}
 
 func (obj SwapZeroFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1931,7 +1931,7 @@ func (obj *SwapZeroFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapZeroFiTuple) isSwap() {}
 
-type SwapStakeDexWithdrawWrappedSolTuple uint8
+type SwapStakeDexWithdrawWrappedSolTuple struct{}
 
 func (obj SwapStakeDexWithdrawWrappedSolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1943,7 +1943,7 @@ func (obj *SwapStakeDexWithdrawWrappedSolTuple) UnmarshalWithDecoder(decoder *ag
 
 func (_ SwapStakeDexWithdrawWrappedSolTuple) isSwap() {}
 
-type SwapVirtualsBuyTuple uint8
+type SwapVirtualsBuyTuple struct{}
 
 func (obj SwapVirtualsBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1955,7 +1955,7 @@ func (obj *SwapVirtualsBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapVirtualsBuyTuple) isSwap() {}
 
-type SwapVirtualsSellTuple uint8
+type SwapVirtualsSellTuple struct{}
 
 func (obj SwapVirtualsSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -2002,7 +2002,7 @@ func (obj *SwapPerenaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapPerenaTuple) isSwap() {}
 
-type SwapPumpdotfunAmmBuyTuple uint8
+type SwapPumpdotfunAmmBuyTuple struct{}
 
 func (obj SwapPumpdotfunAmmBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -2014,7 +2014,7 @@ func (obj *SwapPumpdotfunAmmBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.De
 
 func (_ SwapPumpdotfunAmmBuyTuple) isSwap() {}
 
-type SwapPumpdotfunAmmSellTuple uint8
+type SwapPumpdotfunAmmSellTuple struct{}
 
 func (obj SwapPumpdotfunAmmSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -2026,7 +2026,7 @@ func (obj *SwapPumpdotfunAmmSellTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapPumpdotfunAmmSellTuple) isSwap() {}
 
-type SwapGammaTuple uint8
+type SwapGammaTuple struct{}
 
 func (obj SwapGammaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
