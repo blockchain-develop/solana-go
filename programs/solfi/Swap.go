@@ -12,7 +12,9 @@ import (
 
 // Swap is the `swap` instruction.
 type Swap struct {
-	AmountIn *uint64
+	AmountIn         *uint64
+	MinimalAmountOut *uint64
+	A2B              *uint8
 
 	// [0] = [WRITE, SIGNER] user
 	//
@@ -43,6 +45,18 @@ func NewSwapInstructionBuilder() *Swap {
 // SetAmountIn sets the "amountIn" parameter.
 func (inst *Swap) SetAmountIn(amountIn uint64) *Swap {
 	inst.AmountIn = &amountIn
+	return inst
+}
+
+// SetMinimalAmountOut sets the "minimalAmountOut" parameter.
+func (inst *Swap) SetMinimalAmountOut(minimalAmountOut uint64) *Swap {
+	inst.MinimalAmountOut = &minimalAmountOut
+	return inst
+}
+
+// SetA2B sets the "a2b" parameter.
+func (inst *Swap) SetA2B(a2b uint8) *Swap {
+	inst.A2B = &a2b
 	return inst
 }
 
@@ -157,6 +171,12 @@ func (inst *Swap) Validate() error {
 		if inst.AmountIn == nil {
 			return errors.New("AmountIn parameter is not set")
 		}
+		if inst.MinimalAmountOut == nil {
+			return errors.New("MinimalAmountOut parameter is not set")
+		}
+		if inst.A2B == nil {
+			return errors.New("A2B parameter is not set")
+		}
 	}
 
 	// Check whether all (required) accounts are set:
@@ -198,8 +218,10 @@ func (inst *Swap) EncodeToTree(parent ag_treeout.Branches) {
 				ParentFunc(func(instructionBranch ag_treeout.Branches) {
 
 					// Parameters of the instruction:
-					instructionBranch.Child("Params[len=1]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
-						paramsBranch.Child(ag_format.Param("AmountIn", *inst.AmountIn))
+					instructionBranch.Child("Params[len=3]").ParentFunc(func(paramsBranch ag_treeout.Branches) {
+						paramsBranch.Child(ag_format.Param("        AmountIn", *inst.AmountIn))
+						paramsBranch.Child(ag_format.Param("MinimalAmountOut", *inst.MinimalAmountOut))
+						paramsBranch.Child(ag_format.Param("             A2B", *inst.A2B))
 					})
 
 					// Accounts of the instruction:
@@ -223,11 +245,31 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	if err != nil {
 		return err
 	}
+	// Serialize `MinimalAmountOut` param:
+	err = encoder.Encode(obj.MinimalAmountOut)
+	if err != nil {
+		return err
+	}
+	// Serialize `A2B` param:
+	err = encoder.Encode(obj.A2B)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `AmountIn`:
 	err = decoder.Decode(&obj.AmountIn)
+	if err != nil {
+		return err
+	}
+	// Deserialize `MinimalAmountOut`:
+	err = decoder.Decode(&obj.MinimalAmountOut)
+	if err != nil {
+		return err
+	}
+	// Deserialize `A2B`:
+	err = decoder.Decode(&obj.A2B)
 	if err != nil {
 		return err
 	}
@@ -238,6 +280,8 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 func NewSwapInstruction(
 	// Parameters:
 	amountIn uint64,
+	minimalAmountOut uint64,
+	a2b uint8,
 	// Accounts:
 	user ag_solanago.PublicKey,
 	pair ag_solanago.PublicKey,
@@ -249,6 +293,8 @@ func NewSwapInstruction(
 	sysvarProgram ag_solanago.PublicKey) *Swap {
 	return NewSwapInstructionBuilder().
 		SetAmountIn(amountIn).
+		SetMinimalAmountOut(minimalAmountOut).
+		SetA2B(a2b).
 		SetUserAccount(user).
 		SetPairAccount(pair).
 		SetPoolTokenAccountAAccount(poolTokenAccountA).
