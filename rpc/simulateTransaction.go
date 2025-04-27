@@ -43,6 +43,11 @@ type SimulateTransactionResult struct {
 
 	// The number of compute budget units consumed during the processing of this transaction.
 	UnitsConsumed *uint64 `json:"unitsConsumed,omitempty"`
+
+	//
+	ReturnData *ReturnData `json:"returnData"`
+
+	InnerInstructions []ParsedInnerInstruction `json:"innerInstructions"`
 }
 
 // SimulateTransaction simulates sending a transaction.
@@ -69,6 +74,10 @@ type SimulateTransactionOpts struct {
 	// If true the transaction recent blockhash will be replaced with the most recent blockhash.
 	// (default: false, conflicts with SigVerify)
 	ReplaceRecentBlockhash bool
+
+	MinContextSlot uint64
+
+	InnerInstructions bool
 
 	Accounts *SimulateTransactionAccountsOpts
 }
@@ -117,6 +126,12 @@ func (cl *Client) SimulateRawTransactionWithOpts(
 		}
 		if opts.ReplaceRecentBlockhash {
 			obj["replaceRecentBlockhash"] = opts.ReplaceRecentBlockhash
+		}
+		if opts.MinContextSlot > 0 {
+			obj["minContextSlot"] = opts.MinContextSlot
+		}
+		if opts.InnerInstructions {
+			obj["innerInstructions"] = opts.InnerInstructions
 		}
 		if opts.Accounts != nil {
 			obj["accounts"] = M{
