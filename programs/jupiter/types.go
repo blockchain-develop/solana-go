@@ -659,6 +659,21 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	case SwapPumpWrappedSellV4Tuple:
 		tmp.Enum = 113
 		tmp.PumpWrappedSellV4 = realvalue
+	case SwapCarrotIssueTuple:
+		tmp.Enum = 114
+		tmp.CarrotIssue = realvalue
+	case SwapCarrotRedeemTuple:
+		tmp.Enum = 115
+		tmp.CarrotRedeem = realvalue
+	case SwapManifestTuple:
+		tmp.Enum = 116
+		tmp.Manifest = realvalue
+	case SwapBisonFiTuple:
+		tmp.Enum = 117
+		tmp.BisonFi = realvalue
+	case SwapHumidiFiV2Tuple:
+		tmp.Enum = 118
+		tmp.HumidiFiV2 = realvalue
 	}
 	return encoder.Encode(tmp)
 }
@@ -898,6 +913,16 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 		obj.Value = tmp.PumpWrappedBuyV4
 	case 113:
 		obj.Value = tmp.PumpWrappedSellV4
+	case 114:
+		obj.Value = tmp.CarrotIssue
+	case 115:
+		obj.Value = tmp.CarrotRedeem
+	case 116:
+		obj.Value = tmp.Manifest
+	case 117:
+		obj.Value = tmp.BisonFi
+	case 118:
+		obj.Value = tmp.HumidiFiV2
 	default:
 		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
 	}
@@ -1024,6 +1049,11 @@ type swapContainer struct {
 	DynamicV1                                           SwapDynamicV1Tuple
 	PumpWrappedBuyV4                                    SwapPumpWrappedBuyV4Tuple
 	PumpWrappedSellV4                                   SwapPumpWrappedSellV4Tuple
+	CarrotIssue                                         SwapCarrotIssueTuple
+	CarrotRedeem                                        SwapCarrotRedeemTuple
+	Manifest                                            SwapManifestTuple
+	BisonFi                                             SwapBisonFiTuple
+	HumidiFiV2                                          SwapHumidiFiV2Tuple
 }
 
 type SwapSaberTuple uint8
@@ -3059,6 +3089,113 @@ func (obj *SwapPumpWrappedSellV4Tuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapPumpWrappedSellV4Tuple) isSwap() {}
 
+type SwapCarrotIssueTuple uint8
+
+func (obj SwapCarrotIssueTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapCarrotIssueTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapCarrotIssueTuple) isSwap() {}
+
+type SwapCarrotRedeemTuple uint8
+
+func (obj SwapCarrotRedeemTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapCarrotRedeemTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapCarrotRedeemTuple) isSwap() {}
+
+type SwapManifestTuple struct {
+	Side Side
+}
+
+func (obj SwapManifestTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapManifestTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapManifestTuple) isSwap() {}
+
+type SwapBisonFiTuple struct {
+	AToB bool
+}
+
+func (obj SwapBisonFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `AToB` param:
+	err = encoder.Encode(obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapBisonFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `AToB`:
+	err = decoder.Decode(&obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapBisonFiTuple) isSwap() {}
+
+type SwapHumidiFiV2Tuple struct {
+	SwapId        uint64
+	IsBaseToQuote bool
+}
+
+func (obj SwapHumidiFiV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapId` param:
+	err = encoder.Encode(obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Serialize `IsBaseToQuote` param:
+	err = encoder.Encode(obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapHumidiFiV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapId`:
+	err = decoder.Decode(&obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Deserialize `IsBaseToQuote`:
+	err = decoder.Decode(&obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapHumidiFiV2Tuple) isSwap() {}
+
 type CandidateSwap struct {
 	Value candidateSwap
 }
@@ -3072,6 +3209,9 @@ func (obj CandidateSwap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err err
 	case CandidateSwapTesseraVTuple:
 		tmp.Enum = 1
 		tmp.TesseraV = realvalue
+	case CandidateSwapHumidiFiV2Tuple:
+		tmp.Enum = 2
+		tmp.HumidiFiV2 = realvalue
 	}
 	return encoder.Encode(tmp)
 }
@@ -3087,6 +3227,8 @@ func (obj *CandidateSwap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 		obj.Value = tmp.HumidiFi
 	case 1:
 		obj.Value = tmp.TesseraV
+	case 2:
+		obj.Value = tmp.HumidiFiV2
 	default:
 		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
 	}
@@ -3098,9 +3240,10 @@ type candidateSwap interface {
 }
 
 type candidateSwapContainer struct {
-	Enum     ag_binary.BorshEnum `borsh_enum:"true"`
-	HumidiFi CandidateSwapHumidiFiTuple
-	TesseraV CandidateSwapTesseraVTuple
+	Enum       ag_binary.BorshEnum `borsh_enum:"true"`
+	HumidiFi   CandidateSwapHumidiFiTuple
+	TesseraV   CandidateSwapTesseraVTuple
+	HumidiFiV2 CandidateSwapHumidiFiV2Tuple
 }
 
 type CandidateSwapHumidiFiTuple struct {
@@ -3161,6 +3304,41 @@ func (obj *CandidateSwapTesseraVTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 }
 
 func (_ CandidateSwapTesseraVTuple) isCandidateSwap() {}
+
+type CandidateSwapHumidiFiV2Tuple struct {
+	SwapId        uint64
+	IsBaseToQuote bool
+}
+
+func (obj CandidateSwapHumidiFiV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapId` param:
+	err = encoder.Encode(obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Serialize `IsBaseToQuote` param:
+	err = encoder.Encode(obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapHumidiFiV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapId`:
+	err = decoder.Decode(&obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Deserialize `IsBaseToQuote`:
+	err = decoder.Decode(&obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ CandidateSwapHumidiFiV2Tuple) isCandidateSwap() {}
 
 type SwapEvent struct {
 	Amm          ag_solanago.PublicKey
