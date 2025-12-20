@@ -11,7 +11,7 @@ import (
 )
 
 // ClaimToken is the `claim_token` instruction.
-type ClaimToken struct {
+type ClaimTokenInstruction struct {
 	Id *uint8
 
 	// [0] = [WRITE, SIGNER] payer
@@ -34,78 +34,78 @@ type ClaimToken struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewClaimTokenInstructionBuilder creates a new `ClaimToken` instruction builder.
-func NewClaimTokenInstructionBuilder() *ClaimToken {
-	nd := &ClaimToken{
+// NewClaimTokenInstructionBuilder creates a new `ClaimTokenInstruction` instruction builder.
+func NewClaimTokenInstructionBuilder() *ClaimTokenInstruction {
+	nd := &ClaimTokenInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 9),
 	}
-	nd.AccountMetaSlice[1] = ag_solanago.Meta(Addresses["J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"])
+	nd.AccountMetaSlice[1] = ag_solanago.Meta(Addresses["7JQeyNK55fkUPUmEotupBFpiBGpgEQYLe8Ht1VdSfxcP"])
 	nd.AccountMetaSlice[7] = ag_solanago.Meta(Addresses["ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"])
 	nd.AccountMetaSlice[8] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 
 // SetId sets the "id" parameter.
-func (inst *ClaimToken) SetId(id uint8) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetId(id uint8) *ClaimTokenInstruction {
 	inst.Id = &id
 	return inst
 }
 
 // SetPayerAccount sets the "payer" account.
-func (inst *ClaimToken) SetPayerAccount(payer ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetPayerAccount(payer ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(payer).WRITE().SIGNER()
 	return inst
 }
 
 // GetPayerAccount gets the "payer" account.
-func (inst *ClaimToken) GetPayerAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetPayerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetWalletAccount sets the "wallet" account.
-func (inst *ClaimToken) SetWalletAccount(wallet ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetWalletAccount(wallet ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(wallet)
 	return inst
 }
 
 // GetWalletAccount gets the "wallet" account.
-func (inst *ClaimToken) GetWalletAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetWalletAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetProgramAuthorityAccount sets the "program_authority" account.
-func (inst *ClaimToken) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(programAuthority)
 	return inst
 }
 
 // GetProgramAuthorityAccount gets the "program_authority" account.
-func (inst *ClaimToken) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetProgramTokenAccountAccount sets the "program_token_account" account.
-func (inst *ClaimToken) SetProgramTokenAccountAccount(programTokenAccount ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetProgramTokenAccountAccount(programTokenAccount ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(programTokenAccount).WRITE()
 	return inst
 }
 
 // GetProgramTokenAccountAccount gets the "program_token_account" account.
-func (inst *ClaimToken) GetProgramTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetProgramTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetDestinationTokenAccountAccount sets the "destination_token_account" account.
-func (inst *ClaimToken) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(destinationTokenAccount).WRITE()
 	return inst
 }
 
-func (inst *ClaimToken) findFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, knownBumpSeed uint8) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+func (inst *ClaimTokenInstruction) findFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, knownBumpSeed uint8) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	var seeds [][]byte
 	// path: wallet
 	seeds = append(seeds, wallet.Bytes())
-	// path: tokenProgram
+	// path: token_program
 	seeds = append(seeds, tokenProgram.Bytes())
 	// path: mint
 	seeds = append(seeds, mint.Bytes())
@@ -113,7 +113,7 @@ func (inst *ClaimToken) findFindDestinationTokenAccountAddress(wallet ag_solanag
 	programID := Addresses["ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"]
 
 	if knownBumpSeed != 0 {
-		seeds = append(seeds, []byte{byte(bumpSeed)})
+		seeds = append(seeds, []byte{byte(knownBumpSeed)})
 		pda, err = ag_solanago.CreateProgramAddress(seeds, programID)
 	} else {
 		pda, bumpSeed, err = ag_solanago.FindProgramAddress(seeds, programID)
@@ -122,12 +122,12 @@ func (inst *ClaimToken) findFindDestinationTokenAccountAddress(wallet ag_solanag
 }
 
 // FindDestinationTokenAccountAddressWithBumpSeed calculates DestinationTokenAccount account address with given seeds and a known bump seed.
-func (inst *ClaimToken) FindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey, err error) {
+func (inst *ClaimTokenInstruction) FindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey, err error) {
 	pda, _, err = inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, bumpSeed)
 	return
 }
 
-func (inst *ClaimToken) MustFindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey) {
+func (inst *ClaimTokenInstruction) MustFindDestinationTokenAccountAddressWithBumpSeed(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey, bumpSeed uint8) (pda ag_solanago.PublicKey) {
 	pda, _, err := inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, bumpSeed)
 	if err != nil {
 		panic(err)
@@ -136,12 +136,12 @@ func (inst *ClaimToken) MustFindDestinationTokenAccountAddressWithBumpSeed(walle
 }
 
 // FindDestinationTokenAccountAddress finds DestinationTokenAccount account address with given seeds.
-func (inst *ClaimToken) FindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
+func (inst *ClaimTokenInstruction) FindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey, bumpSeed uint8, err error) {
 	pda, bumpSeed, err = inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, 0)
 	return
 }
 
-func (inst *ClaimToken) MustFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
+func (inst *ClaimTokenInstruction) MustFindDestinationTokenAccountAddress(wallet ag_solanago.PublicKey, tokenProgram ag_solanago.PublicKey, mint ag_solanago.PublicKey) (pda ag_solanago.PublicKey) {
 	pda, _, err := inst.findFindDestinationTokenAccountAddress(wallet, tokenProgram, mint, 0)
 	if err != nil {
 		panic(err)
@@ -150,55 +150,55 @@ func (inst *ClaimToken) MustFindDestinationTokenAccountAddress(wallet ag_solanag
 }
 
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account.
-func (inst *ClaimToken) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetMintAccount sets the "mint" account.
-func (inst *ClaimToken) SetMintAccount(mint ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetMintAccount(mint ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(mint)
 	return inst
 }
 
 // GetMintAccount gets the "mint" account.
-func (inst *ClaimToken) GetMintAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *ClaimToken) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *ClaimToken) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetAssociatedTokenProgramAccount sets the "associated_token_program" account.
-func (inst *ClaimToken) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetAssociatedTokenProgramAccount(associatedTokenProgram ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(associatedTokenProgram)
 	return inst
 }
 
 // GetAssociatedTokenProgramAccount gets the "associated_token_program" account.
-func (inst *ClaimToken) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetAssociatedTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetSystemProgramAccount sets the "system_program" account.
-func (inst *ClaimToken) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *ClaimToken {
+func (inst *ClaimTokenInstruction) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *ClaimTokenInstruction {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "system_program" account.
-func (inst *ClaimToken) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimTokenInstruction) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
-func (inst ClaimToken) Build() *Instruction {
+func (inst ClaimTokenInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_ClaimToken,
@@ -208,14 +208,14 @@ func (inst ClaimToken) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst ClaimToken) ValidateAndBuild() (*Instruction, error) {
+func (inst ClaimTokenInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *ClaimToken) Validate() error {
+func (inst *ClaimTokenInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Id == nil {
@@ -256,7 +256,7 @@ func (inst *ClaimToken) Validate() error {
 	return nil
 }
 
-func (inst *ClaimToken) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *ClaimTokenInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -285,7 +285,7 @@ func (inst *ClaimToken) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj ClaimToken) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj ClaimTokenInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Id` param:
 	err = encoder.Encode(obj.Id)
 	if err != nil {
@@ -293,7 +293,7 @@ func (obj ClaimToken) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error)
 	}
 	return nil
 }
-func (obj *ClaimToken) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *ClaimTokenInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Id`:
 	err = decoder.Decode(&obj.Id)
 	if err != nil {
@@ -315,7 +315,7 @@ func NewClaimTokenInstruction(
 	mint ag_solanago.PublicKey,
 	tokenProgram ag_solanago.PublicKey,
 	associatedTokenProgram ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *ClaimToken {
+	systemProgram ag_solanago.PublicKey) *ClaimTokenInstruction {
 	return NewClaimTokenInstructionBuilder().
 		SetId(id).
 		SetPayerAccount(payer).

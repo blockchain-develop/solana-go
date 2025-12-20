@@ -11,7 +11,7 @@ import (
 )
 
 // Claim is the `claim` instruction.
-type Claim struct {
+type ClaimInstruction struct {
 	Id *uint8
 
 	// [0] = [WRITE] wallet
@@ -22,56 +22,56 @@ type Claim struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewClaimInstructionBuilder creates a new `Claim` instruction builder.
-func NewClaimInstructionBuilder() *Claim {
-	nd := &Claim{
+// NewClaimInstructionBuilder creates a new `ClaimInstruction` instruction builder.
+func NewClaimInstructionBuilder() *ClaimInstruction {
+	nd := &ClaimInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
-	nd.AccountMetaSlice[0] = ag_solanago.Meta(Addresses["J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"]).WRITE()
+	nd.AccountMetaSlice[0] = ag_solanago.Meta(Addresses["7JQeyNK55fkUPUmEotupBFpiBGpgEQYLe8Ht1VdSfxcP"]).WRITE()
 	nd.AccountMetaSlice[2] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
 	return nd
 }
 
 // SetId sets the "id" parameter.
-func (inst *Claim) SetId(id uint8) *Claim {
+func (inst *ClaimInstruction) SetId(id uint8) *ClaimInstruction {
 	inst.Id = &id
 	return inst
 }
 
 // SetWalletAccount sets the "wallet" account.
-func (inst *Claim) SetWalletAccount(wallet ag_solanago.PublicKey) *Claim {
+func (inst *ClaimInstruction) SetWalletAccount(wallet ag_solanago.PublicKey) *ClaimInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(wallet).WRITE()
 	return inst
 }
 
 // GetWalletAccount gets the "wallet" account.
-func (inst *Claim) GetWalletAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimInstruction) GetWalletAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetProgramAuthorityAccount sets the "program_authority" account.
-func (inst *Claim) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *Claim {
+func (inst *ClaimInstruction) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *ClaimInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(programAuthority).WRITE()
 	return inst
 }
 
 // GetProgramAuthorityAccount gets the "program_authority" account.
-func (inst *Claim) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimInstruction) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetSystemProgramAccount sets the "system_program" account.
-func (inst *Claim) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *Claim {
+func (inst *ClaimInstruction) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *ClaimInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "system_program" account.
-func (inst *Claim) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ClaimInstruction) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
-func (inst Claim) Build() *Instruction {
+func (inst ClaimInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_Claim,
@@ -81,14 +81,14 @@ func (inst Claim) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst Claim) ValidateAndBuild() (*Instruction, error) {
+func (inst ClaimInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *Claim) Validate() error {
+func (inst *ClaimInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Id == nil {
@@ -111,7 +111,7 @@ func (inst *Claim) Validate() error {
 	return nil
 }
 
-func (inst *Claim) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *ClaimInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -134,7 +134,7 @@ func (inst *Claim) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj Claim) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj ClaimInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Id` param:
 	err = encoder.Encode(obj.Id)
 	if err != nil {
@@ -142,7 +142,7 @@ func (obj Claim) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	return nil
 }
-func (obj *Claim) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *ClaimInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Id`:
 	err = decoder.Decode(&obj.Id)
 	if err != nil {
@@ -158,7 +158,7 @@ func NewClaimInstruction(
 	// Accounts:
 	wallet ag_solanago.PublicKey,
 	programAuthority ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *Claim {
+	systemProgram ag_solanago.PublicKey) *ClaimInstruction {
 	return NewClaimInstructionBuilder().
 		SetId(id).
 		SetWalletAccount(wallet).

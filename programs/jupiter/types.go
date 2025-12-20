@@ -8,45 +8,6 @@ import (
 	ag_solanago "github.com/gagliardetto/solana-go"
 )
 
-type AccountsType ag_binary.BorshEnum
-
-const (
-	AccountsTypeTransferHookA AccountsType = iota
-	AccountsTypeTransferHookB
-	AccountsTypeTransferHookReward
-	AccountsTypeTransferHookInput
-	AccountsTypeTransferHookIntermediate
-	AccountsTypeTransferHookOutput
-	AccountsTypeSupplementalTickArrays
-	AccountsTypeSupplementalTickArraysOne
-	AccountsTypeSupplementalTickArraysTwo
-)
-
-func (value AccountsType) String() string {
-	switch value {
-	case AccountsTypeTransferHookA:
-		return "TransferHookA"
-	case AccountsTypeTransferHookB:
-		return "TransferHookB"
-	case AccountsTypeTransferHookReward:
-		return "TransferHookReward"
-	case AccountsTypeTransferHookInput:
-		return "TransferHookInput"
-	case AccountsTypeTransferHookIntermediate:
-		return "TransferHookIntermediate"
-	case AccountsTypeTransferHookOutput:
-		return "TransferHookOutput"
-	case AccountsTypeSupplementalTickArrays:
-		return "SupplementalTickArrays"
-	case AccountsTypeSupplementalTickArraysOne:
-		return "SupplementalTickArraysOne"
-	case AccountsTypeSupplementalTickArraysTwo:
-		return "SupplementalTickArraysTwo"
-	default:
-		return ""
-	}
-}
-
 type FeeEvent struct {
 	Account ag_solanago.PublicKey
 	Mint    ag_solanago.PublicKey
@@ -114,7 +75,7 @@ func (obj *RemainingAccountsInfo) UnmarshalWithDecoder(decoder *ag_binary.Decode
 }
 
 type RemainingAccountsSlice struct {
-	AccountsType AccountsType
+	AccountsType uint8
 	Length       uint8
 }
 
@@ -144,6 +105,81 @@ func (obj *RemainingAccountsSlice) UnmarshalWithDecoder(decoder *ag_binary.Decod
 		return err
 	}
 	return nil
+}
+
+type AccountsType ag_binary.BorshEnum
+
+const (
+	AccountsTypeTransferHookA AccountsType = iota
+	AccountsTypeTransferHookB
+	AccountsTypeTransferHookReward
+	AccountsTypeTransferHookInput
+	AccountsTypeTransferHookIntermediate
+	AccountsTypeTransferHookOutput
+	AccountsTypeSupplementalTickArrays
+	AccountsTypeSupplementalTickArraysOne
+	AccountsTypeSupplementalTickArraysTwo
+)
+
+func (value AccountsType) String() string {
+	switch value {
+	case AccountsTypeTransferHookA:
+		return "TransferHookA"
+	case AccountsTypeTransferHookB:
+		return "TransferHookB"
+	case AccountsTypeTransferHookReward:
+		return "TransferHookReward"
+	case AccountsTypeTransferHookInput:
+		return "TransferHookInput"
+	case AccountsTypeTransferHookIntermediate:
+		return "TransferHookIntermediate"
+	case AccountsTypeTransferHookOutput:
+		return "TransferHookOutput"
+	case AccountsTypeSupplementalTickArrays:
+		return "SupplementalTickArrays"
+	case AccountsTypeSupplementalTickArraysOne:
+		return "SupplementalTickArraysOne"
+	case AccountsTypeSupplementalTickArraysTwo:
+		return "SupplementalTickArraysTwo"
+	default:
+		return ""
+	}
+}
+
+type DefiTunaAccountsType ag_binary.BorshEnum
+
+const (
+	DefiTunaAccountsTypeTransferHookA DefiTunaAccountsType = iota
+	DefiTunaAccountsTypeTransferHookB
+	DefiTunaAccountsTypeTransferHookInput
+	DefiTunaAccountsTypeTransferHookIntermediate
+	DefiTunaAccountsTypeTransferHookOutput
+	DefiTunaAccountsTypeSupplementalTickArrays
+	DefiTunaAccountsTypeSupplementalTickArraysOne
+	DefiTunaAccountsTypeSupplementalTickArraysTwo
+)
+
+func (value DefiTunaAccountsType) String() string {
+	switch value {
+	case DefiTunaAccountsTypeTransferHookA:
+		return "TransferHookA"
+	case DefiTunaAccountsTypeTransferHookB:
+		return "TransferHookB"
+	case DefiTunaAccountsTypeTransferHookInput:
+		return "TransferHookInput"
+	case DefiTunaAccountsTypeTransferHookIntermediate:
+		return "TransferHookIntermediate"
+	case DefiTunaAccountsTypeTransferHookOutput:
+		return "TransferHookOutput"
+	case DefiTunaAccountsTypeSupplementalTickArrays:
+		return "SupplementalTickArrays"
+	case DefiTunaAccountsTypeSupplementalTickArraysOne:
+		return "SupplementalTickArraysOne"
+	case DefiTunaAccountsTypeSupplementalTickArraysTwo:
+		return "SupplementalTickArraysTwo"
+	default:
+		return ""
+	}
 }
 
 type RoutePlanStep struct {
@@ -185,6 +221,61 @@ func (obj *RoutePlanStep) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 	}
 	// Deserialize `Percent`:
 	err = decoder.Decode(&obj.Percent)
+	if err != nil {
+		return err
+	}
+	// Deserialize `InputIndex`:
+	err = decoder.Decode(&obj.InputIndex)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OutputIndex`:
+	err = decoder.Decode(&obj.OutputIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type RoutePlanStepV2 struct {
+	Swap        *Swap
+	Bps         uint16
+	InputIndex  uint8
+	OutputIndex uint8
+}
+
+func (obj RoutePlanStepV2) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Swap` param:
+	err = encoder.Encode(obj.Swap)
+	if err != nil {
+		return err
+	}
+	// Serialize `Bps` param:
+	err = encoder.Encode(obj.Bps)
+	if err != nil {
+		return err
+	}
+	// Serialize `InputIndex` param:
+	err = encoder.Encode(obj.InputIndex)
+	if err != nil {
+		return err
+	}
+	// Serialize `OutputIndex` param:
+	err = encoder.Encode(obj.OutputIndex)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *RoutePlanStepV2) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Swap`:
+	err = decoder.Decode(&obj.Swap)
+	if err != nil {
+		return err
+	}
+	// Deserialize `Bps`:
+	err = decoder.Decode(&obj.Bps)
 	if err != nil {
 		return err
 	}
@@ -373,12 +464,12 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	case SwapOneIntroTuple:
 		tmp.Enum = 48
 		tmp.OneIntro = realvalue
-	case SwapPumpdotfunWrappedBuyTuple:
+	case SwapPumpWrappedBuyTuple:
 		tmp.Enum = 49
-		tmp.PumpdotfunWrappedBuy = realvalue
-	case SwapPumpdotfunWrappedSellTuple:
+		tmp.PumpWrappedBuy = realvalue
+	case SwapPumpWrappedSellTuple:
 		tmp.Enum = 50
-		tmp.PumpdotfunWrappedSell = realvalue
+		tmp.PumpWrappedSell = realvalue
 	case SwapPerpsV2Tuple:
 		tmp.Enum = 51
 		tmp.PerpsV2 = realvalue
@@ -442,18 +533,132 @@ func (obj Swap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	case SwapPerenaTuple:
 		tmp.Enum = 71
 		tmp.Perena = realvalue
-	case SwapPumpdotfunAmmBuyTuple:
+	case SwapPumpSwapBuyTuple:
 		tmp.Enum = 72
-		tmp.PumpdotfunAmmBuy = realvalue
-	case SwapPumpdotfunAmmSellTuple:
+		tmp.PumpSwapBuy = realvalue
+	case SwapPumpSwapSellTuple:
 		tmp.Enum = 73
-		tmp.PumpdotfunAmmSell = realvalue
+		tmp.PumpSwapSell = realvalue
 	case SwapGammaTuple:
 		tmp.Enum = 74
 		tmp.Gamma = realvalue
 	case SwapMeteoraDlmmSwapV2Tuple:
 		tmp.Enum = 75
 		tmp.MeteoraDlmmSwapV2 = realvalue
+	case SwapWoofiTuple:
+		tmp.Enum = 76
+		tmp.Woofi = realvalue
+	case SwapMeteoraDammV2Tuple:
+		tmp.Enum = 77
+		tmp.MeteoraDammV2 = realvalue
+	case SwapMeteoraDynamicBondingCurveSwapTuple:
+		tmp.Enum = 78
+		tmp.MeteoraDynamicBondingCurveSwap = realvalue
+	case SwapStabbleStableSwapV2Tuple:
+		tmp.Enum = 79
+		tmp.StabbleStableSwapV2 = realvalue
+	case SwapStabbleWeightedSwapV2Tuple:
+		tmp.Enum = 80
+		tmp.StabbleWeightedSwapV2 = realvalue
+	case SwapRaydiumLaunchlabBuyTuple:
+		tmp.Enum = 81
+		tmp.RaydiumLaunchlabBuy = realvalue
+	case SwapRaydiumLaunchlabSellTuple:
+		tmp.Enum = 82
+		tmp.RaydiumLaunchlabSell = realvalue
+	case SwapBoopdotfunWrappedBuyTuple:
+		tmp.Enum = 83
+		tmp.BoopdotfunWrappedBuy = realvalue
+	case SwapBoopdotfunWrappedSellTuple:
+		tmp.Enum = 84
+		tmp.BoopdotfunWrappedSell = realvalue
+	case SwapPlasmaTuple:
+		tmp.Enum = 85
+		tmp.Plasma = realvalue
+	case SwapGoonFiTuple:
+		tmp.Enum = 86
+		tmp.GoonFi = realvalue
+	case SwapHumidiFiTuple:
+		tmp.Enum = 87
+		tmp.HumidiFi = realvalue
+	case SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple:
+		tmp.Enum = 88
+		tmp.MeteoraDynamicBondingCurveSwapWithRemainingAccounts = realvalue
+	case SwapTesseraVTuple:
+		tmp.Enum = 89
+		tmp.TesseraV = realvalue
+	case SwapPumpWrappedBuyV2Tuple:
+		tmp.Enum = 90
+		tmp.PumpWrappedBuyV2 = realvalue
+	case SwapPumpWrappedSellV2Tuple:
+		tmp.Enum = 91
+		tmp.PumpWrappedSellV2 = realvalue
+	case SwapPumpSwapBuyV2Tuple:
+		tmp.Enum = 92
+		tmp.PumpSwapBuyV2 = realvalue
+	case SwapPumpSwapSellV2Tuple:
+		tmp.Enum = 93
+		tmp.PumpSwapSellV2 = realvalue
+	case SwapHeavenTuple:
+		tmp.Enum = 94
+		tmp.Heaven = realvalue
+	case SwapSolFiV2Tuple:
+		tmp.Enum = 95
+		tmp.SolFiV2 = realvalue
+	case SwapAquiferTuple:
+		tmp.Enum = 96
+		tmp.Aquifer = realvalue
+	case SwapPumpWrappedBuyV3Tuple:
+		tmp.Enum = 97
+		tmp.PumpWrappedBuyV3 = realvalue
+	case SwapPumpWrappedSellV3Tuple:
+		tmp.Enum = 98
+		tmp.PumpWrappedSellV3 = realvalue
+	case SwapPumpSwapBuyV3Tuple:
+		tmp.Enum = 99
+		tmp.PumpSwapBuyV3 = realvalue
+	case SwapPumpSwapSellV3Tuple:
+		tmp.Enum = 100
+		tmp.PumpSwapSellV3 = realvalue
+	case SwapJupiterLendDepositTuple:
+		tmp.Enum = 101
+		tmp.JupiterLendDeposit = realvalue
+	case SwapJupiterLendRedeemTuple:
+		tmp.Enum = 102
+		tmp.JupiterLendRedeem = realvalue
+	case SwapDefiTunaTuple:
+		tmp.Enum = 103
+		tmp.DefiTuna = realvalue
+	case SwapAlphaQTuple:
+		tmp.Enum = 104
+		tmp.AlphaQ = realvalue
+	case SwapRaydiumV2Tuple:
+		tmp.Enum = 105
+		tmp.RaydiumV2 = realvalue
+	case SwapSarosDlmmTuple:
+		tmp.Enum = 106
+		tmp.SarosDlmm = realvalue
+	case SwapFutarchyTuple:
+		tmp.Enum = 107
+		tmp.Futarchy = realvalue
+	case SwapMeteoraDammV2WithRemainingAccountsTuple:
+		tmp.Enum = 108
+		tmp.MeteoraDammV2WithRemainingAccounts = realvalue
+	case SwapObsidianTuple:
+		tmp.Enum = 109
+		tmp.Obsidian = realvalue
+	case SwapWhaleStreetTuple:
+		tmp.Enum = 110
+		tmp.WhaleStreet = realvalue
+	case SwapDynamicV1Tuple:
+		tmp.Enum = 111
+		tmp.DynamicV1 = realvalue
+	case SwapPumpWrappedBuyV4Tuple:
+		tmp.Enum = 112
+		tmp.PumpWrappedBuyV4 = realvalue
+	case SwapPumpWrappedSellV4Tuple:
+		tmp.Enum = 113
+		tmp.PumpWrappedSellV4 = realvalue
 	}
 	return encoder.Encode(tmp)
 }
@@ -564,9 +769,9 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	case 48:
 		obj.Value = tmp.OneIntro
 	case 49:
-		obj.Value = tmp.PumpdotfunWrappedBuy
+		obj.Value = tmp.PumpWrappedBuy
 	case 50:
-		obj.Value = tmp.PumpdotfunWrappedSell
+		obj.Value = tmp.PumpWrappedSell
 	case 51:
 		obj.Value = tmp.PerpsV2
 	case 52:
@@ -610,13 +815,89 @@ func (obj *Swap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	case 71:
 		obj.Value = tmp.Perena
 	case 72:
-		obj.Value = tmp.PumpdotfunAmmBuy
+		obj.Value = tmp.PumpSwapBuy
 	case 73:
-		obj.Value = tmp.PumpdotfunAmmSell
+		obj.Value = tmp.PumpSwapSell
 	case 74:
 		obj.Value = tmp.Gamma
 	case 75:
 		obj.Value = tmp.MeteoraDlmmSwapV2
+	case 76:
+		obj.Value = tmp.Woofi
+	case 77:
+		obj.Value = tmp.MeteoraDammV2
+	case 78:
+		obj.Value = tmp.MeteoraDynamicBondingCurveSwap
+	case 79:
+		obj.Value = tmp.StabbleStableSwapV2
+	case 80:
+		obj.Value = tmp.StabbleWeightedSwapV2
+	case 81:
+		obj.Value = tmp.RaydiumLaunchlabBuy
+	case 82:
+		obj.Value = tmp.RaydiumLaunchlabSell
+	case 83:
+		obj.Value = tmp.BoopdotfunWrappedBuy
+	case 84:
+		obj.Value = tmp.BoopdotfunWrappedSell
+	case 85:
+		obj.Value = tmp.Plasma
+	case 86:
+		obj.Value = tmp.GoonFi
+	case 87:
+		obj.Value = tmp.HumidiFi
+	case 88:
+		obj.Value = tmp.MeteoraDynamicBondingCurveSwapWithRemainingAccounts
+	case 89:
+		obj.Value = tmp.TesseraV
+	case 90:
+		obj.Value = tmp.PumpWrappedBuyV2
+	case 91:
+		obj.Value = tmp.PumpWrappedSellV2
+	case 92:
+		obj.Value = tmp.PumpSwapBuyV2
+	case 93:
+		obj.Value = tmp.PumpSwapSellV2
+	case 94:
+		obj.Value = tmp.Heaven
+	case 95:
+		obj.Value = tmp.SolFiV2
+	case 96:
+		obj.Value = tmp.Aquifer
+	case 97:
+		obj.Value = tmp.PumpWrappedBuyV3
+	case 98:
+		obj.Value = tmp.PumpWrappedSellV3
+	case 99:
+		obj.Value = tmp.PumpSwapBuyV3
+	case 100:
+		obj.Value = tmp.PumpSwapSellV3
+	case 101:
+		obj.Value = tmp.JupiterLendDeposit
+	case 102:
+		obj.Value = tmp.JupiterLendRedeem
+	case 103:
+		obj.Value = tmp.DefiTuna
+	case 104:
+		obj.Value = tmp.AlphaQ
+	case 105:
+		obj.Value = tmp.RaydiumV2
+	case 106:
+		obj.Value = tmp.SarosDlmm
+	case 107:
+		obj.Value = tmp.Futarchy
+	case 108:
+		obj.Value = tmp.MeteoraDammV2WithRemainingAccounts
+	case 109:
+		obj.Value = tmp.Obsidian
+	case 110:
+		obj.Value = tmp.WhaleStreet
+	case 111:
+		obj.Value = tmp.DynamicV1
+	case 112:
+		obj.Value = tmp.PumpWrappedBuyV4
+	case 113:
+		obj.Value = tmp.PumpWrappedSellV4
 	default:
 		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
 	}
@@ -628,86 +909,124 @@ type swap interface {
 }
 
 type swapContainer struct {
-	Enum                                        ag_binary.BorshEnum `borsh_enum:"true"`
-	Saber                                       SwapSaberTuple
-	SaberAddDecimalsDeposit                     SwapSaberAddDecimalsDepositTuple
-	SaberAddDecimalsWithdraw                    SwapSaberAddDecimalsWithdrawTuple
-	TokenSwap                                   SwapTokenSwapTuple
-	Sencha                                      SwapSenchaTuple
-	Step                                        SwapStepTuple
-	Cropper                                     SwapCropperTuple
-	Raydium                                     SwapRaydiumTuple
-	Crema                                       SwapCremaTuple
-	Lifinity                                    SwapLifinityTuple
-	Mercurial                                   SwapMercurialTuple
-	Cykura                                      SwapCykuraTuple
-	Serum                                       SwapSerumTuple
-	MarinadeDeposit                             SwapMarinadeDepositTuple
-	MarinadeUnstake                             SwapMarinadeUnstakeTuple
-	Aldrin                                      SwapAldrinTuple
-	AldrinV2                                    SwapAldrinV2Tuple
-	Whirlpool                                   SwapWhirlpoolTuple
-	Invariant                                   SwapInvariantTuple
-	Meteora                                     SwapMeteoraTuple
-	GooseFX                                     SwapGooseFXTuple
-	DeltaFi                                     SwapDeltaFiTuple
-	Balansol                                    SwapBalansolTuple
-	MarcoPolo                                   SwapMarcoPoloTuple
-	Dradex                                      SwapDradexTuple
-	LifinityV2                                  SwapLifinityV2Tuple
-	RaydiumClmm                                 SwapRaydiumClmmTuple
-	Openbook                                    SwapOpenbookTuple
-	Phoenix                                     SwapPhoenixTuple
-	Symmetry                                    SwapSymmetryTuple
-	TokenSwapV2                                 SwapTokenSwapV2Tuple
-	HeliumTreasuryManagementRedeemV0            SwapHeliumTreasuryManagementRedeemV0Tuple
-	StakeDexStakeWrappedSol                     SwapStakeDexStakeWrappedSolTuple
-	StakeDexSwapViaStake                        SwapStakeDexSwapViaStakeTuple
-	GooseFXV2                                   SwapGooseFXV2Tuple
-	Perps                                       SwapPerpsTuple
-	PerpsAddLiquidity                           SwapPerpsAddLiquidityTuple
-	PerpsRemoveLiquidity                        SwapPerpsRemoveLiquidityTuple
-	MeteoraDlmm                                 SwapMeteoraDlmmTuple
-	OpenBookV2                                  SwapOpenBookV2Tuple
-	RaydiumClmmV2                               SwapRaydiumClmmV2Tuple
-	StakeDexPrefundWithdrawStakeAndDepositStake SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple
-	Clone                                       SwapCloneTuple
-	SanctumS                                    SwapSanctumSTuple
-	SanctumSAddLiquidity                        SwapSanctumSAddLiquidityTuple
-	SanctumSRemoveLiquidity                     SwapSanctumSRemoveLiquidityTuple
-	RaydiumCP                                   SwapRaydiumCPTuple
-	WhirlpoolSwapV2                             SwapWhirlpoolSwapV2Tuple
-	OneIntro                                    SwapOneIntroTuple
-	PumpdotfunWrappedBuy                        SwapPumpdotfunWrappedBuyTuple
-	PumpdotfunWrappedSell                       SwapPumpdotfunWrappedSellTuple
-	PerpsV2                                     SwapPerpsV2Tuple
-	PerpsV2AddLiquidity                         SwapPerpsV2AddLiquidityTuple
-	PerpsV2RemoveLiquidity                      SwapPerpsV2RemoveLiquidityTuple
-	MoonshotWrappedBuy                          SwapMoonshotWrappedBuyTuple
-	MoonshotWrappedSell                         SwapMoonshotWrappedSellTuple
-	StabbleStableSwap                           SwapStabbleStableSwapTuple
-	StabbleWeightedSwap                         SwapStabbleWeightedSwapTuple
-	Obric                                       SwapObricTuple
-	FoxBuyFromEstimatedCost                     SwapFoxBuyFromEstimatedCostTuple
-	FoxClaimPartial                             SwapFoxClaimPartialTuple
-	SolFi                                       SwapSolFiTuple
-	SolayerDelegateNoInit                       SwapSolayerDelegateNoInitTuple
-	SolayerUndelegateNoInit                     SwapSolayerUndelegateNoInitTuple
-	TokenMill                                   SwapTokenMillTuple
-	DaosFunBuy                                  SwapDaosFunBuyTuple
-	DaosFunSell                                 SwapDaosFunSellTuple
-	ZeroFi                                      SwapZeroFiTuple
-	StakeDexWithdrawWrappedSol                  SwapStakeDexWithdrawWrappedSolTuple
-	VirtualsBuy                                 SwapVirtualsBuyTuple
-	VirtualsSell                                SwapVirtualsSellTuple
-	Perena                                      SwapPerenaTuple
-	PumpdotfunAmmBuy                            SwapPumpdotfunAmmBuyTuple
-	PumpdotfunAmmSell                           SwapPumpdotfunAmmSellTuple
-	Gamma                                       SwapGammaTuple
-	MeteoraDlmmSwapV2                           SwapMeteoraDlmmSwapV2Tuple
+	Enum                                                ag_binary.BorshEnum `borsh_enum:"true"`
+	Saber                                               SwapSaberTuple
+	SaberAddDecimalsDeposit                             SwapSaberAddDecimalsDepositTuple
+	SaberAddDecimalsWithdraw                            SwapSaberAddDecimalsWithdrawTuple
+	TokenSwap                                           SwapTokenSwapTuple
+	Sencha                                              SwapSenchaTuple
+	Step                                                SwapStepTuple
+	Cropper                                             SwapCropperTuple
+	Raydium                                             SwapRaydiumTuple
+	Crema                                               SwapCremaTuple
+	Lifinity                                            SwapLifinityTuple
+	Mercurial                                           SwapMercurialTuple
+	Cykura                                              SwapCykuraTuple
+	Serum                                               SwapSerumTuple
+	MarinadeDeposit                                     SwapMarinadeDepositTuple
+	MarinadeUnstake                                     SwapMarinadeUnstakeTuple
+	Aldrin                                              SwapAldrinTuple
+	AldrinV2                                            SwapAldrinV2Tuple
+	Whirlpool                                           SwapWhirlpoolTuple
+	Invariant                                           SwapInvariantTuple
+	Meteora                                             SwapMeteoraTuple
+	GooseFX                                             SwapGooseFXTuple
+	DeltaFi                                             SwapDeltaFiTuple
+	Balansol                                            SwapBalansolTuple
+	MarcoPolo                                           SwapMarcoPoloTuple
+	Dradex                                              SwapDradexTuple
+	LifinityV2                                          SwapLifinityV2Tuple
+	RaydiumClmm                                         SwapRaydiumClmmTuple
+	Openbook                                            SwapOpenbookTuple
+	Phoenix                                             SwapPhoenixTuple
+	Symmetry                                            SwapSymmetryTuple
+	TokenSwapV2                                         SwapTokenSwapV2Tuple
+	HeliumTreasuryManagementRedeemV0                    SwapHeliumTreasuryManagementRedeemV0Tuple
+	StakeDexStakeWrappedSol                             SwapStakeDexStakeWrappedSolTuple
+	StakeDexSwapViaStake                                SwapStakeDexSwapViaStakeTuple
+	GooseFXV2                                           SwapGooseFXV2Tuple
+	Perps                                               SwapPerpsTuple
+	PerpsAddLiquidity                                   SwapPerpsAddLiquidityTuple
+	PerpsRemoveLiquidity                                SwapPerpsRemoveLiquidityTuple
+	MeteoraDlmm                                         SwapMeteoraDlmmTuple
+	OpenBookV2                                          SwapOpenBookV2Tuple
+	RaydiumClmmV2                                       SwapRaydiumClmmV2Tuple
+	StakeDexPrefundWithdrawStakeAndDepositStake         SwapStakeDexPrefundWithdrawStakeAndDepositStakeTuple
+	Clone                                               SwapCloneTuple
+	SanctumS                                            SwapSanctumSTuple
+	SanctumSAddLiquidity                                SwapSanctumSAddLiquidityTuple
+	SanctumSRemoveLiquidity                             SwapSanctumSRemoveLiquidityTuple
+	RaydiumCP                                           SwapRaydiumCPTuple
+	WhirlpoolSwapV2                                     SwapWhirlpoolSwapV2Tuple
+	OneIntro                                            SwapOneIntroTuple
+	PumpWrappedBuy                                      SwapPumpWrappedBuyTuple
+	PumpWrappedSell                                     SwapPumpWrappedSellTuple
+	PerpsV2                                             SwapPerpsV2Tuple
+	PerpsV2AddLiquidity                                 SwapPerpsV2AddLiquidityTuple
+	PerpsV2RemoveLiquidity                              SwapPerpsV2RemoveLiquidityTuple
+	MoonshotWrappedBuy                                  SwapMoonshotWrappedBuyTuple
+	MoonshotWrappedSell                                 SwapMoonshotWrappedSellTuple
+	StabbleStableSwap                                   SwapStabbleStableSwapTuple
+	StabbleWeightedSwap                                 SwapStabbleWeightedSwapTuple
+	Obric                                               SwapObricTuple
+	FoxBuyFromEstimatedCost                             SwapFoxBuyFromEstimatedCostTuple
+	FoxClaimPartial                                     SwapFoxClaimPartialTuple
+	SolFi                                               SwapSolFiTuple
+	SolayerDelegateNoInit                               SwapSolayerDelegateNoInitTuple
+	SolayerUndelegateNoInit                             SwapSolayerUndelegateNoInitTuple
+	TokenMill                                           SwapTokenMillTuple
+	DaosFunBuy                                          SwapDaosFunBuyTuple
+	DaosFunSell                                         SwapDaosFunSellTuple
+	ZeroFi                                              SwapZeroFiTuple
+	StakeDexWithdrawWrappedSol                          SwapStakeDexWithdrawWrappedSolTuple
+	VirtualsBuy                                         SwapVirtualsBuyTuple
+	VirtualsSell                                        SwapVirtualsSellTuple
+	Perena                                              SwapPerenaTuple
+	PumpSwapBuy                                         SwapPumpSwapBuyTuple
+	PumpSwapSell                                        SwapPumpSwapSellTuple
+	Gamma                                               SwapGammaTuple
+	MeteoraDlmmSwapV2                                   SwapMeteoraDlmmSwapV2Tuple
+	Woofi                                               SwapWoofiTuple
+	MeteoraDammV2                                       SwapMeteoraDammV2Tuple
+	MeteoraDynamicBondingCurveSwap                      SwapMeteoraDynamicBondingCurveSwapTuple
+	StabbleStableSwapV2                                 SwapStabbleStableSwapV2Tuple
+	StabbleWeightedSwapV2                               SwapStabbleWeightedSwapV2Tuple
+	RaydiumLaunchlabBuy                                 SwapRaydiumLaunchlabBuyTuple
+	RaydiumLaunchlabSell                                SwapRaydiumLaunchlabSellTuple
+	BoopdotfunWrappedBuy                                SwapBoopdotfunWrappedBuyTuple
+	BoopdotfunWrappedSell                               SwapBoopdotfunWrappedSellTuple
+	Plasma                                              SwapPlasmaTuple
+	GoonFi                                              SwapGoonFiTuple
+	HumidiFi                                            SwapHumidiFiTuple
+	MeteoraDynamicBondingCurveSwapWithRemainingAccounts SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple
+	TesseraV                                            SwapTesseraVTuple
+	PumpWrappedBuyV2                                    SwapPumpWrappedBuyV2Tuple
+	PumpWrappedSellV2                                   SwapPumpWrappedSellV2Tuple
+	PumpSwapBuyV2                                       SwapPumpSwapBuyV2Tuple
+	PumpSwapSellV2                                      SwapPumpSwapSellV2Tuple
+	Heaven                                              SwapHeavenTuple
+	SolFiV2                                             SwapSolFiV2Tuple
+	Aquifer                                             SwapAquiferTuple
+	PumpWrappedBuyV3                                    SwapPumpWrappedBuyV3Tuple
+	PumpWrappedSellV3                                   SwapPumpWrappedSellV3Tuple
+	PumpSwapBuyV3                                       SwapPumpSwapBuyV3Tuple
+	PumpSwapSellV3                                      SwapPumpSwapSellV3Tuple
+	JupiterLendDeposit                                  SwapJupiterLendDepositTuple
+	JupiterLendRedeem                                   SwapJupiterLendRedeemTuple
+	DefiTuna                                            SwapDefiTunaTuple
+	AlphaQ                                              SwapAlphaQTuple
+	RaydiumV2                                           SwapRaydiumV2Tuple
+	SarosDlmm                                           SwapSarosDlmmTuple
+	Futarchy                                            SwapFutarchyTuple
+	MeteoraDammV2WithRemainingAccounts                  SwapMeteoraDammV2WithRemainingAccountsTuple
+	Obsidian                                            SwapObsidianTuple
+	WhaleStreet                                         SwapWhaleStreetTuple
+	DynamicV1                                           SwapDynamicV1Tuple
+	PumpWrappedBuyV4                                    SwapPumpWrappedBuyV4Tuple
+	PumpWrappedSellV4                                   SwapPumpWrappedSellV4Tuple
 }
 
-type SwapSaberTuple struct{}
+type SwapSaberTuple uint8
 
 func (obj SwapSaberTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -719,7 +1038,7 @@ func (obj *SwapSaberTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSaberTuple) isSwap() {}
 
-type SwapSaberAddDecimalsDepositTuple struct{}
+type SwapSaberAddDecimalsDepositTuple uint8
 
 func (obj SwapSaberAddDecimalsDepositTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -731,7 +1050,7 @@ func (obj *SwapSaberAddDecimalsDepositTuple) UnmarshalWithDecoder(decoder *ag_bi
 
 func (_ SwapSaberAddDecimalsDepositTuple) isSwap() {}
 
-type SwapSaberAddDecimalsWithdrawTuple struct{}
+type SwapSaberAddDecimalsWithdrawTuple uint8
 
 func (obj SwapSaberAddDecimalsWithdrawTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -743,7 +1062,7 @@ func (obj *SwapSaberAddDecimalsWithdrawTuple) UnmarshalWithDecoder(decoder *ag_b
 
 func (_ SwapSaberAddDecimalsWithdrawTuple) isSwap() {}
 
-type SwapTokenSwapTuple struct{}
+type SwapTokenSwapTuple uint8
 
 func (obj SwapTokenSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -755,7 +1074,7 @@ func (obj *SwapTokenSwapTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapTokenSwapTuple) isSwap() {}
 
-type SwapSenchaTuple struct{}
+type SwapSenchaTuple uint8
 
 func (obj SwapSenchaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -767,7 +1086,7 @@ func (obj *SwapSenchaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapSenchaTuple) isSwap() {}
 
-type SwapStepTuple struct{}
+type SwapStepTuple uint8
 
 func (obj SwapStepTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -779,7 +1098,7 @@ func (obj *SwapStepTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err 
 
 func (_ SwapStepTuple) isSwap() {}
 
-type SwapCropperTuple struct{}
+type SwapCropperTuple uint8
 
 func (obj SwapCropperTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -791,7 +1110,7 @@ func (obj *SwapCropperTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapCropperTuple) isSwap() {}
 
-type SwapRaydiumTuple struct{}
+type SwapRaydiumTuple uint8
 
 func (obj SwapRaydiumTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -827,7 +1146,7 @@ func (obj *SwapCremaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapCremaTuple) isSwap() {}
 
-type SwapLifinityTuple struct{}
+type SwapLifinityTuple uint8
 
 func (obj SwapLifinityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -839,7 +1158,7 @@ func (obj *SwapLifinityTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapLifinityTuple) isSwap() {}
 
-type SwapMercurialTuple struct{}
+type SwapMercurialTuple uint8
 
 func (obj SwapMercurialTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -851,7 +1170,7 @@ func (obj *SwapMercurialTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapMercurialTuple) isSwap() {}
 
-type SwapCykuraTuple struct{}
+type SwapCykuraTuple uint8
 
 func (obj SwapCykuraTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -887,7 +1206,7 @@ func (obj *SwapSerumTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSerumTuple) isSwap() {}
 
-type SwapMarinadeDepositTuple struct{}
+type SwapMarinadeDepositTuple uint8
 
 func (obj SwapMarinadeDepositTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -899,7 +1218,7 @@ func (obj *SwapMarinadeDepositTuple) UnmarshalWithDecoder(decoder *ag_binary.Dec
 
 func (_ SwapMarinadeDepositTuple) isSwap() {}
 
-type SwapMarinadeUnstakeTuple struct{}
+type SwapMarinadeUnstakeTuple uint8
 
 func (obj SwapMarinadeUnstakeTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1007,7 +1326,7 @@ func (obj *SwapInvariantTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapInvariantTuple) isSwap() {}
 
-type SwapMeteoraTuple struct{}
+type SwapMeteoraTuple uint8
 
 func (obj SwapMeteoraTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1019,7 +1338,7 @@ func (obj *SwapMeteoraTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapMeteoraTuple) isSwap() {}
 
-type SwapGooseFXTuple struct{}
+type SwapGooseFXTuple uint8
 
 func (obj SwapGooseFXTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1055,7 +1374,7 @@ func (obj *SwapDeltaFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapDeltaFiTuple) isSwap() {}
 
-type SwapBalansolTuple struct{}
+type SwapBalansolTuple uint8
 
 func (obj SwapBalansolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1115,7 +1434,7 @@ func (obj *SwapDradexTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapDradexTuple) isSwap() {}
 
-type SwapLifinityV2Tuple struct{}
+type SwapLifinityV2Tuple uint8
 
 func (obj SwapLifinityV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1127,7 +1446,7 @@ func (obj *SwapLifinityV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapLifinityV2Tuple) isSwap() {}
 
-type SwapRaydiumClmmTuple struct{}
+type SwapRaydiumClmmTuple uint8
 
 func (obj SwapRaydiumClmmTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1222,7 +1541,7 @@ func (obj *SwapSymmetryTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapSymmetryTuple) isSwap() {}
 
-type SwapTokenSwapV2Tuple struct{}
+type SwapTokenSwapV2Tuple uint8
 
 func (obj SwapTokenSwapV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1234,7 +1553,7 @@ func (obj *SwapTokenSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapTokenSwapV2Tuple) isSwap() {}
 
-type SwapHeliumTreasuryManagementRedeemV0Tuple struct{}
+type SwapHeliumTreasuryManagementRedeemV0Tuple uint8
 
 func (obj SwapHeliumTreasuryManagementRedeemV0Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1246,7 +1565,7 @@ func (obj *SwapHeliumTreasuryManagementRedeemV0Tuple) UnmarshalWithDecoder(decod
 
 func (_ SwapHeliumTreasuryManagementRedeemV0Tuple) isSwap() {}
 
-type SwapStakeDexStakeWrappedSolTuple struct{}
+type SwapStakeDexStakeWrappedSolTuple uint8
 
 func (obj SwapStakeDexStakeWrappedSolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1282,7 +1601,7 @@ func (obj *SwapStakeDexSwapViaStakeTuple) UnmarshalWithDecoder(decoder *ag_binar
 
 func (_ SwapStakeDexSwapViaStakeTuple) isSwap() {}
 
-type SwapGooseFXV2Tuple struct{}
+type SwapGooseFXV2Tuple uint8
 
 func (obj SwapGooseFXV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1294,7 +1613,7 @@ func (obj *SwapGooseFXV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapGooseFXV2Tuple) isSwap() {}
 
-type SwapPerpsTuple struct{}
+type SwapPerpsTuple uint8
 
 func (obj SwapPerpsTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1306,7 +1625,7 @@ func (obj *SwapPerpsTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapPerpsTuple) isSwap() {}
 
-type SwapPerpsAddLiquidityTuple struct{}
+type SwapPerpsAddLiquidityTuple uint8
 
 func (obj SwapPerpsAddLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1318,7 +1637,7 @@ func (obj *SwapPerpsAddLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapPerpsAddLiquidityTuple) isSwap() {}
 
-type SwapPerpsRemoveLiquidityTuple struct{}
+type SwapPerpsRemoveLiquidityTuple uint8
 
 func (obj SwapPerpsRemoveLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1330,7 +1649,7 @@ func (obj *SwapPerpsRemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binar
 
 func (_ SwapPerpsRemoveLiquidityTuple) isSwap() {}
 
-type SwapMeteoraDlmmTuple struct{}
+type SwapMeteoraDlmmTuple uint8
 
 func (obj SwapMeteoraDlmmTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1366,7 +1685,7 @@ func (obj *SwapOpenBookV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapOpenBookV2Tuple) isSwap() {}
 
-type SwapRaydiumClmmV2Tuple struct{}
+type SwapRaydiumClmmV2Tuple uint8
 
 func (obj SwapRaydiumClmmV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1575,7 +1894,7 @@ func (obj *SwapSanctumSRemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_bi
 
 func (_ SwapSanctumSRemoveLiquidityTuple) isSwap() {}
 
-type SwapRaydiumCPTuple struct{}
+type SwapRaydiumCPTuple uint8
 
 func (obj SwapRaydiumCPTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1643,7 +1962,7 @@ func (obj *SwapWhirlpoolSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Dec
 
 func (_ SwapWhirlpoolSwapV2Tuple) isSwap() {}
 
-type SwapOneIntroTuple struct{}
+type SwapOneIntroTuple uint8
 
 func (obj SwapOneIntroTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1655,31 +1974,31 @@ func (obj *SwapOneIntroTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 
 func (_ SwapOneIntroTuple) isSwap() {}
 
-type SwapPumpdotfunWrappedBuyTuple struct{}
+type SwapPumpWrappedBuyTuple uint8
 
-func (obj SwapPumpdotfunWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SwapPumpWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
 
-func (obj *SwapPumpdotfunWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SwapPumpWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
-func (_ SwapPumpdotfunWrappedBuyTuple) isSwap() {}
+func (_ SwapPumpWrappedBuyTuple) isSwap() {}
 
-type SwapPumpdotfunWrappedSellTuple struct{}
+type SwapPumpWrappedSellTuple uint8
 
-func (obj SwapPumpdotfunWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SwapPumpWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
 
-func (obj *SwapPumpdotfunWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SwapPumpWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
-func (_ SwapPumpdotfunWrappedSellTuple) isSwap() {}
+func (_ SwapPumpWrappedSellTuple) isSwap() {}
 
-type SwapPerpsV2Tuple struct{}
+type SwapPerpsV2Tuple uint8
 
 func (obj SwapPerpsV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1691,7 +2010,7 @@ func (obj *SwapPerpsV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (e
 
 func (_ SwapPerpsV2Tuple) isSwap() {}
 
-type SwapPerpsV2AddLiquidityTuple struct{}
+type SwapPerpsV2AddLiquidityTuple uint8
 
 func (obj SwapPerpsV2AddLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1703,7 +2022,7 @@ func (obj *SwapPerpsV2AddLiquidityTuple) UnmarshalWithDecoder(decoder *ag_binary
 
 func (_ SwapPerpsV2AddLiquidityTuple) isSwap() {}
 
-type SwapPerpsV2RemoveLiquidityTuple struct{}
+type SwapPerpsV2RemoveLiquidityTuple uint8
 
 func (obj SwapPerpsV2RemoveLiquidityTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1715,7 +2034,7 @@ func (obj *SwapPerpsV2RemoveLiquidityTuple) UnmarshalWithDecoder(decoder *ag_bin
 
 func (_ SwapPerpsV2RemoveLiquidityTuple) isSwap() {}
 
-type SwapMoonshotWrappedBuyTuple struct{}
+type SwapMoonshotWrappedBuyTuple uint8
 
 func (obj SwapMoonshotWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1727,7 +2046,7 @@ func (obj *SwapMoonshotWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.
 
 func (_ SwapMoonshotWrappedBuyTuple) isSwap() {}
 
-type SwapMoonshotWrappedSellTuple struct{}
+type SwapMoonshotWrappedSellTuple uint8
 
 func (obj SwapMoonshotWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1739,7 +2058,7 @@ func (obj *SwapMoonshotWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_binary
 
 func (_ SwapMoonshotWrappedSellTuple) isSwap() {}
 
-type SwapStabbleStableSwapTuple struct{}
+type SwapStabbleStableSwapTuple uint8
 
 func (obj SwapStabbleStableSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1751,7 +2070,7 @@ func (obj *SwapStabbleStableSwapTuple) UnmarshalWithDecoder(decoder *ag_binary.D
 
 func (_ SwapStabbleStableSwapTuple) isSwap() {}
 
-type SwapStabbleWeightedSwapTuple struct{}
+type SwapStabbleWeightedSwapTuple uint8
 
 func (obj SwapStabbleWeightedSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1787,7 +2106,7 @@ func (obj *SwapObricTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapObricTuple) isSwap() {}
 
-type SwapFoxBuyFromEstimatedCostTuple struct{}
+type SwapFoxBuyFromEstimatedCostTuple uint8
 
 func (obj SwapFoxBuyFromEstimatedCostTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1847,7 +2166,7 @@ func (obj *SwapSolFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 
 func (_ SwapSolFiTuple) isSwap() {}
 
-type SwapSolayerDelegateNoInitTuple struct{}
+type SwapSolayerDelegateNoInitTuple uint8
 
 func (obj SwapSolayerDelegateNoInitTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1859,7 +2178,7 @@ func (obj *SwapSolayerDelegateNoInitTuple) UnmarshalWithDecoder(decoder *ag_bina
 
 func (_ SwapSolayerDelegateNoInitTuple) isSwap() {}
 
-type SwapSolayerUndelegateNoInitTuple struct{}
+type SwapSolayerUndelegateNoInitTuple uint8
 
 func (obj SwapSolayerUndelegateNoInitTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1895,7 +2214,7 @@ func (obj *SwapTokenMillTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 func (_ SwapTokenMillTuple) isSwap() {}
 
-type SwapDaosFunBuyTuple struct{}
+type SwapDaosFunBuyTuple uint8
 
 func (obj SwapDaosFunBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1907,7 +2226,7 @@ func (obj *SwapDaosFunBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder)
 
 func (_ SwapDaosFunBuyTuple) isSwap() {}
 
-type SwapDaosFunSellTuple struct{}
+type SwapDaosFunSellTuple uint8
 
 func (obj SwapDaosFunSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1919,7 +2238,7 @@ func (obj *SwapDaosFunSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapDaosFunSellTuple) isSwap() {}
 
-type SwapZeroFiTuple struct{}
+type SwapZeroFiTuple uint8
 
 func (obj SwapZeroFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1931,7 +2250,7 @@ func (obj *SwapZeroFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapZeroFiTuple) isSwap() {}
 
-type SwapStakeDexWithdrawWrappedSolTuple struct{}
+type SwapStakeDexWithdrawWrappedSolTuple uint8
 
 func (obj SwapStakeDexWithdrawWrappedSolTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1943,7 +2262,7 @@ func (obj *SwapStakeDexWithdrawWrappedSolTuple) UnmarshalWithDecoder(decoder *ag
 
 func (_ SwapStakeDexWithdrawWrappedSolTuple) isSwap() {}
 
-type SwapVirtualsBuyTuple struct{}
+type SwapVirtualsBuyTuple uint8
 
 func (obj SwapVirtualsBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -1955,7 +2274,7 @@ func (obj *SwapVirtualsBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder
 
 func (_ SwapVirtualsBuyTuple) isSwap() {}
 
-type SwapVirtualsSellTuple struct{}
+type SwapVirtualsSellTuple uint8
 
 func (obj SwapVirtualsSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -2002,31 +2321,31 @@ func (obj *SwapPerenaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (er
 
 func (_ SwapPerenaTuple) isSwap() {}
 
-type SwapPumpdotfunAmmBuyTuple struct{}
+type SwapPumpSwapBuyTuple uint8
 
-func (obj SwapPumpdotfunAmmBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SwapPumpSwapBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
 
-func (obj *SwapPumpdotfunAmmBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SwapPumpSwapBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
-func (_ SwapPumpdotfunAmmBuyTuple) isSwap() {}
+func (_ SwapPumpSwapBuyTuple) isSwap() {}
 
-type SwapPumpdotfunAmmSellTuple struct{}
+type SwapPumpSwapSellTuple uint8
 
-func (obj SwapPumpdotfunAmmSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SwapPumpSwapSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
 
-func (obj *SwapPumpdotfunAmmSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SwapPumpSwapSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
-func (_ SwapPumpdotfunAmmSellTuple) isSwap() {}
+func (_ SwapPumpSwapSellTuple) isSwap() {}
 
-type SwapGammaTuple struct{}
+type SwapGammaTuple uint8
 
 func (obj SwapGammaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
@@ -2061,6 +2380,787 @@ func (obj *SwapMeteoraDlmmSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.D
 }
 
 func (_ SwapMeteoraDlmmSwapV2Tuple) isSwap() {}
+
+type SwapWoofiTuple uint8
+
+func (obj SwapWoofiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapWoofiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapWoofiTuple) isSwap() {}
+
+type SwapMeteoraDammV2Tuple uint8
+
+func (obj SwapMeteoraDammV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapMeteoraDammV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapMeteoraDammV2Tuple) isSwap() {}
+
+type SwapMeteoraDynamicBondingCurveSwapTuple uint8
+
+func (obj SwapMeteoraDynamicBondingCurveSwapTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapMeteoraDynamicBondingCurveSwapTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapMeteoraDynamicBondingCurveSwapTuple) isSwap() {}
+
+type SwapStabbleStableSwapV2Tuple uint8
+
+func (obj SwapStabbleStableSwapV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapStabbleStableSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapStabbleStableSwapV2Tuple) isSwap() {}
+
+type SwapStabbleWeightedSwapV2Tuple uint8
+
+func (obj SwapStabbleWeightedSwapV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapStabbleWeightedSwapV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapStabbleWeightedSwapV2Tuple) isSwap() {}
+
+type SwapRaydiumLaunchlabBuyTuple struct {
+	ShareFeeRate uint64
+}
+
+func (obj SwapRaydiumLaunchlabBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `ShareFeeRate` param:
+	err = encoder.Encode(obj.ShareFeeRate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapRaydiumLaunchlabBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `ShareFeeRate`:
+	err = decoder.Decode(&obj.ShareFeeRate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapRaydiumLaunchlabBuyTuple) isSwap() {}
+
+type SwapRaydiumLaunchlabSellTuple struct {
+	ShareFeeRate uint64
+}
+
+func (obj SwapRaydiumLaunchlabSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `ShareFeeRate` param:
+	err = encoder.Encode(obj.ShareFeeRate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapRaydiumLaunchlabSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `ShareFeeRate`:
+	err = decoder.Decode(&obj.ShareFeeRate)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapRaydiumLaunchlabSellTuple) isSwap() {}
+
+type SwapBoopdotfunWrappedBuyTuple uint8
+
+func (obj SwapBoopdotfunWrappedBuyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapBoopdotfunWrappedBuyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapBoopdotfunWrappedBuyTuple) isSwap() {}
+
+type SwapBoopdotfunWrappedSellTuple uint8
+
+func (obj SwapBoopdotfunWrappedSellTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapBoopdotfunWrappedSellTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapBoopdotfunWrappedSellTuple) isSwap() {}
+
+type SwapPlasmaTuple struct {
+	Side Side
+}
+
+func (obj SwapPlasmaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapPlasmaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapPlasmaTuple) isSwap() {}
+
+type SwapGoonFiTuple struct {
+	IsBid         bool
+	BlacklistBump uint8
+}
+
+func (obj SwapGoonFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `IsBid` param:
+	err = encoder.Encode(obj.IsBid)
+	if err != nil {
+		return err
+	}
+	// Serialize `BlacklistBump` param:
+	err = encoder.Encode(obj.BlacklistBump)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapGoonFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `IsBid`:
+	err = decoder.Decode(&obj.IsBid)
+	if err != nil {
+		return err
+	}
+	// Deserialize `BlacklistBump`:
+	err = decoder.Decode(&obj.BlacklistBump)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapGoonFiTuple) isSwap() {}
+
+type SwapHumidiFiTuple struct {
+	SwapId        uint64
+	IsBaseToQuote bool
+}
+
+func (obj SwapHumidiFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapId` param:
+	err = encoder.Encode(obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Serialize `IsBaseToQuote` param:
+	err = encoder.Encode(obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapHumidiFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapId`:
+	err = decoder.Decode(&obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Deserialize `IsBaseToQuote`:
+	err = decoder.Decode(&obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapHumidiFiTuple) isSwap() {}
+
+type SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple uint8
+
+func (obj SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapMeteoraDynamicBondingCurveSwapWithRemainingAccountsTuple) isSwap() {}
+
+type SwapTesseraVTuple struct {
+	Side Side
+}
+
+func (obj SwapTesseraVTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapTesseraVTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapTesseraVTuple) isSwap() {}
+
+type SwapPumpWrappedBuyV2Tuple uint8
+
+func (obj SwapPumpWrappedBuyV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedBuyV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedBuyV2Tuple) isSwap() {}
+
+type SwapPumpWrappedSellV2Tuple uint8
+
+func (obj SwapPumpWrappedSellV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedSellV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedSellV2Tuple) isSwap() {}
+
+type SwapPumpSwapBuyV2Tuple uint8
+
+func (obj SwapPumpSwapBuyV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpSwapBuyV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpSwapBuyV2Tuple) isSwap() {}
+
+type SwapPumpSwapSellV2Tuple uint8
+
+func (obj SwapPumpSwapSellV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpSwapSellV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpSwapSellV2Tuple) isSwap() {}
+
+type SwapHeavenTuple struct {
+	AToB bool
+}
+
+func (obj SwapHeavenTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `AToB` param:
+	err = encoder.Encode(obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapHeavenTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `AToB`:
+	err = decoder.Decode(&obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapHeavenTuple) isSwap() {}
+
+type SwapSolFiV2Tuple struct {
+	IsQuoteToBase bool
+}
+
+func (obj SwapSolFiV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `IsQuoteToBase` param:
+	err = encoder.Encode(obj.IsQuoteToBase)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapSolFiV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `IsQuoteToBase`:
+	err = decoder.Decode(&obj.IsQuoteToBase)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapSolFiV2Tuple) isSwap() {}
+
+type SwapAquiferTuple uint8
+
+func (obj SwapAquiferTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapAquiferTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapAquiferTuple) isSwap() {}
+
+type SwapPumpWrappedBuyV3Tuple uint8
+
+func (obj SwapPumpWrappedBuyV3Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedBuyV3Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedBuyV3Tuple) isSwap() {}
+
+type SwapPumpWrappedSellV3Tuple uint8
+
+func (obj SwapPumpWrappedSellV3Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedSellV3Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedSellV3Tuple) isSwap() {}
+
+type SwapPumpSwapBuyV3Tuple uint8
+
+func (obj SwapPumpSwapBuyV3Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpSwapBuyV3Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpSwapBuyV3Tuple) isSwap() {}
+
+type SwapPumpSwapSellV3Tuple uint8
+
+func (obj SwapPumpSwapSellV3Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpSwapSellV3Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpSwapSellV3Tuple) isSwap() {}
+
+type SwapJupiterLendDepositTuple uint8
+
+func (obj SwapJupiterLendDepositTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapJupiterLendDepositTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapJupiterLendDepositTuple) isSwap() {}
+
+type SwapJupiterLendRedeemTuple uint8
+
+func (obj SwapJupiterLendRedeemTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapJupiterLendRedeemTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapJupiterLendRedeemTuple) isSwap() {}
+
+type SwapDefiTunaTuple struct {
+	AToB                  bool
+	RemainingAccountsInfo *RemainingAccountsInfo `bin:"optional"`
+}
+
+func (obj SwapDefiTunaTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `AToB` param:
+	err = encoder.Encode(obj.AToB)
+	if err != nil {
+		return err
+	}
+	// Serialize `RemainingAccountsInfo` param (optional):
+	{
+		if obj.RemainingAccountsInfo == nil {
+			err = encoder.WriteBool(false)
+			if err != nil {
+				return err
+			}
+		} else {
+			err = encoder.WriteBool(true)
+			if err != nil {
+				return err
+			}
+			err = encoder.Encode(obj.RemainingAccountsInfo)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (obj *SwapDefiTunaTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `AToB`:
+	err = decoder.Decode(&obj.AToB)
+	if err != nil {
+		return err
+	}
+	// Deserialize `RemainingAccountsInfo` (optional):
+	{
+		ok, err := decoder.ReadBool()
+		if err != nil {
+			return err
+		}
+		if ok {
+			err = decoder.Decode(&obj.RemainingAccountsInfo)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+func (_ SwapDefiTunaTuple) isSwap() {}
+
+type SwapAlphaQTuple struct {
+	AToB bool
+}
+
+func (obj SwapAlphaQTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `AToB` param:
+	err = encoder.Encode(obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapAlphaQTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `AToB`:
+	err = decoder.Decode(&obj.AToB)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapAlphaQTuple) isSwap() {}
+
+type SwapRaydiumV2Tuple uint8
+
+func (obj SwapRaydiumV2Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapRaydiumV2Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapRaydiumV2Tuple) isSwap() {}
+
+type SwapSarosDlmmTuple struct {
+	SwapForY bool
+}
+
+func (obj SwapSarosDlmmTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapForY` param:
+	err = encoder.Encode(obj.SwapForY)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapSarosDlmmTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapForY`:
+	err = decoder.Decode(&obj.SwapForY)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapSarosDlmmTuple) isSwap() {}
+
+type SwapFutarchyTuple struct {
+	Side Side
+}
+
+func (obj SwapFutarchyTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapFutarchyTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapFutarchyTuple) isSwap() {}
+
+type SwapMeteoraDammV2WithRemainingAccountsTuple uint8
+
+func (obj SwapMeteoraDammV2WithRemainingAccountsTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapMeteoraDammV2WithRemainingAccountsTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapMeteoraDammV2WithRemainingAccountsTuple) isSwap() {}
+
+type SwapObsidianTuple uint8
+
+func (obj SwapObsidianTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapObsidianTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapObsidianTuple) isSwap() {}
+
+type SwapWhaleStreetTuple struct {
+	Side Side
+}
+
+func (obj SwapWhaleStreetTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapWhaleStreetTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapWhaleStreetTuple) isSwap() {}
+
+type SwapDynamicV1Tuple struct {
+	CandidateSwaps []CandidateSwap
+}
+
+func (obj SwapDynamicV1Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `CandidateSwaps` param:
+	err = encoder.Encode(obj.CandidateSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapDynamicV1Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `CandidateSwaps`:
+	err = decoder.Decode(&obj.CandidateSwaps)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ SwapDynamicV1Tuple) isSwap() {}
+
+type SwapPumpWrappedBuyV4Tuple uint8
+
+func (obj SwapPumpWrappedBuyV4Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedBuyV4Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedBuyV4Tuple) isSwap() {}
+
+type SwapPumpWrappedSellV4Tuple uint8
+
+func (obj SwapPumpWrappedSellV4Tuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	return nil
+}
+
+func (obj *SwapPumpWrappedSellV4Tuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	return nil
+}
+
+func (_ SwapPumpWrappedSellV4Tuple) isSwap() {}
+
+type CandidateSwap struct {
+	Value candidateSwap
+}
+
+func (obj CandidateSwap) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	tmp := candidateSwapContainer{}
+	switch realvalue := obj.Value.(type) {
+	case CandidateSwapHumidiFiTuple:
+		tmp.Enum = 0
+		tmp.HumidiFi = realvalue
+	case CandidateSwapTesseraVTuple:
+		tmp.Enum = 1
+		tmp.TesseraV = realvalue
+	}
+	return encoder.Encode(tmp)
+}
+
+func (obj *CandidateSwap) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	tmp := new(candidateSwapContainer)
+	err = decoder.Decode(tmp)
+	if err != nil {
+		return err
+	}
+	switch tmp.Enum {
+	case 0:
+		obj.Value = tmp.HumidiFi
+	case 1:
+		obj.Value = tmp.TesseraV
+	default:
+		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
+	}
+	return nil
+}
+
+type candidateSwap interface {
+	isCandidateSwap()
+}
+
+type candidateSwapContainer struct {
+	Enum     ag_binary.BorshEnum `borsh_enum:"true"`
+	HumidiFi CandidateSwapHumidiFiTuple
+	TesseraV CandidateSwapTesseraVTuple
+}
+
+type CandidateSwapHumidiFiTuple struct {
+	SwapId        uint64
+	IsBaseToQuote bool
+}
+
+func (obj CandidateSwapHumidiFiTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapId` param:
+	err = encoder.Encode(obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Serialize `IsBaseToQuote` param:
+	err = encoder.Encode(obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapHumidiFiTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapId`:
+	err = decoder.Decode(&obj.SwapId)
+	if err != nil {
+		return err
+	}
+	// Deserialize `IsBaseToQuote`:
+	err = decoder.Decode(&obj.IsBaseToQuote)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ CandidateSwapHumidiFiTuple) isCandidateSwap() {}
+
+type CandidateSwapTesseraVTuple struct {
+	Side Side
+}
+
+func (obj CandidateSwapTesseraVTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Side` param:
+	err = encoder.Encode(obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapTesseraVTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Side`:
+	err = decoder.Decode(&obj.Side)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ CandidateSwapTesseraVTuple) isCandidateSwap() {}
 
 type SwapEvent struct {
 	Amm          ag_solanago.PublicKey
@@ -2128,6 +3228,83 @@ func (obj *SwapEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err erro
 	return nil
 }
 
+type SwapEventV2 struct {
+	InputMint    ag_solanago.PublicKey
+	InputAmount  uint64
+	OutputMint   ag_solanago.PublicKey
+	OutputAmount uint64
+}
+
+func (obj SwapEventV2) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `InputMint` param:
+	err = encoder.Encode(obj.InputMint)
+	if err != nil {
+		return err
+	}
+	// Serialize `InputAmount` param:
+	err = encoder.Encode(obj.InputAmount)
+	if err != nil {
+		return err
+	}
+	// Serialize `OutputMint` param:
+	err = encoder.Encode(obj.OutputMint)
+	if err != nil {
+		return err
+	}
+	// Serialize `OutputAmount` param:
+	err = encoder.Encode(obj.OutputAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapEventV2) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `InputMint`:
+	err = decoder.Decode(&obj.InputMint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `InputAmount`:
+	err = decoder.Decode(&obj.InputAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OutputMint`:
+	err = decoder.Decode(&obj.OutputMint)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OutputAmount`:
+	err = decoder.Decode(&obj.OutputAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type SwapsEvent struct {
+	SwapEvents []SwapEventV2
+}
+
+func (obj SwapsEvent) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `SwapEvents` param:
+	err = encoder.Encode(obj.SwapEvents)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapsEvent) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `SwapEvents`:
+	err = decoder.Decode(&obj.SwapEvents)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 type TokenLedger struct {
 	TokenAccount ag_solanago.PublicKey
 	Amount       uint64
@@ -2155,6 +3332,153 @@ func (obj *TokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err er
 	}
 	// Deserialize `Amount`:
 	err = decoder.Decode(&obj.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type BestSwapOutAmountViolation struct {
+	ExpectedOutAmount uint64
+	OutAmount         uint64
+}
+
+func (obj BestSwapOutAmountViolation) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `ExpectedOutAmount` param:
+	err = encoder.Encode(obj.ExpectedOutAmount)
+	if err != nil {
+		return err
+	}
+	// Serialize `OutAmount` param:
+	err = encoder.Encode(obj.OutAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *BestSwapOutAmountViolation) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `ExpectedOutAmount`:
+	err = decoder.Decode(&obj.ExpectedOutAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OutAmount`:
+	err = decoder.Decode(&obj.OutAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type CandidateSwapResult struct {
+	Value candidateSwapResult
+}
+
+func (obj CandidateSwapResult) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	tmp := candidateSwapResultContainer{}
+	switch realvalue := obj.Value.(type) {
+	case CandidateSwapResultOutAmountTuple:
+		tmp.Enum = 0
+		tmp.OutAmount = realvalue
+	case CandidateSwapResultProgramErrorTuple:
+		tmp.Enum = 1
+		tmp.ProgramError = realvalue
+	}
+	return encoder.Encode(tmp)
+}
+
+func (obj *CandidateSwapResult) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	tmp := new(candidateSwapResultContainer)
+	err = decoder.Decode(tmp)
+	if err != nil {
+		return err
+	}
+	switch tmp.Enum {
+	case 0:
+		obj.Value = tmp.OutAmount
+	case 1:
+		obj.Value = tmp.ProgramError
+	default:
+		return fmt.Errorf("unknown enum index: %v", tmp.Enum)
+	}
+	return nil
+}
+
+type candidateSwapResult interface {
+	isCandidateSwapResult()
+}
+
+type candidateSwapResultContainer struct {
+	Enum         ag_binary.BorshEnum `borsh_enum:"true"`
+	OutAmount    CandidateSwapResultOutAmountTuple
+	ProgramError CandidateSwapResultProgramErrorTuple
+}
+
+type CandidateSwapResultOutAmountTuple struct {
+	Elem0 uint64
+}
+
+func (obj CandidateSwapResultOutAmountTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Elem0` param:
+	err = encoder.Encode(obj.Elem0)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapResultOutAmountTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Elem0`:
+	err = decoder.Decode(&obj.Elem0)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ CandidateSwapResultOutAmountTuple) isCandidateSwapResult() {}
+
+type CandidateSwapResultProgramErrorTuple struct {
+	Elem0 uint64
+}
+
+func (obj CandidateSwapResultProgramErrorTuple) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Elem0` param:
+	err = encoder.Encode(obj.Elem0)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapResultProgramErrorTuple) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Elem0`:
+	err = decoder.Decode(&obj.Elem0)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (_ CandidateSwapResultProgramErrorTuple) isCandidateSwapResult() {}
+
+type CandidateSwapResults struct {
+	Results []CandidateSwapResult
+}
+
+func (obj CandidateSwapResults) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Serialize `Results` param:
+	err = encoder.Encode(obj.Results)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapResults) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Deserialize `Results`:
+	err = decoder.Decode(&obj.Results)
 	if err != nil {
 		return err
 	}

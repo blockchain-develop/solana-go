@@ -10,18 +10,25 @@ import (
 	"testing"
 )
 
-func TestEncodeDecode_CreateProgramOpenOrders(t *testing.T) {
+func TestEncodeDecode_SharedAccountsRouteV2(t *testing.T) {
 	fu := ag_gofuzz.New().NilChance(0)
 	for i := 0; i < 1; i++ {
-		t.Run("CreateProgramOpenOrders"+strconv.Itoa(i), func(t *testing.T) {
+		t.Run("SharedAccountsRouteV2"+strconv.Itoa(i), func(t *testing.T) {
 			{
-				params := new(CreateProgramOpenOrders)
+				params := new(SharedAccountsRouteV2Instruction)
 				fu.Fuzz(params)
 				params.AccountMetaSlice = nil
+				params.Id = nil
+				params.InAmount = nil
+				params.QuotedOutAmount = nil
+				params.SlippageBps = nil
+				params.PlatformFeeBps = nil
+				params.PositiveSlippageBps = nil
+				params.RoutePlan = nil
 				buf := new(bytes.Buffer)
 				err := encodeT(*params, buf)
 				ag_require.NoError(t, err)
-				got := new(CreateProgramOpenOrders)
+				got := new(SharedAccountsRouteV2Instruction)
 				err = decodeT(got, buf.Bytes())
 				got.AccountMetaSlice = nil
 				ag_require.NoError(t, err)

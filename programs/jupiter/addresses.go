@@ -6,8 +6,8 @@ import ag_solanago "github.com/gagliardetto/solana-go"
 
 var Addresses = map[string]ag_solanago.PublicKey{
 	"11111111111111111111111111111111":             ag_solanago.MustPublicKeyFromBase58("11111111111111111111111111111111"),
+	"7JQeyNK55fkUPUmEotupBFpiBGpgEQYLe8Ht1VdSfxcP": ag_solanago.MustPublicKeyFromBase58("7JQeyNK55fkUPUmEotupBFpiBGpgEQYLe8Ht1VdSfxcP"),
+	"9RAufBfjGQjDfrwxeyKmZWPADHSb8HcoqCdrmpqvCr1g": ag_solanago.MustPublicKeyFromBase58("9RAufBfjGQjDfrwxeyKmZWPADHSb8HcoqCdrmpqvCr1g"),
 	"ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL": ag_solanago.MustPublicKeyFromBase58("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"),
 	"D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf": ag_solanago.MustPublicKeyFromBase58("D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"),
-	"J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64": ag_solanago.MustPublicKeyFromBase58("J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"),
-	"SysvarRent111111111111111111111111111111111":  ag_solanago.MustPublicKeyFromBase58("SysvarRent111111111111111111111111111111111"),
 }

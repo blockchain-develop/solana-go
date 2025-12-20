@@ -15,7 +15,7 @@ func TestEncodeDecode_SharedAccountsRouteWithTokenLedger(t *testing.T) {
 	for i := 0; i < 1; i++ {
 		t.Run("SharedAccountsRouteWithTokenLedger"+strconv.Itoa(i), func(t *testing.T) {
 			{
-				params := new(SharedAccountsRouteWithTokenLedger)
+				params := new(SharedAccountsRouteWithTokenLedgerInstruction)
 				fu.Fuzz(params)
 				params.AccountMetaSlice = nil
 				params.Id = nil
@@ -26,7 +26,7 @@ func TestEncodeDecode_SharedAccountsRouteWithTokenLedger(t *testing.T) {
 				buf := new(bytes.Buffer)
 				err := encodeT(*params, buf)
 				ag_require.NoError(t, err)
-				got := new(SharedAccountsRouteWithTokenLedger)
+				got := new(SharedAccountsRouteWithTokenLedgerInstruction)
 				err = decodeT(got, buf.Bytes())
 				got.AccountMetaSlice = nil
 				ag_require.NoError(t, err)

@@ -111,6 +111,46 @@ var (
 		msg:  "Source mint and destination mint cannot the same",
 		name: "SourceAndDestinationMintCannotBeTheSame",
 	}
+	ErrInvalidMint = &customErrorDef{
+		code: 6019,
+		msg:  "Invalid mint",
+		name: "InvalidMint",
+	}
+	ErrInvalidProgramAuthority = &customErrorDef{
+		code: 6020,
+		msg:  "Invalid program authority",
+		name: "InvalidProgramAuthority",
+	}
+	ErrInvalidOutputTokenAccount = &customErrorDef{
+		code: 6021,
+		msg:  "Invalid output token account",
+		name: "InvalidOutputTokenAccount",
+	}
+	ErrInvalidFeeWallet = &customErrorDef{
+		code: 6022,
+		msg:  "Invalid fee wallet",
+		name: "InvalidFeeWallet",
+	}
+	ErrInvalidAuthority = &customErrorDef{
+		code: 6023,
+		msg:  "Invalid authority",
+		name: "InvalidAuthority",
+	}
+	ErrInsufficientFunds = &customErrorDef{
+		code: 6024,
+		msg:  "Insufficient funds",
+		name: "InsufficientFunds",
+	}
+	ErrInvalidTokenAccount = &customErrorDef{
+		code: 6025,
+		msg:  "Invalid token account",
+		name: "InvalidTokenAccount",
+	}
+	ErrBondingCurveAlreadyCompleted = &customErrorDef{
+		code: 6026,
+		msg:  "Bonding curve already completed",
+		name: "BondingCurveAlreadyCompleted",
+	}
 	Errors = map[int]CustomError{
 		6000: ErrEmptyRoute,
 		6001: ErrSlippageToleranceExceeded,
@@ -131,6 +171,14 @@ var (
 		6016: ErrSwapNotSupported,
 		6017: ErrExactOutAmountNotMatched,
 		6018: ErrSourceAndDestinationMintCannotBeTheSame,
+		6019: ErrInvalidMint,
+		6020: ErrInvalidProgramAuthority,
+		6021: ErrInvalidOutputTokenAccount,
+		6022: ErrInvalidFeeWallet,
+		6023: ErrInvalidAuthority,
+		6024: ErrInsufficientFunds,
+		6025: ErrInvalidTokenAccount,
+		6026: ErrBondingCurveAlreadyCompleted,
 	}
 )
 

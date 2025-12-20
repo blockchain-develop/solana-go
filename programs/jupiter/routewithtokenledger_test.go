@@ -15,7 +15,7 @@ func TestEncodeDecode_RouteWithTokenLedger(t *testing.T) {
 	for i := 0; i < 1; i++ {
 		t.Run("RouteWithTokenLedger"+strconv.Itoa(i), func(t *testing.T) {
 			{
-				params := new(RouteWithTokenLedger)
+				params := new(RouteWithTokenLedgerInstruction)
 				fu.Fuzz(params)
 				params.AccountMetaSlice = nil
 				params.RoutePlan = nil
@@ -25,7 +25,7 @@ func TestEncodeDecode_RouteWithTokenLedger(t *testing.T) {
 				buf := new(bytes.Buffer)
 				err := encodeT(*params, buf)
 				ag_require.NoError(t, err)
-				got := new(RouteWithTokenLedger)
+				got := new(RouteWithTokenLedgerInstruction)
 				err = decodeT(got, buf.Bytes())
 				got.AccountMetaSlice = nil
 				ag_require.NoError(t, err)

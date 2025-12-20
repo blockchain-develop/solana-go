@@ -11,7 +11,7 @@ import (
 )
 
 // ExactOutRoute is the `exact_out_route` instruction.
-type ExactOutRoute struct {
+type ExactOutRouteInstruction struct {
 	RoutePlan      *[]RoutePlanStep
 	OutAmount      *uint64
 	QuotedInAmount *uint64
@@ -42,9 +42,9 @@ type ExactOutRoute struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewExactOutRouteInstructionBuilder creates a new `ExactOutRoute` instruction builder.
-func NewExactOutRouteInstructionBuilder() *ExactOutRoute {
-	nd := &ExactOutRoute{
+// NewExactOutRouteInstructionBuilder creates a new `ExactOutRouteInstruction` instruction builder.
+func NewExactOutRouteInstructionBuilder() *ExactOutRouteInstruction {
+	nd := &ExactOutRouteInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 11),
 	}
 	nd.AccountMetaSlice[9] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
@@ -52,157 +52,157 @@ func NewExactOutRouteInstructionBuilder() *ExactOutRoute {
 }
 
 // SetRoutePlan sets the "route_plan" parameter.
-func (inst *ExactOutRoute) SetRoutePlan(route_plan []RoutePlanStep) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetRoutePlan(route_plan []RoutePlanStep) *ExactOutRouteInstruction {
 	inst.RoutePlan = &route_plan
 	return inst
 }
 
 // SetOutAmount sets the "out_amount" parameter.
-func (inst *ExactOutRoute) SetOutAmount(out_amount uint64) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetOutAmount(out_amount uint64) *ExactOutRouteInstruction {
 	inst.OutAmount = &out_amount
 	return inst
 }
 
 // SetQuotedInAmount sets the "quoted_in_amount" parameter.
-func (inst *ExactOutRoute) SetQuotedInAmount(quoted_in_amount uint64) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetQuotedInAmount(quoted_in_amount uint64) *ExactOutRouteInstruction {
 	inst.QuotedInAmount = &quoted_in_amount
 	return inst
 }
 
 // SetSlippageBps sets the "slippage_bps" parameter.
-func (inst *ExactOutRoute) SetSlippageBps(slippage_bps uint16) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetSlippageBps(slippage_bps uint16) *ExactOutRouteInstruction {
 	inst.SlippageBps = &slippage_bps
 	return inst
 }
 
 // SetPlatformFeeBps sets the "platform_fee_bps" parameter.
-func (inst *ExactOutRoute) SetPlatformFeeBps(platform_fee_bps uint8) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetPlatformFeeBps(platform_fee_bps uint8) *ExactOutRouteInstruction {
 	inst.PlatformFeeBps = &platform_fee_bps
 	return inst
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *ExactOutRoute) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *ExactOutRoute) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetUserTransferAuthorityAccount sets the "user_transfer_authority" account.
-func (inst *ExactOutRoute) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(userTransferAuthority).SIGNER()
 	return inst
 }
 
 // GetUserTransferAuthorityAccount gets the "user_transfer_authority" account.
-func (inst *ExactOutRoute) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetUserSourceTokenAccountAccount sets the "user_source_token_account" account.
-func (inst *ExactOutRoute) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(userSourceTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserSourceTokenAccountAccount gets the "user_source_token_account" account.
-func (inst *ExactOutRoute) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetUserDestinationTokenAccountAccount sets the "user_destination_token_account" account.
-func (inst *ExactOutRoute) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(userDestinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserDestinationTokenAccountAccount gets the "user_destination_token_account" account.
-func (inst *ExactOutRoute) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetDestinationTokenAccountAccount sets the "destination_token_account" account.
-func (inst *ExactOutRoute) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(destinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account (optional).
-func (inst *ExactOutRoute) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetSourceMintAccount sets the "source_mint" account.
-func (inst *ExactOutRoute) SetSourceMintAccount(sourceMint ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetSourceMintAccount(sourceMint ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(sourceMint)
 	return inst
 }
 
 // GetSourceMintAccount gets the "source_mint" account.
-func (inst *ExactOutRoute) GetSourceMintAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetSourceMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetDestinationMintAccount sets the "destination_mint" account.
-func (inst *ExactOutRoute) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(destinationMint)
 	return inst
 }
 
 // GetDestinationMintAccount gets the "destination_mint" account.
-func (inst *ExactOutRoute) GetDestinationMintAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetDestinationMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetPlatformFeeAccountAccount sets the "platform_fee_account" account.
-func (inst *ExactOutRoute) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(platformFeeAccount).WRITE()
 	return inst
 }
 
 // GetPlatformFeeAccountAccount gets the "platform_fee_account" account (optional).
-func (inst *ExactOutRoute) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetToken2022ProgramAccount sets the "token_2022_program" account.
-func (inst *ExactOutRoute) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(token2022Program)
 	return inst
 }
 
 // GetToken2022ProgramAccount gets the "token_2022_program" account (optional).
-func (inst *ExactOutRoute) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetEventAuthorityAccount sets the "event_authority" account.
-func (inst *ExactOutRoute) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(eventAuthority)
 	return inst
 }
 
 // GetEventAuthorityAccount gets the "event_authority" account.
-func (inst *ExactOutRoute) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
 // SetProgramAccount sets the "program" account.
-func (inst *ExactOutRoute) SetProgramAccount(program ag_solanago.PublicKey) *ExactOutRoute {
+func (inst *ExactOutRouteInstruction) SetProgramAccount(program ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	inst.AccountMetaSlice[10] = ag_solanago.Meta(program)
 	return inst
 }
 
 // GetProgramAccount gets the "program" account.
-func (inst *ExactOutRoute) GetProgramAccount() *ag_solanago.AccountMeta {
+func (inst *ExactOutRouteInstruction) GetProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(10)
 }
 
-func (inst ExactOutRoute) Build() *Instruction {
+func (inst ExactOutRouteInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_ExactOutRoute,
@@ -212,14 +212,14 @@ func (inst ExactOutRoute) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst ExactOutRoute) ValidateAndBuild() (*Instruction, error) {
+func (inst ExactOutRouteInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *ExactOutRoute) Validate() error {
+func (inst *ExactOutRouteInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.RoutePlan == nil {
@@ -277,7 +277,7 @@ func (inst *ExactOutRoute) Validate() error {
 	return nil
 }
 
-func (inst *ExactOutRoute) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *ExactOutRouteInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -312,7 +312,7 @@ func (inst *ExactOutRoute) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj ExactOutRoute) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj ExactOutRouteInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `RoutePlan` param:
 	err = encoder.Encode(obj.RoutePlan)
 	if err != nil {
@@ -340,7 +340,7 @@ func (obj ExactOutRoute) MarshalWithEncoder(encoder *ag_binary.Encoder) (err err
 	}
 	return nil
 }
-func (obj *ExactOutRoute) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *ExactOutRouteInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `RoutePlan`:
 	err = decoder.Decode(&obj.RoutePlan)
 	if err != nil {
@@ -388,7 +388,7 @@ func NewExactOutRouteInstruction(
 	platformFeeAccount ag_solanago.PublicKey,
 	token2022Program ag_solanago.PublicKey,
 	eventAuthority ag_solanago.PublicKey,
-	program ag_solanago.PublicKey) *ExactOutRoute {
+	program ag_solanago.PublicKey) *ExactOutRouteInstruction {
 	return NewExactOutRouteInstructionBuilder().
 		SetRoutePlan(route_plan).
 		SetOutAmount(out_amount).

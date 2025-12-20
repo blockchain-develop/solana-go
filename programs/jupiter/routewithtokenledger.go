@@ -11,7 +11,7 @@ import (
 )
 
 // RouteWithTokenLedger is the `route_with_token_ledger` instruction.
-type RouteWithTokenLedger struct {
+type RouteWithTokenLedgerInstruction struct {
 	RoutePlan       *[]RoutePlanStep
 	QuotedOutAmount *uint64
 	SlippageBps     *uint16
@@ -39,9 +39,9 @@ type RouteWithTokenLedger struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewRouteWithTokenLedgerInstructionBuilder creates a new `RouteWithTokenLedger` instruction builder.
-func NewRouteWithTokenLedgerInstructionBuilder() *RouteWithTokenLedger {
-	nd := &RouteWithTokenLedger{
+// NewRouteWithTokenLedgerInstructionBuilder creates a new `RouteWithTokenLedgerInstruction` instruction builder.
+func NewRouteWithTokenLedgerInstructionBuilder() *RouteWithTokenLedgerInstruction {
+	nd := &RouteWithTokenLedgerInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 10),
 	}
 	nd.AccountMetaSlice[8] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
@@ -49,140 +49,140 @@ func NewRouteWithTokenLedgerInstructionBuilder() *RouteWithTokenLedger {
 }
 
 // SetRoutePlan sets the "route_plan" parameter.
-func (inst *RouteWithTokenLedger) SetRoutePlan(route_plan []RoutePlanStep) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetRoutePlan(route_plan []RoutePlanStep) *RouteWithTokenLedgerInstruction {
 	inst.RoutePlan = &route_plan
 	return inst
 }
 
 // SetQuotedOutAmount sets the "quoted_out_amount" parameter.
-func (inst *RouteWithTokenLedger) SetQuotedOutAmount(quoted_out_amount uint64) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetQuotedOutAmount(quoted_out_amount uint64) *RouteWithTokenLedgerInstruction {
 	inst.QuotedOutAmount = &quoted_out_amount
 	return inst
 }
 
 // SetSlippageBps sets the "slippage_bps" parameter.
-func (inst *RouteWithTokenLedger) SetSlippageBps(slippage_bps uint16) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetSlippageBps(slippage_bps uint16) *RouteWithTokenLedgerInstruction {
 	inst.SlippageBps = &slippage_bps
 	return inst
 }
 
 // SetPlatformFeeBps sets the "platform_fee_bps" parameter.
-func (inst *RouteWithTokenLedger) SetPlatformFeeBps(platform_fee_bps uint8) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetPlatformFeeBps(platform_fee_bps uint8) *RouteWithTokenLedgerInstruction {
 	inst.PlatformFeeBps = &platform_fee_bps
 	return inst
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *RouteWithTokenLedger) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *RouteWithTokenLedger) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetUserTransferAuthorityAccount sets the "user_transfer_authority" account.
-func (inst *RouteWithTokenLedger) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(userTransferAuthority).SIGNER()
 	return inst
 }
 
 // GetUserTransferAuthorityAccount gets the "user_transfer_authority" account.
-func (inst *RouteWithTokenLedger) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetUserSourceTokenAccountAccount sets the "user_source_token_account" account.
-func (inst *RouteWithTokenLedger) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(userSourceTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserSourceTokenAccountAccount gets the "user_source_token_account" account.
-func (inst *RouteWithTokenLedger) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetUserDestinationTokenAccountAccount sets the "user_destination_token_account" account.
-func (inst *RouteWithTokenLedger) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(userDestinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserDestinationTokenAccountAccount gets the "user_destination_token_account" account.
-func (inst *RouteWithTokenLedger) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetDestinationTokenAccountAccount sets the "destination_token_account" account.
-func (inst *RouteWithTokenLedger) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(destinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account (optional).
-func (inst *RouteWithTokenLedger) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetDestinationMintAccount sets the "destination_mint" account.
-func (inst *RouteWithTokenLedger) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(destinationMint)
 	return inst
 }
 
 // GetDestinationMintAccount gets the "destination_mint" account.
-func (inst *RouteWithTokenLedger) GetDestinationMintAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetDestinationMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetPlatformFeeAccountAccount sets the "platform_fee_account" account.
-func (inst *RouteWithTokenLedger) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(platformFeeAccount).WRITE()
 	return inst
 }
 
 // GetPlatformFeeAccountAccount gets the "platform_fee_account" account (optional).
-func (inst *RouteWithTokenLedger) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetTokenLedgerAccount sets the "token_ledger" account.
-func (inst *RouteWithTokenLedger) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(tokenLedger)
 	return inst
 }
 
 // GetTokenLedgerAccount gets the "token_ledger" account.
-func (inst *RouteWithTokenLedger) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetEventAuthorityAccount sets the "event_authority" account.
-func (inst *RouteWithTokenLedger) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(eventAuthority)
 	return inst
 }
 
 // GetEventAuthorityAccount gets the "event_authority" account.
-func (inst *RouteWithTokenLedger) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetProgramAccount sets the "program" account.
-func (inst *RouteWithTokenLedger) SetProgramAccount(program ag_solanago.PublicKey) *RouteWithTokenLedger {
+func (inst *RouteWithTokenLedgerInstruction) SetProgramAccount(program ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(program)
 	return inst
 }
 
 // GetProgramAccount gets the "program" account.
-func (inst *RouteWithTokenLedger) GetProgramAccount() *ag_solanago.AccountMeta {
+func (inst *RouteWithTokenLedgerInstruction) GetProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
-func (inst RouteWithTokenLedger) Build() *Instruction {
+func (inst RouteWithTokenLedgerInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_RouteWithTokenLedger,
@@ -192,14 +192,14 @@ func (inst RouteWithTokenLedger) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst RouteWithTokenLedger) ValidateAndBuild() (*Instruction, error) {
+func (inst RouteWithTokenLedgerInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *RouteWithTokenLedger) Validate() error {
+func (inst *RouteWithTokenLedgerInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.RoutePlan == nil {
@@ -252,7 +252,7 @@ func (inst *RouteWithTokenLedger) Validate() error {
 	return nil
 }
 
-func (inst *RouteWithTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *RouteWithTokenLedgerInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -285,7 +285,7 @@ func (inst *RouteWithTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj RouteWithTokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj RouteWithTokenLedgerInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `RoutePlan` param:
 	err = encoder.Encode(obj.RoutePlan)
 	if err != nil {
@@ -308,7 +308,7 @@ func (obj RouteWithTokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (
 	}
 	return nil
 }
-func (obj *RouteWithTokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *RouteWithTokenLedgerInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `RoutePlan`:
 	err = decoder.Decode(&obj.RoutePlan)
 	if err != nil {
@@ -349,7 +349,7 @@ func NewRouteWithTokenLedgerInstruction(
 	platformFeeAccount ag_solanago.PublicKey,
 	tokenLedger ag_solanago.PublicKey,
 	eventAuthority ag_solanago.PublicKey,
-	program ag_solanago.PublicKey) *RouteWithTokenLedger {
+	program ag_solanago.PublicKey) *RouteWithTokenLedgerInstruction {
 	return NewRouteWithTokenLedgerInstructionBuilder().
 		SetRoutePlan(route_plan).
 		SetQuotedOutAmount(quoted_out_amount).

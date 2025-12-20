@@ -11,7 +11,7 @@ import (
 )
 
 // CreateTokenLedger is the `create_token_ledger` instruction.
-type CreateTokenLedger struct {
+type CreateTokenLedgerInstruction struct {
 
 	// [0] = [WRITE, SIGNER] token_ledger
 	//
@@ -21,9 +21,9 @@ type CreateTokenLedger struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewCreateTokenLedgerInstructionBuilder creates a new `CreateTokenLedger` instruction builder.
-func NewCreateTokenLedgerInstructionBuilder() *CreateTokenLedger {
-	nd := &CreateTokenLedger{
+// NewCreateTokenLedgerInstructionBuilder creates a new `CreateTokenLedgerInstruction` instruction builder.
+func NewCreateTokenLedgerInstructionBuilder() *CreateTokenLedgerInstruction {
+	nd := &CreateTokenLedgerInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 3),
 	}
 	nd.AccountMetaSlice[2] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
@@ -31,39 +31,39 @@ func NewCreateTokenLedgerInstructionBuilder() *CreateTokenLedger {
 }
 
 // SetTokenLedgerAccount sets the "token_ledger" account.
-func (inst *CreateTokenLedger) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *CreateTokenLedger {
+func (inst *CreateTokenLedgerInstruction) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *CreateTokenLedgerInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenLedger).WRITE().SIGNER()
 	return inst
 }
 
 // GetTokenLedgerAccount gets the "token_ledger" account.
-func (inst *CreateTokenLedger) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenLedgerInstruction) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetPayerAccount sets the "payer" account.
-func (inst *CreateTokenLedger) SetPayerAccount(payer ag_solanago.PublicKey) *CreateTokenLedger {
+func (inst *CreateTokenLedgerInstruction) SetPayerAccount(payer ag_solanago.PublicKey) *CreateTokenLedgerInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(payer).WRITE().SIGNER()
 	return inst
 }
 
 // GetPayerAccount gets the "payer" account.
-func (inst *CreateTokenLedger) GetPayerAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenLedgerInstruction) GetPayerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetSystemProgramAccount sets the "system_program" account.
-func (inst *CreateTokenLedger) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *CreateTokenLedger {
+func (inst *CreateTokenLedgerInstruction) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *CreateTokenLedgerInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "system_program" account.
-func (inst *CreateTokenLedger) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenLedgerInstruction) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
-func (inst CreateTokenLedger) Build() *Instruction {
+func (inst CreateTokenLedgerInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_CreateTokenLedger,
@@ -73,14 +73,14 @@ func (inst CreateTokenLedger) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst CreateTokenLedger) ValidateAndBuild() (*Instruction, error) {
+func (inst CreateTokenLedgerInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *CreateTokenLedger) Validate() error {
+func (inst *CreateTokenLedgerInstruction) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
@@ -96,7 +96,7 @@ func (inst *CreateTokenLedger) Validate() error {
 	return nil
 }
 
-func (inst *CreateTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *CreateTokenLedgerInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -117,10 +117,10 @@ func (inst *CreateTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj CreateTokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj CreateTokenLedgerInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
-func (obj *CreateTokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *CreateTokenLedgerInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
@@ -129,7 +129,7 @@ func NewCreateTokenLedgerInstruction(
 	// Accounts:
 	tokenLedger ag_solanago.PublicKey,
 	payer ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *CreateTokenLedger {
+	systemProgram ag_solanago.PublicKey) *CreateTokenLedgerInstruction {
 	return NewCreateTokenLedgerInstructionBuilder().
 		SetTokenLedgerAccount(tokenLedger).
 		SetPayerAccount(payer).

@@ -10,8 +10,8 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-// Route by using program owned token accounts and open orders accounts.
-type SharedAccountsExactOutRoute struct {
+// SharedAccountsExactOutRoute is the `shared_accounts_exact_out_route` instruction.
+type SharedAccountsExactOutRouteInstruction struct {
 	Id             *uint8
 	RoutePlan      *[]RoutePlanStep
 	OutAmount      *uint64
@@ -47,9 +47,9 @@ type SharedAccountsExactOutRoute struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewSharedAccountsExactOutRouteInstructionBuilder creates a new `SharedAccountsExactOutRoute` instruction builder.
-func NewSharedAccountsExactOutRouteInstructionBuilder() *SharedAccountsExactOutRoute {
-	nd := &SharedAccountsExactOutRoute{
+// NewSharedAccountsExactOutRouteInstructionBuilder creates a new `SharedAccountsExactOutRouteInstruction` instruction builder.
+func NewSharedAccountsExactOutRouteInstructionBuilder() *SharedAccountsExactOutRouteInstruction {
+	nd := &SharedAccountsExactOutRouteInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 13),
 	}
 	nd.AccountMetaSlice[11] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
@@ -57,185 +57,185 @@ func NewSharedAccountsExactOutRouteInstructionBuilder() *SharedAccountsExactOutR
 }
 
 // SetId sets the "id" parameter.
-func (inst *SharedAccountsExactOutRoute) SetId(id uint8) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetId(id uint8) *SharedAccountsExactOutRouteInstruction {
 	inst.Id = &id
 	return inst
 }
 
 // SetRoutePlan sets the "route_plan" parameter.
-func (inst *SharedAccountsExactOutRoute) SetRoutePlan(route_plan []RoutePlanStep) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetRoutePlan(route_plan []RoutePlanStep) *SharedAccountsExactOutRouteInstruction {
 	inst.RoutePlan = &route_plan
 	return inst
 }
 
 // SetOutAmount sets the "out_amount" parameter.
-func (inst *SharedAccountsExactOutRoute) SetOutAmount(out_amount uint64) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetOutAmount(out_amount uint64) *SharedAccountsExactOutRouteInstruction {
 	inst.OutAmount = &out_amount
 	return inst
 }
 
 // SetQuotedInAmount sets the "quoted_in_amount" parameter.
-func (inst *SharedAccountsExactOutRoute) SetQuotedInAmount(quoted_in_amount uint64) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetQuotedInAmount(quoted_in_amount uint64) *SharedAccountsExactOutRouteInstruction {
 	inst.QuotedInAmount = &quoted_in_amount
 	return inst
 }
 
 // SetSlippageBps sets the "slippage_bps" parameter.
-func (inst *SharedAccountsExactOutRoute) SetSlippageBps(slippage_bps uint16) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetSlippageBps(slippage_bps uint16) *SharedAccountsExactOutRouteInstruction {
 	inst.SlippageBps = &slippage_bps
 	return inst
 }
 
 // SetPlatformFeeBps sets the "platform_fee_bps" parameter.
-func (inst *SharedAccountsExactOutRoute) SetPlatformFeeBps(platform_fee_bps uint8) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetPlatformFeeBps(platform_fee_bps uint8) *SharedAccountsExactOutRouteInstruction {
 	inst.PlatformFeeBps = &platform_fee_bps
 	return inst
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *SharedAccountsExactOutRoute) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *SharedAccountsExactOutRoute) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetProgramAuthorityAccount sets the "program_authority" account.
-func (inst *SharedAccountsExactOutRoute) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(programAuthority)
 	return inst
 }
 
 // GetProgramAuthorityAccount gets the "program_authority" account.
-func (inst *SharedAccountsExactOutRoute) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetUserTransferAuthorityAccount sets the "user_transfer_authority" account.
-func (inst *SharedAccountsExactOutRoute) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(userTransferAuthority).SIGNER()
 	return inst
 }
 
 // GetUserTransferAuthorityAccount gets the "user_transfer_authority" account.
-func (inst *SharedAccountsExactOutRoute) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetSourceTokenAccountAccount sets the "source_token_account" account.
-func (inst *SharedAccountsExactOutRoute) SetSourceTokenAccountAccount(sourceTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetSourceTokenAccountAccount(sourceTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(sourceTokenAccount).WRITE()
 	return inst
 }
 
 // GetSourceTokenAccountAccount gets the "source_token_account" account.
-func (inst *SharedAccountsExactOutRoute) GetSourceTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetSourceTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetProgramSourceTokenAccountAccount sets the "program_source_token_account" account.
-func (inst *SharedAccountsExactOutRoute) SetProgramSourceTokenAccountAccount(programSourceTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetProgramSourceTokenAccountAccount(programSourceTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(programSourceTokenAccount).WRITE()
 	return inst
 }
 
 // GetProgramSourceTokenAccountAccount gets the "program_source_token_account" account.
-func (inst *SharedAccountsExactOutRoute) GetProgramSourceTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetProgramSourceTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetProgramDestinationTokenAccountAccount sets the "program_destination_token_account" account.
-func (inst *SharedAccountsExactOutRoute) SetProgramDestinationTokenAccountAccount(programDestinationTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetProgramDestinationTokenAccountAccount(programDestinationTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(programDestinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetProgramDestinationTokenAccountAccount gets the "program_destination_token_account" account.
-func (inst *SharedAccountsExactOutRoute) GetProgramDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetProgramDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetDestinationTokenAccountAccount sets the "destination_token_account" account.
-func (inst *SharedAccountsExactOutRoute) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(destinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account.
-func (inst *SharedAccountsExactOutRoute) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetSourceMintAccount sets the "source_mint" account.
-func (inst *SharedAccountsExactOutRoute) SetSourceMintAccount(sourceMint ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetSourceMintAccount(sourceMint ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(sourceMint)
 	return inst
 }
 
 // GetSourceMintAccount gets the "source_mint" account.
-func (inst *SharedAccountsExactOutRoute) GetSourceMintAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetSourceMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetDestinationMintAccount sets the "destination_mint" account.
-func (inst *SharedAccountsExactOutRoute) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(destinationMint)
 	return inst
 }
 
 // GetDestinationMintAccount gets the "destination_mint" account.
-func (inst *SharedAccountsExactOutRoute) GetDestinationMintAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetDestinationMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
 // SetPlatformFeeAccountAccount sets the "platform_fee_account" account.
-func (inst *SharedAccountsExactOutRoute) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[9] = ag_solanago.Meta(platformFeeAccount).WRITE()
 	return inst
 }
 
 // GetPlatformFeeAccountAccount gets the "platform_fee_account" account (optional).
-func (inst *SharedAccountsExactOutRoute) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(9)
 }
 
 // SetToken2022ProgramAccount sets the "token_2022_program" account.
-func (inst *SharedAccountsExactOutRoute) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetToken2022ProgramAccount(token2022Program ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[10] = ag_solanago.Meta(token2022Program)
 	return inst
 }
 
 // GetToken2022ProgramAccount gets the "token_2022_program" account (optional).
-func (inst *SharedAccountsExactOutRoute) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetToken2022ProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(10)
 }
 
 // SetEventAuthorityAccount sets the "event_authority" account.
-func (inst *SharedAccountsExactOutRoute) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[11] = ag_solanago.Meta(eventAuthority)
 	return inst
 }
 
 // GetEventAuthorityAccount gets the "event_authority" account.
-func (inst *SharedAccountsExactOutRoute) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(11)
 }
 
 // SetProgramAccount sets the "program" account.
-func (inst *SharedAccountsExactOutRoute) SetProgramAccount(program ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+func (inst *SharedAccountsExactOutRouteInstruction) SetProgramAccount(program ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	inst.AccountMetaSlice[12] = ag_solanago.Meta(program)
 	return inst
 }
 
 // GetProgramAccount gets the "program" account.
-func (inst *SharedAccountsExactOutRoute) GetProgramAccount() *ag_solanago.AccountMeta {
+func (inst *SharedAccountsExactOutRouteInstruction) GetProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(12)
 }
 
-func (inst SharedAccountsExactOutRoute) Build() *Instruction {
+func (inst SharedAccountsExactOutRouteInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_SharedAccountsExactOutRoute,
@@ -245,14 +245,14 @@ func (inst SharedAccountsExactOutRoute) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst SharedAccountsExactOutRoute) ValidateAndBuild() (*Instruction, error) {
+func (inst SharedAccountsExactOutRouteInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *SharedAccountsExactOutRoute) Validate() error {
+func (inst *SharedAccountsExactOutRouteInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Id == nil {
@@ -319,7 +319,7 @@ func (inst *SharedAccountsExactOutRoute) Validate() error {
 	return nil
 }
 
-func (inst *SharedAccountsExactOutRoute) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *SharedAccountsExactOutRouteInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -357,7 +357,7 @@ func (inst *SharedAccountsExactOutRoute) EncodeToTree(parent ag_treeout.Branches
 		})
 }
 
-func (obj SharedAccountsExactOutRoute) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SharedAccountsExactOutRouteInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Id` param:
 	err = encoder.Encode(obj.Id)
 	if err != nil {
@@ -390,7 +390,7 @@ func (obj SharedAccountsExactOutRoute) MarshalWithEncoder(encoder *ag_binary.Enc
 	}
 	return nil
 }
-func (obj *SharedAccountsExactOutRoute) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SharedAccountsExactOutRouteInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Id`:
 	err = decoder.Decode(&obj.Id)
 	if err != nil {
@@ -446,7 +446,7 @@ func NewSharedAccountsExactOutRouteInstruction(
 	platformFeeAccount ag_solanago.PublicKey,
 	token2022Program ag_solanago.PublicKey,
 	eventAuthority ag_solanago.PublicKey,
-	program ag_solanago.PublicKey) *SharedAccountsExactOutRoute {
+	program ag_solanago.PublicKey) *SharedAccountsExactOutRouteInstruction {
 	return NewSharedAccountsExactOutRouteInstructionBuilder().
 		SetId(id).
 		SetRoutePlan(route_plan).

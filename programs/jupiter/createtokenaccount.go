@@ -11,7 +11,7 @@ import (
 )
 
 // CreateTokenAccount is the `create_token_account` instruction.
-type CreateTokenAccount struct {
+type CreateTokenAccountInstruction struct {
 	Bump *uint8
 
 	// [0] = [WRITE] token_account
@@ -26,9 +26,9 @@ type CreateTokenAccount struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewCreateTokenAccountInstructionBuilder creates a new `CreateTokenAccount` instruction builder.
-func NewCreateTokenAccountInstructionBuilder() *CreateTokenAccount {
-	nd := &CreateTokenAccount{
+// NewCreateTokenAccountInstructionBuilder creates a new `CreateTokenAccountInstruction` instruction builder.
+func NewCreateTokenAccountInstructionBuilder() *CreateTokenAccountInstruction {
+	nd := &CreateTokenAccountInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 5),
 	}
 	nd.AccountMetaSlice[4] = ag_solanago.Meta(Addresses["11111111111111111111111111111111"])
@@ -36,67 +36,67 @@ func NewCreateTokenAccountInstructionBuilder() *CreateTokenAccount {
 }
 
 // SetBump sets the "bump" parameter.
-func (inst *CreateTokenAccount) SetBump(bump uint8) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetBump(bump uint8) *CreateTokenAccountInstruction {
 	inst.Bump = &bump
 	return inst
 }
 
 // SetTokenAccountAccount sets the "token_account" account.
-func (inst *CreateTokenAccount) SetTokenAccountAccount(tokenAccount ag_solanago.PublicKey) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetTokenAccountAccount(tokenAccount ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenAccount).WRITE()
 	return inst
 }
 
 // GetTokenAccountAccount gets the "token_account" account.
-func (inst *CreateTokenAccount) GetTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenAccountInstruction) GetTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetUserAccount sets the "user" account.
-func (inst *CreateTokenAccount) SetUserAccount(user ag_solanago.PublicKey) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetUserAccount(user ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(user).WRITE().SIGNER()
 	return inst
 }
 
 // GetUserAccount gets the "user" account.
-func (inst *CreateTokenAccount) GetUserAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenAccountInstruction) GetUserAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetMintAccount sets the "mint" account.
-func (inst *CreateTokenAccount) SetMintAccount(mint ag_solanago.PublicKey) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetMintAccount(mint ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(mint)
 	return inst
 }
 
 // GetMintAccount gets the "mint" account.
-func (inst *CreateTokenAccount) GetMintAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenAccountInstruction) GetMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *CreateTokenAccount) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *CreateTokenAccount) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenAccountInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetSystemProgramAccount sets the "system_program" account.
-func (inst *CreateTokenAccount) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *CreateTokenAccount {
+func (inst *CreateTokenAccountInstruction) SetSystemProgramAccount(systemProgram ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(systemProgram)
 	return inst
 }
 
 // GetSystemProgramAccount gets the "system_program" account.
-func (inst *CreateTokenAccount) GetSystemProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CreateTokenAccountInstruction) GetSystemProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
-func (inst CreateTokenAccount) Build() *Instruction {
+func (inst CreateTokenAccountInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_CreateTokenAccount,
@@ -106,14 +106,14 @@ func (inst CreateTokenAccount) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst CreateTokenAccount) ValidateAndBuild() (*Instruction, error) {
+func (inst CreateTokenAccountInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *CreateTokenAccount) Validate() error {
+func (inst *CreateTokenAccountInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Bump == nil {
@@ -142,7 +142,7 @@ func (inst *CreateTokenAccount) Validate() error {
 	return nil
 }
 
-func (inst *CreateTokenAccount) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *CreateTokenAccountInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -167,7 +167,7 @@ func (inst *CreateTokenAccount) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj CreateTokenAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj CreateTokenAccountInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Bump` param:
 	err = encoder.Encode(obj.Bump)
 	if err != nil {
@@ -175,7 +175,7 @@ func (obj CreateTokenAccount) MarshalWithEncoder(encoder *ag_binary.Encoder) (er
 	}
 	return nil
 }
-func (obj *CreateTokenAccount) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *CreateTokenAccountInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Bump`:
 	err = decoder.Decode(&obj.Bump)
 	if err != nil {
@@ -193,7 +193,7 @@ func NewCreateTokenAccountInstruction(
 	user ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	tokenProgram ag_solanago.PublicKey,
-	systemProgram ag_solanago.PublicKey) *CreateTokenAccount {
+	systemProgram ag_solanago.PublicKey) *CreateTokenAccountInstruction {
 	return NewCreateTokenAccountInstructionBuilder().
 		SetBump(bump).
 		SetTokenAccountAccount(tokenAccount).

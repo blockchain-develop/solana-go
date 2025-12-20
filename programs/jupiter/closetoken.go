@@ -11,7 +11,7 @@ import (
 )
 
 // CloseToken is the `close_token` instruction.
-type CloseToken struct {
+type CloseTokenInstruction struct {
 	Id      *uint8
 	BurnAll *bool
 
@@ -29,94 +29,95 @@ type CloseToken struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewCloseTokenInstructionBuilder creates a new `CloseToken` instruction builder.
-func NewCloseTokenInstructionBuilder() *CloseToken {
-	nd := &CloseToken{
+// NewCloseTokenInstructionBuilder creates a new `CloseTokenInstruction` instruction builder.
+func NewCloseTokenInstructionBuilder() *CloseTokenInstruction {
+	nd := &CloseTokenInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 6),
 	}
-	nd.AccountMetaSlice[1] = ag_solanago.Meta(Addresses["J434EKW6KDmnJHxVty1axHT6kjszKKFEyesKqxdQ7y64"]).WRITE()
+	nd.AccountMetaSlice[0] = ag_solanago.Meta(Addresses["9RAufBfjGQjDfrwxeyKmZWPADHSb8HcoqCdrmpqvCr1g"]).SIGNER()
+	nd.AccountMetaSlice[1] = ag_solanago.Meta(Addresses["7JQeyNK55fkUPUmEotupBFpiBGpgEQYLe8Ht1VdSfxcP"]).WRITE()
 	return nd
 }
 
 // SetId sets the "id" parameter.
-func (inst *CloseToken) SetId(id uint8) *CloseToken {
+func (inst *CloseTokenInstruction) SetId(id uint8) *CloseTokenInstruction {
 	inst.Id = &id
 	return inst
 }
 
 // SetBurnAll sets the "burn_all" parameter.
-func (inst *CloseToken) SetBurnAll(burn_all bool) *CloseToken {
+func (inst *CloseTokenInstruction) SetBurnAll(burn_all bool) *CloseTokenInstruction {
 	inst.BurnAll = &burn_all
 	return inst
 }
 
 // SetOperatorAccount sets the "operator" account.
-func (inst *CloseToken) SetOperatorAccount(operator ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetOperatorAccount(operator ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(operator).SIGNER()
 	return inst
 }
 
 // GetOperatorAccount gets the "operator" account.
-func (inst *CloseToken) GetOperatorAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetOperatorAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetWalletAccount sets the "wallet" account.
-func (inst *CloseToken) SetWalletAccount(wallet ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetWalletAccount(wallet ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(wallet).WRITE()
 	return inst
 }
 
 // GetWalletAccount gets the "wallet" account.
-func (inst *CloseToken) GetWalletAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetWalletAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetProgramAuthorityAccount sets the "program_authority" account.
-func (inst *CloseToken) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetProgramAuthorityAccount(programAuthority ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(programAuthority)
 	return inst
 }
 
 // GetProgramAuthorityAccount gets the "program_authority" account.
-func (inst *CloseToken) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetProgramAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetProgramTokenAccountAccount sets the "program_token_account" account.
-func (inst *CloseToken) SetProgramTokenAccountAccount(programTokenAccount ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetProgramTokenAccountAccount(programTokenAccount ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(programTokenAccount).WRITE()
 	return inst
 }
 
 // GetProgramTokenAccountAccount gets the "program_token_account" account.
-func (inst *CloseToken) GetProgramTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetProgramTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetMintAccount sets the "mint" account.
-func (inst *CloseToken) SetMintAccount(mint ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetMintAccount(mint ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(mint).WRITE()
 	return inst
 }
 
 // GetMintAccount gets the "mint" account.
-func (inst *CloseToken) GetMintAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *CloseToken) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *CloseToken {
+func (inst *CloseTokenInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *CloseTokenInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *CloseToken) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *CloseTokenInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
-func (inst CloseToken) Build() *Instruction {
+func (inst CloseTokenInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_CloseToken,
@@ -126,14 +127,14 @@ func (inst CloseToken) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst CloseToken) ValidateAndBuild() (*Instruction, error) {
+func (inst CloseTokenInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *CloseToken) Validate() error {
+func (inst *CloseTokenInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.Id == nil {
@@ -168,7 +169,7 @@ func (inst *CloseToken) Validate() error {
 	return nil
 }
 
-func (inst *CloseToken) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *CloseTokenInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -195,7 +196,7 @@ func (inst *CloseToken) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj CloseToken) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj CloseTokenInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `Id` param:
 	err = encoder.Encode(obj.Id)
 	if err != nil {
@@ -208,7 +209,7 @@ func (obj CloseToken) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error)
 	}
 	return nil
 }
-func (obj *CloseToken) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *CloseTokenInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `Id`:
 	err = decoder.Decode(&obj.Id)
 	if err != nil {
@@ -233,7 +234,7 @@ func NewCloseTokenInstruction(
 	programAuthority ag_solanago.PublicKey,
 	programTokenAccount ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
-	tokenProgram ag_solanago.PublicKey) *CloseToken {
+	tokenProgram ag_solanago.PublicKey) *CloseTokenInstruction {
 	return NewCloseTokenInstructionBuilder().
 		SetId(id).
 		SetBurnAll(burn_all).

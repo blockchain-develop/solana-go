@@ -15,7 +15,7 @@ func TestEncodeDecode_SharedAccountsRoute(t *testing.T) {
 	for i := 0; i < 1; i++ {
 		t.Run("SharedAccountsRoute"+strconv.Itoa(i), func(t *testing.T) {
 			{
-				params := new(SharedAccountsRoute)
+				params := new(SharedAccountsRouteInstruction)
 				fu.Fuzz(params)
 				params.AccountMetaSlice = nil
 				params.Id = nil
@@ -27,7 +27,7 @@ func TestEncodeDecode_SharedAccountsRoute(t *testing.T) {
 				buf := new(bytes.Buffer)
 				err := encodeT(*params, buf)
 				ag_require.NoError(t, err)
-				got := new(SharedAccountsRoute)
+				got := new(SharedAccountsRouteInstruction)
 				err = decodeT(got, buf.Bytes())
 				got.AccountMetaSlice = nil
 				ag_require.NoError(t, err)

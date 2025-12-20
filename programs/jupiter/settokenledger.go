@@ -11,7 +11,7 @@ import (
 )
 
 // SetTokenLedger is the `set_token_ledger` instruction.
-type SetTokenLedger struct {
+type SetTokenLedgerInstruction struct {
 
 	// [0] = [WRITE] token_ledger
 	//
@@ -19,37 +19,37 @@ type SetTokenLedger struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewSetTokenLedgerInstructionBuilder creates a new `SetTokenLedger` instruction builder.
-func NewSetTokenLedgerInstructionBuilder() *SetTokenLedger {
-	nd := &SetTokenLedger{
+// NewSetTokenLedgerInstructionBuilder creates a new `SetTokenLedgerInstruction` instruction builder.
+func NewSetTokenLedgerInstructionBuilder() *SetTokenLedgerInstruction {
+	nd := &SetTokenLedgerInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 2),
 	}
 	return nd
 }
 
 // SetTokenLedgerAccount sets the "token_ledger" account.
-func (inst *SetTokenLedger) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *SetTokenLedger {
+func (inst *SetTokenLedgerInstruction) SetTokenLedgerAccount(tokenLedger ag_solanago.PublicKey) *SetTokenLedgerInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenLedger).WRITE()
 	return inst
 }
 
 // GetTokenLedgerAccount gets the "token_ledger" account.
-func (inst *SetTokenLedger) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
+func (inst *SetTokenLedgerInstruction) GetTokenLedgerAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetTokenAccountAccount sets the "token_account" account.
-func (inst *SetTokenLedger) SetTokenAccountAccount(tokenAccount ag_solanago.PublicKey) *SetTokenLedger {
+func (inst *SetTokenLedgerInstruction) SetTokenAccountAccount(tokenAccount ag_solanago.PublicKey) *SetTokenLedgerInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(tokenAccount)
 	return inst
 }
 
 // GetTokenAccountAccount gets the "token_account" account.
-func (inst *SetTokenLedger) GetTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *SetTokenLedgerInstruction) GetTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
-func (inst SetTokenLedger) Build() *Instruction {
+func (inst SetTokenLedgerInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_SetTokenLedger,
@@ -59,14 +59,14 @@ func (inst SetTokenLedger) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst SetTokenLedger) ValidateAndBuild() (*Instruction, error) {
+func (inst SetTokenLedgerInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *SetTokenLedger) Validate() error {
+func (inst *SetTokenLedgerInstruction) Validate() error {
 	// Check whether all (required) accounts are set:
 	{
 		if inst.AccountMetaSlice[0] == nil {
@@ -79,7 +79,7 @@ func (inst *SetTokenLedger) Validate() error {
 	return nil
 }
 
-func (inst *SetTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *SetTokenLedgerInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -99,10 +99,10 @@ func (inst *SetTokenLedger) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj SetTokenLedger) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj SetTokenLedgerInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	return nil
 }
-func (obj *SetTokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *SetTokenLedgerInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	return nil
 }
 
@@ -110,7 +110,7 @@ func (obj *SetTokenLedger) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err
 func NewSetTokenLedgerInstruction(
 	// Accounts:
 	tokenLedger ag_solanago.PublicKey,
-	tokenAccount ag_solanago.PublicKey) *SetTokenLedger {
+	tokenAccount ag_solanago.PublicKey) *SetTokenLedgerInstruction {
 	return NewSetTokenLedgerInstructionBuilder().
 		SetTokenLedgerAccount(tokenLedger).
 		SetTokenAccountAccount(tokenAccount)

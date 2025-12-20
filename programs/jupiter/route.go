@@ -10,8 +10,8 @@ import (
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
-// route_plan Topologically sorted trade DAG
-type Route struct {
+// Route is the `route` instruction.
+type RouteInstruction struct {
 	RoutePlan       *[]RoutePlanStep
 	InAmount        *uint64
 	QuotedOutAmount *uint64
@@ -38,9 +38,9 @@ type Route struct {
 	ag_solanago.AccountMetaSlice `bin:"-"`
 }
 
-// NewRouteInstructionBuilder creates a new `Route` instruction builder.
-func NewRouteInstructionBuilder() *Route {
-	nd := &Route{
+// NewRouteInstructionBuilder creates a new `RouteInstruction` instruction builder.
+func NewRouteInstructionBuilder() *RouteInstruction {
+	nd := &RouteInstruction{
 		AccountMetaSlice: make(ag_solanago.AccountMetaSlice, 9),
 	}
 	nd.AccountMetaSlice[7] = ag_solanago.Meta(Addresses["D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf"])
@@ -48,135 +48,135 @@ func NewRouteInstructionBuilder() *Route {
 }
 
 // SetRoutePlan sets the "route_plan" parameter.
-func (inst *Route) SetRoutePlan(route_plan []RoutePlanStep) *Route {
+func (inst *RouteInstruction) SetRoutePlan(route_plan []RoutePlanStep) *RouteInstruction {
 	inst.RoutePlan = &route_plan
 	return inst
 }
 
 // SetInAmount sets the "in_amount" parameter.
-func (inst *Route) SetInAmount(in_amount uint64) *Route {
+func (inst *RouteInstruction) SetInAmount(in_amount uint64) *RouteInstruction {
 	inst.InAmount = &in_amount
 	return inst
 }
 
 // SetQuotedOutAmount sets the "quoted_out_amount" parameter.
-func (inst *Route) SetQuotedOutAmount(quoted_out_amount uint64) *Route {
+func (inst *RouteInstruction) SetQuotedOutAmount(quoted_out_amount uint64) *RouteInstruction {
 	inst.QuotedOutAmount = &quoted_out_amount
 	return inst
 }
 
 // SetSlippageBps sets the "slippage_bps" parameter.
-func (inst *Route) SetSlippageBps(slippage_bps uint16) *Route {
+func (inst *RouteInstruction) SetSlippageBps(slippage_bps uint16) *RouteInstruction {
 	inst.SlippageBps = &slippage_bps
 	return inst
 }
 
 // SetPlatformFeeBps sets the "platform_fee_bps" parameter.
-func (inst *Route) SetPlatformFeeBps(platform_fee_bps uint8) *Route {
+func (inst *RouteInstruction) SetPlatformFeeBps(platform_fee_bps uint8) *RouteInstruction {
 	inst.PlatformFeeBps = &platform_fee_bps
 	return inst
 }
 
 // SetTokenProgramAccount sets the "token_program" account.
-func (inst *Route) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetTokenProgramAccount(tokenProgram ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[0] = ag_solanago.Meta(tokenProgram)
 	return inst
 }
 
 // GetTokenProgramAccount gets the "token_program" account.
-func (inst *Route) GetTokenProgramAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetTokenProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(0)
 }
 
 // SetUserTransferAuthorityAccount sets the "user_transfer_authority" account.
-func (inst *Route) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetUserTransferAuthorityAccount(userTransferAuthority ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[1] = ag_solanago.Meta(userTransferAuthority).SIGNER()
 	return inst
 }
 
 // GetUserTransferAuthorityAccount gets the "user_transfer_authority" account.
-func (inst *Route) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetUserTransferAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(1)
 }
 
 // SetUserSourceTokenAccountAccount sets the "user_source_token_account" account.
-func (inst *Route) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetUserSourceTokenAccountAccount(userSourceTokenAccount ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[2] = ag_solanago.Meta(userSourceTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserSourceTokenAccountAccount gets the "user_source_token_account" account.
-func (inst *Route) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetUserSourceTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(2)
 }
 
 // SetUserDestinationTokenAccountAccount sets the "user_destination_token_account" account.
-func (inst *Route) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetUserDestinationTokenAccountAccount(userDestinationTokenAccount ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[3] = ag_solanago.Meta(userDestinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetUserDestinationTokenAccountAccount gets the "user_destination_token_account" account.
-func (inst *Route) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetUserDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(3)
 }
 
 // SetDestinationTokenAccountAccount sets the "destination_token_account" account.
-func (inst *Route) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetDestinationTokenAccountAccount(destinationTokenAccount ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[4] = ag_solanago.Meta(destinationTokenAccount).WRITE()
 	return inst
 }
 
 // GetDestinationTokenAccountAccount gets the "destination_token_account" account (optional).
-func (inst *Route) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetDestinationTokenAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(4)
 }
 
 // SetDestinationMintAccount sets the "destination_mint" account.
-func (inst *Route) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetDestinationMintAccount(destinationMint ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[5] = ag_solanago.Meta(destinationMint)
 	return inst
 }
 
 // GetDestinationMintAccount gets the "destination_mint" account.
-func (inst *Route) GetDestinationMintAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetDestinationMintAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(5)
 }
 
 // SetPlatformFeeAccountAccount sets the "platform_fee_account" account.
-func (inst *Route) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetPlatformFeeAccountAccount(platformFeeAccount ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[6] = ag_solanago.Meta(platformFeeAccount).WRITE()
 	return inst
 }
 
 // GetPlatformFeeAccountAccount gets the "platform_fee_account" account (optional).
-func (inst *Route) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetPlatformFeeAccountAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(6)
 }
 
 // SetEventAuthorityAccount sets the "event_authority" account.
-func (inst *Route) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetEventAuthorityAccount(eventAuthority ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[7] = ag_solanago.Meta(eventAuthority)
 	return inst
 }
 
 // GetEventAuthorityAccount gets the "event_authority" account.
-func (inst *Route) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetEventAuthorityAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(7)
 }
 
 // SetProgramAccount sets the "program" account.
-func (inst *Route) SetProgramAccount(program ag_solanago.PublicKey) *Route {
+func (inst *RouteInstruction) SetProgramAccount(program ag_solanago.PublicKey) *RouteInstruction {
 	inst.AccountMetaSlice[8] = ag_solanago.Meta(program)
 	return inst
 }
 
 // GetProgramAccount gets the "program" account.
-func (inst *Route) GetProgramAccount() *ag_solanago.AccountMeta {
+func (inst *RouteInstruction) GetProgramAccount() *ag_solanago.AccountMeta {
 	return inst.AccountMetaSlice.Get(8)
 }
 
-func (inst Route) Build() *Instruction {
+func (inst RouteInstruction) Build() *Instruction {
 	return &Instruction{BaseVariant: ag_binary.BaseVariant{
 		Impl:   inst,
 		TypeID: Instruction_Route,
@@ -186,14 +186,14 @@ func (inst Route) Build() *Instruction {
 // ValidateAndBuild validates the instruction parameters and accounts;
 // if there is a validation error, it returns the error.
 // Otherwise, it builds and returns the instruction.
-func (inst Route) ValidateAndBuild() (*Instruction, error) {
+func (inst RouteInstruction) ValidateAndBuild() (*Instruction, error) {
 	if err := inst.Validate(); err != nil {
 		return nil, err
 	}
 	return inst.Build(), nil
 }
 
-func (inst *Route) Validate() error {
+func (inst *RouteInstruction) Validate() error {
 	// Check whether all (required) parameters are set:
 	{
 		if inst.RoutePlan == nil {
@@ -246,7 +246,7 @@ func (inst *Route) Validate() error {
 	return nil
 }
 
-func (inst *Route) EncodeToTree(parent ag_treeout.Branches) {
+func (inst *RouteInstruction) EncodeToTree(parent ag_treeout.Branches) {
 	parent.Child(ag_format.Program(ProgramName, ProgramID)).
 		//
 		ParentFunc(func(programBranch ag_treeout.Branches) {
@@ -279,7 +279,7 @@ func (inst *Route) EncodeToTree(parent ag_treeout.Branches) {
 		})
 }
 
-func (obj Route) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+func (obj RouteInstruction) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	// Serialize `RoutePlan` param:
 	err = encoder.Encode(obj.RoutePlan)
 	if err != nil {
@@ -307,7 +307,7 @@ func (obj Route) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
 	}
 	return nil
 }
-func (obj *Route) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+func (obj *RouteInstruction) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
 	// Deserialize `RoutePlan`:
 	err = decoder.Decode(&obj.RoutePlan)
 	if err != nil {
@@ -353,7 +353,7 @@ func NewRouteInstruction(
 	destinationMint ag_solanago.PublicKey,
 	platformFeeAccount ag_solanago.PublicKey,
 	eventAuthority ag_solanago.PublicKey,
-	program ag_solanago.PublicKey) *Route {
+	program ag_solanago.PublicKey) *RouteInstruction {
 	return NewRouteInstructionBuilder().
 		SetRoutePlan(route_plan).
 		SetInAmount(in_amount).

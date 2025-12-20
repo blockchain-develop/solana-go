@@ -78,6 +78,9 @@ func (obj *FeeEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (
 }
 
 func (*FeeEventEventData) isEventData() {}
+func (obj *FeeEventEventData) Self() any {
+	return obj
+}
 
 type SwapEventEventData struct {
 	Amm          ag_solanago.PublicKey
@@ -166,15 +169,182 @@ func (obj *SwapEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 }
 
 func (*SwapEventEventData) isEventData() {}
+func (obj *SwapEventEventData) Self() any {
+	return obj
+}
+
+type SwapsEventEventData struct {
+	SwapEvents []SwapEventV2
+}
+
+var SwapsEventEventDataDiscriminator = [8]byte{152, 47, 78, 235, 192, 96, 110, 106}
+
+func (obj SwapsEventEventData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(SwapsEventEventDataDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `SwapEvents` param:
+	err = encoder.Encode(obj.SwapEvents)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *SwapsEventEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(SwapsEventEventDataDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[152 47 78 235 192 96 110 106]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `SwapEvents`:
+	err = decoder.Decode(&obj.SwapEvents)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (*SwapsEventEventData) isEventData() {}
+func (obj *SwapsEventEventData) Self() any {
+	return obj
+}
+
+type CandidateSwapResultsEventData struct {
+	Results []CandidateSwapResult
+}
+
+var CandidateSwapResultsEventDataDiscriminator = [8]byte{45, 9, 244, 30, 229, 52, 168, 123}
+
+func (obj CandidateSwapResultsEventData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(CandidateSwapResultsEventDataDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `Results` param:
+	err = encoder.Encode(obj.Results)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *CandidateSwapResultsEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(CandidateSwapResultsEventDataDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[45 9 244 30 229 52 168 123]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `Results`:
+	err = decoder.Decode(&obj.Results)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (*CandidateSwapResultsEventData) isEventData() {}
+func (obj *CandidateSwapResultsEventData) Self() any {
+	return obj
+}
+
+type BestSwapOutAmountViolationEventData struct {
+	ExpectedOutAmount uint64
+	OutAmount         uint64
+}
+
+var BestSwapOutAmountViolationEventDataDiscriminator = [8]byte{124, 66, 196, 51, 218, 173, 46, 93}
+
+func (obj BestSwapOutAmountViolationEventData) MarshalWithEncoder(encoder *ag_binary.Encoder) (err error) {
+	// Write account discriminator:
+	err = encoder.WriteBytes(BestSwapOutAmountViolationEventDataDiscriminator[:], false)
+	if err != nil {
+		return err
+	}
+	// Serialize `ExpectedOutAmount` param:
+	err = encoder.Encode(obj.ExpectedOutAmount)
+	if err != nil {
+		return err
+	}
+	// Serialize `OutAmount` param:
+	err = encoder.Encode(obj.OutAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (obj *BestSwapOutAmountViolationEventData) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) {
+	// Read and check account discriminator:
+	{
+		discriminator, err := decoder.ReadTypeID()
+		if err != nil {
+			return err
+		}
+		if !discriminator.Equal(BestSwapOutAmountViolationEventDataDiscriminator[:]) {
+			return fmt.Errorf(
+				"wrong discriminator: wanted %s, got %s",
+				"[124 66 196 51 218 173 46 93]",
+				fmt.Sprint(discriminator[:]))
+		}
+	}
+	// Deserialize `ExpectedOutAmount`:
+	err = decoder.Decode(&obj.ExpectedOutAmount)
+	if err != nil {
+		return err
+	}
+	// Deserialize `OutAmount`:
+	err = decoder.Decode(&obj.OutAmount)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (*BestSwapOutAmountViolationEventData) isEventData() {}
+func (obj *BestSwapOutAmountViolationEventData) Self() any {
+	return obj
+}
 
 var eventTypes = map[[8]byte]reflect.Type{
-	FeeEventEventDataDiscriminator:  reflect.TypeOf(FeeEventEventData{}),
-	SwapEventEventDataDiscriminator: reflect.TypeOf(SwapEventEventData{}),
+	BestSwapOutAmountViolationEventDataDiscriminator: reflect.TypeOf(BestSwapOutAmountViolationEventData{}),
+	CandidateSwapResultsEventDataDiscriminator:       reflect.TypeOf(CandidateSwapResultsEventData{}),
+	FeeEventEventDataDiscriminator:                   reflect.TypeOf(FeeEventEventData{}),
+	SwapEventEventDataDiscriminator:                  reflect.TypeOf(SwapEventEventData{}),
+	SwapsEventEventDataDiscriminator:                 reflect.TypeOf(SwapsEventEventData{}),
 }
 var eventNames = map[[8]byte]string{
-	FeeEventEventDataDiscriminator:  "FeeEvent",
-	SwapEventEventDataDiscriminator: "SwapEvent",
+	BestSwapOutAmountViolationEventDataDiscriminator: "BestSwapOutAmountViolation",
+	CandidateSwapResultsEventDataDiscriminator:       "CandidateSwapResults",
+	FeeEventEventDataDiscriminator:                   "FeeEvent",
+	SwapEventEventDataDiscriminator:                  "SwapEvent",
+	SwapsEventEventDataDiscriminator:                 "SwapsEvent",
 }
+var (
+	_ fmt.Formatter = nil
+)
+var (
+	_ *ag_solanago.Transaction = nil
+)
 var (
 	_ *strings.Builder = nil
 )
@@ -199,6 +369,7 @@ type Event struct {
 type EventData interface {
 	UnmarshalWithDecoder(decoder *ag_binary.Decoder) error
 	isEventData()
+	Self() any
 }
 
 const eventLogPrefix = "Program data: "
@@ -268,6 +439,10 @@ func decodeEventsFromEmitCPI(InnerInstructions []ag_rpc.InnerInstruction, accoun
 			if ixData, err = ag_base58.Decode(ix.Data.String()); err != nil {
 				return
 			}
+			if len(ixData) < 8 {
+				continue
+			}
+
 			eventBase64 := base64.StdEncoding.EncodeToString(ixData[8:])
 			var eventBinary []byte
 			if eventBinary, err = base64.StdEncoding.DecodeString(eventBase64); err != nil {
@@ -283,6 +458,9 @@ func parseEvents(base64Binaries [][]byte) (evts []*Event, err error) {
 	decoder := ag_binary.NewDecoderWithEncoding(nil, ag_binary.EncodingBorsh)
 
 	for _, eventBinary := range base64Binaries {
+		if len(eventBinary) < 8 {
+			continue
+		}
 		eventDiscriminator := ag_binary.TypeID(eventBinary[:8])
 		if eventType, ok := eventTypes[eventDiscriminator]; ok {
 			eventData := reflect.New(eventType).Interface().(EventData)
